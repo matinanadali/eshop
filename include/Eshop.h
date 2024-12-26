@@ -5,12 +5,16 @@
 #include <map>
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 class Eshop {
     std::map<std::string, User*> users;  // Map to store users by username
     std::vector<std::pair<Product, float>> products;
+    int fetchUsers();
+    int fetchProducts();
+    
     public:
-    void fetchData();
-    void storeData();
+    Eshop();
+    
     // More methods to be added
 };

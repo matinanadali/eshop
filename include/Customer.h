@@ -3,6 +3,7 @@
 #include <vector>
 #include "Product.h"
 #include "Order.h"
+#include <iostream>
 
 class Customer : public User {
     std::vector<std::pair<Product, float>> shoppingCart;
@@ -14,7 +15,8 @@ class Customer : public User {
         void showShoppingCart();
         void removeFromShoppingCart();
         void editShoppingCart();
-        void viewProduct();
+        void viewProduct(const Product &product) {std::cout << "Product1\n";};
         void makeOrder();
         void viewOrderHistory();
+        ~Customer() {};
 };

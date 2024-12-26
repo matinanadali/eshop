@@ -1,29 +1,25 @@
+INCLUDE = -I./include -I../include
+SRC = ./src
+
 CC = g++
-CFLAGS = -Wall -Wextra -O2
+
+# Compile options
+CFLAGS = -Wall $(INCLUDE)
 LDFLAGS = -lm
 
-SRC_DIR = src
-OBJ_DIR = obj
-BIN_DIR = bin
+%.o: %.cpp
+	$(CC) -c $(CFLAGS) $< -o $@
 
-SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
-OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC_FILES))
-EXECUTABLE = $(BIN_DIR)/program
+# Object files for native build
+OBJS = $(SRC)/User.o $(SRC)/main.o $(SRC)/Eshop.o $(SRC)/Administrator.o $(SRC)/Customer.o  $(SRC)/Product.o 
+EXEC = main
 
-all: $(EXECUTABLE)
+# Default target (native build with GCC)
+all: $(EXEC)
 
-$(EXECUTABLE): $(OBJ_FILES)
-	mkdir -p $(BIN_DIR)
-	$(CC) $(CFLAGS) $(OBJ_FILES) -o $@ $(LDFLAGS)
+$(EXEC): $(OBJS)
+	$(CC) $(OBJS) -o $(EXEC) $(LDFLAGS)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+run: $(EXEC)
+	./$(EXEC) $(ARGS)
 
-clean:
-	rm -rf $(OBJ_DIR) $(BIN_DIR)
-
-run: $(EXECUTABLE)
-	./$(EXECUTABLE)
-
-.PHONY: clean
