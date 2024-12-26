@@ -12,5 +12,6 @@ class User {
         // Virtual function : it exists in Customer and Administrator Class but with different functionality
         virtual void viewProduct(const Product &product) = 0;
         void searchProduct();
+        std::string getPassword() const { return password; };
         virtual ~User() {};
 };

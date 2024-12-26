@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
   std::string usersFilePath = argv[3];
   
   Eshop eshop = Eshop(categoriesFilePath, productsFilePath, usersFilePath);
-  eshop.showProducts();
+  eshop.showLoginPrompt();
+  // eshop.showProducts();
   return 0;
 }

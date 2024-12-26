@@ -11,7 +11,7 @@ LDFLAGS = -lm
 	$(CC) -c $(CFLAGS) $< -o $@
 
 # Object files for native build
-OBJS = $(SRC)/User.o $(SRC)/main.o $(SRC)/Eshop.o $(SRC)/Administrator.o $(SRC)/Customer.o  $(SRC)/Product.o 
+OBJS = $(SRC)/User.o $(SRC)/main.o $(SRC)/Eshop.o $(SRC)/Administrator.o $(SRC)/Customer.o  $(SRC)/Product.o $(SRC)/General.o
 EXEC = oop24
 ARGS = ./files/categories.txt ./files/products.txt ./files/users.txt
 
