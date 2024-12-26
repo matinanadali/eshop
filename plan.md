@@ -1,50 +1,25 @@
-# Πλάνο
+**Important**: To run the program, navigate to the root directory of the project and execute:
+```bash
+make run 
+```
+This will run the program using the default command-line arguements: `./files/categories.txt ./files/products.txt ./files/users.txt`, as specified in the Makefile.
+**Important**: If you create a new .cpp file, don't forget to add the corresponding .o file to the Makefile.
 
-### Βασικές Κλάσεις
--	Eshop
--	Customer -> User
--	Administrator -> User
--	Product
--	Order
--	
-### Eshop
-##### Πεδία
--	Map χρηστών για γρήγορη αναζήτηση
-	Θα είναι map από pointers ώστε όταν αλλάζει ένα προϊόν να αλλάζει αυτόματα και εδώ
--	(Vector) προϊόντων
--	Active User
-##### Μέθοδοι
--	fetchData - initialize
--	storeData (after each session)
--	User login/logout/register
--	addProduct, changeProduct, searchProduct(title, category, subcategory...)
-	Αυτές οι μέθοδοι θα μπορούσαν να είναι και μέθοδοι του διαχειριστή αλλά θα έπρεπε να έχει πρόσβαση στα products (μέσω μίας getProducts). Για να μη γίνει αυτό, η κλάση διαχειριστής προτείνω να λειτουργεί ως η διεπαφή ανάμεσα στον χρήστη και την addProducts, δηλαδή να μαζεύει όλα τα στοιχεία του προϊόντος και να περνάει έτοιμο όρισμα Product στην addProduct. Γενικά προτείνω να το κάνουμε έτσι.. ας πούμε και η αλλαγή των προϊόντων να γίνεται μέσα από την product.changeProduct().
-
-### User
-##### Πεδία
--	Username, password
-##### Μέθοδοι
--	searchProduct
--	viewProduct (υπάρχει και στον Administrator και στον Customer) αλλά με διαφορετικές λειτουργίες
-
-### Administrator -> User
-##### Πεδία
-##### Μέθοδοι
--	addProduct, changeProduct, viewProduct
-
-### Customer-> User
-##### Πεδία
-- Καλάθι αγορών: vector με pair προϊόν-ποσότητα?
-- Ιστορικό παραγγελιών: vector με Orders
-##### Μέθοδοι
--	addProductToCart, changeCart
--	viewProduct
--	makeOrder
--	viewOrderHistory
-
-### Product 
-##### Πεδία
--	Όλα τα πεδία που αναγράφονται στην εκφώνηση
-##### Μέθοδοι
--	changeProduct
+# Done - To Do
+-	[x] Initialize eshop from files
+-	[x] Add user authentication
+-	[ ] Implement administrator functionalities
+	-	[ ] Add products
+	-	[ ] Edit products 
+	-	[ ] View statistics (e.g. out of stock products, products with the highest demand (see assignment))
+-	[ ] Implement customer functionalities
+	-	[ ] Add to cart
+	-	[ ] Edit cart
+	-	[ ] Complete order
+	-	[ ] View order history
+-	[ ] Implement product search (by title, category etc. (see assignment))
+-	[ ] Store data after each session
+	-	[ ] Save data to files when program terminates
+	-	[ ] Extend Eshop initialization to retrieve all user/product data (orders, cart..)
+-	[ ] Bonus Part
 
