@@ -87,6 +87,13 @@ Eshop::Eshop(const std::string &categoriesFilePath,
         const std::string &productsFilePath, const std::string &usersFilePath)
       : categoriesFilePath(categoriesFilePath),
         productsFilePath(productsFilePath), usersFilePath(usersFilePath){
+            // Initialize E-shop with data from files
             fetchUsers(usersFilePath);
             fetchProducts(productsFilePath);
         };
+
+void Eshop::showProducts() {
+    for (auto [product, quantity] : products) {
+        product.showProductDetails(quantity);
+    }
+}

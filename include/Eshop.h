@@ -17,6 +17,6 @@ class Eshop {
 public:
   Eshop(const std::string &categoriesFilePath,
         const std::string &productsFilePath, const std::string &usersFilePath);
-
+  void showProducts();
   // More methods to be added
 };

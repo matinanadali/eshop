@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
   std::string productsFilePath = argv[2];
   std::string usersFilePath = argv[3];
   
-   Eshop eshop = Eshop(categoriesFilePath, productsFilePath, usersFilePath);
-
+  Eshop eshop = Eshop(categoriesFilePath, productsFilePath, usersFilePath);
+  eshop.showProducts();
   return 0;
 }

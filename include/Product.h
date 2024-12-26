@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <iostream>
 
 class Product {
   std::string title;
@@ -17,5 +18,5 @@ public:
       : title(title), description(description), category(category),
         subcategory(subcategory), price(price),
         measuredInKilos(measuredInKilos){};
-  void showProductDetails();
+  void showProductDetails(float quantity);
 };
