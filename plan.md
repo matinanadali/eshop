@@ -23,8 +23,6 @@
 ### User
 ##### Πεδία
 -	Username, password
-	Θα είναι map από pointers ώστε όταν αλλάζει ένα προϊόν να αλλάζει αυτόματα και εδώ
--	(Vector) προϊόντων
 ##### Μέθοδοι
 -	searchProduct
 -	viewProduct (υπάρχει και στον Administrator και στον Customer) αλλά με διαφορετικές λειτουργίες
