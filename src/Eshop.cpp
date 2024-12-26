@@ -1,7 +1,7 @@
 #include "../include/Eshop.h"
 
-int Eshop::fetchUsers() {
-  std::ifstream file("files/users.txt"); // Open the file
+int Eshop::fetchUsers(const std::string &usersFilePath) {
+  std::ifstream file(usersFilePath); // Open the file
 
   if (!file.is_open()) {
     std::cerr << "Error opening file!" << std::endl;
@@ -33,8 +33,8 @@ int Eshop::fetchUsers() {
   return 0;
 }
 
-int Eshop::fetchProducts() {
-    std::ifstream file("files/products.txt"); // Open the file
+int Eshop::fetchProducts(const std::string &productsFilePath) {
+    std::ifstream file(productsFilePath); // Open the file
 
   if (!file.is_open()) {
     std::cerr << "Error opening file!" << std::endl;
@@ -83,7 +83,10 @@ int Eshop::fetchProducts() {
   return 0;
 }
 
-Eshop::Eshop() {
-    fetchUsers();
-    fetchProducts();
-}
+Eshop::Eshop(const std::string &categoriesFilePath,
+        const std::string &productsFilePath, const std::string &usersFilePath)
+      : categoriesFilePath(categoriesFilePath),
+        productsFilePath(productsFilePath), usersFilePath(usersFilePath){
+            fetchUsers(usersFilePath);
+            fetchProducts(productsFilePath);
+        };
