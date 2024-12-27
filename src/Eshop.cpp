@@ -121,7 +121,7 @@ void Eshop::registerUser() {
     // Username already exists -> redirect user to login or to register with different username
     std::cout << "Username already exists. ";
     std::string option = readStringOption(
-        {"login", "register"},
+        {"login", "register", "cancel"},
         "Would you like to login or register "
         "with a different username? (enter option login/register/cancel): ");
 
