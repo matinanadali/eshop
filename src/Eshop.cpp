@@ -147,7 +147,7 @@ void Eshop::registerUser() {
   isAdmin = (isAdminString == "y");
 
   // Create new user
-  User *newUser;
+  // User *newUser; - Should we keep this pointer?
   if (isAdmin) {
     users[username] = new Administrator(username, password);
   } else {
@@ -155,6 +155,8 @@ void Eshop::registerUser() {
   }
 
   std::cout << "Thanks for signing up! You are automatically logged-in as " << username << "\n";
+
+  showMenu();
 }
 
 // Processes user login
@@ -200,6 +202,8 @@ void Eshop::loginUser() {
   }
 
   std::cout << "\nWelcome " << username << "!\n\n";
+
+  showMenu();
 }
 
 void Eshop::showLoginPrompt() {
@@ -213,4 +217,9 @@ void Eshop::showLoginPrompt() {
   } else {
     registerUser();
   }
+}
+
+/////////////////////////////////////// Menus ///////////////////////////////////////
+void Eshop::showMenu(){
+  std::cout << "Menu:\n";
 }

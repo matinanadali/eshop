@@ -17,6 +17,7 @@ class Eshop {
   int fetchProducts(const std::string &productsFilePath);
   void loginUser();
   void registerUser();
+  void showMenu();
 
 public:
   // IMPORTANT: At the moment, E-shop is initialized with input data when constructed
