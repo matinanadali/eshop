@@ -12,7 +12,7 @@ class Eshop {
   std::string categoriesFilePath, productsFilePath, usersFilePath;
   std::map<std::string, User *> users; // Map to store users by username
   std::vector<std::pair<Product, float>> products;
-  User* activeUser; // Defined as pointer because User is an abstract class
+  User* activeUser = nullptr; // Defined as pointer because User is an abstract class
   int fetchUsers(const std::string &usersFilePath);
   int fetchProducts(const std::string &productsFilePath);
   void loginUser();

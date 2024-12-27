@@ -38,9 +38,9 @@ int Eshop::fetchUsers(const std::string &usersFilePath) {
 
     // Store user
     if (isAdmin) {
-      users[username] = new Administrator(username, password);
+      users[username] = new Administrator(username, password, isAdmin);
     } else {
-      users[username] = new Customer(username, password);
+      users[username] = new Customer(username, password, isAdmin);
     }
   }
 
@@ -149,12 +149,13 @@ void Eshop::registerUser() {
   // Create new user
   // User *newUser; - Should we keep this pointer?
   if (isAdmin) {
-    users[username] = new Administrator(username, password);
+    users[username] = new Administrator(username, password, isAdmin);
   } else {
-    users[username] = new Customer(username, password);
+    users[username] = new Customer(username, password, isAdmin);
   }
 
-  std::cout << "Thanks for signing up! You are automatically logged-in as " << username << "\n";
+  activeUser = users[username];
+  std::cout << "Thanks for signing up! You are automatically logged-in as " << activeUser->getUsername() << "\n";
 
   showMenu();
 }
@@ -201,7 +202,8 @@ void Eshop::loginUser() {
     }
   }
 
-  std::cout << "\nWelcome " << username << "!\n\n";
+  activeUser = users[username];
+  std::cout << "\nWelcome " << activeUser->getUsername() << "!\n\n";
 
   showMenu();
 }
@@ -222,4 +224,5 @@ void Eshop::showLoginPrompt() {
 /////////////////////////////////////// Menus ///////////////////////////////////////
 void Eshop::showMenu(){
   std::cout << "Menu:\n";
+  std::cout << activeUser->getIsAdmin();
 }

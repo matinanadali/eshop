@@ -10,7 +10,7 @@ class Customer : public User {
     std::vector<Order> orderHistory;
 
     public:
-        Customer(const std::string &username, const std::string &password): User(username, password) {};
+        Customer(const std::string &username, const std::string &password, const bool &isAdmin): User(username, password, isAdmin) {};
         void addToShoppingCart(const Product &product);
         void showShoppingCart();
         void removeFromShoppingCart();
