@@ -203,7 +203,7 @@ void Eshop::loginUser() {
   }
 
   activeUser = users[username];
-  std::cout << "\nWelcome " << activeUser->getUsername() << "!\n\n";
+  std::cout << "\nWelcome " << activeUser->getUsername() << "!\n";
 
   showMenu();
 }
@@ -223,6 +223,104 @@ void Eshop::showLoginPrompt() {
 
 /////////////////////////////////////// Menus ///////////////////////////////////////
 void Eshop::showMenu(){
-  std::cout << "Menu:\n";
-  std::cout << activeUser->getIsAdmin();
+  if(activeUser->getIsAdmin() == 1){ // Menu for Admin
+
+    int choice;
+    do{
+      std::cout << "\n---Admin Menu---\n1. Add Product\n2. Edit Product\n3. Remove Product\n4. Search Product\n5. Show Unavailable Products\n6. Show Top 5 Products\n7. Exit\n";
+      
+      std::string choicestring;
+      do{
+        std::cout << "Enter your choice: ";
+        std::cin >> choicestring;
+        if(choicestring.length() != 1 || !isdigit(choicestring[0])){ // Make sure input is an one-digit integer
+          std::cout << "Invalid choice! Please enter a number between 1 and 7.\n";
+          continue;
+        }
+        choice = choicestring[0] - '0'; // Conversion to integer
+        if(choice < 1 || choice > 7){ // Out of bounds case
+          std::cout << "Invalid choice! Please enter a number between 1 and 7.\n";
+          continue;
+        }
+        break;
+      } while (1);
+
+      switch(choice){
+        case 1:
+          std::cout << "addProduct()\n";
+          break;
+        case 2:
+          std::cout << "editProduct()\n";
+          break;
+        case 3:
+          std::cout << "removeProduct()\n";
+          break;
+        case 4:
+          std::cout << "searchProduct()\n";
+          break;
+        case 5:
+          std::cout << "unavailableProducts()\n";
+          break;
+        case 6:
+          std::cout << "top5Products()\n";
+          break;
+        case 7:
+          std::cout << "Goodbye!\n";
+          break;
+        }
+
+    } while(choice != 7);
+
+  }
+  else{ // Menu for Customer
+    int choice;
+    do{
+      std::cout << "\n---Customer Menu---\n1. Search for a product\n2. Add product to cart\n3. Update product from cart\n4. Remove product from cart\n5. Complete order\n6. View order history\n7. View cart\n8. Exit\n";
+      
+      std::string choicestring;
+      do{
+        std::cout << "Enter your choice: ";
+        std::cin >> choicestring;
+        if(choicestring.length() != 1 || !isdigit(choicestring[0])){ // Make sure input is an one-digit integer
+          std::cout << "Invalid choice! Please enter a number between 1 and 8.\n";
+          continue;
+        }
+        choice = choicestring[0] - '0'; // Conversion to integer
+        if(choice < 1 || choice > 8){ // Out of bounds case
+          std::cout << "Invalid choice! Please enter a number between 1 and 8.\n";
+          continue;
+        }
+        break;
+      } while (1);
+
+      switch(choice){
+        case 1:
+          std::cout << "searchProduct()\n";
+          break;
+        case 2:
+          std::cout << "addProduct()\n";
+          break;
+        case 3:
+          std::cout << "updateProduct()\n";
+          break;
+        case 4:
+          std::cout << "removeProduct()\n";
+          break;
+        case 5:
+          std::cout << "completeOrder()\n";
+          break;
+        case 6:
+          std::cout << "orderHistory()\n";
+          break;
+        case 7:
+          std::cout << "cart()\n";
+          break;
+        case 8:
+          std::cout << "Goodbye!\n";
+          break;
+        }
+
+    } while(choice != 8);
+
+  }
 }
