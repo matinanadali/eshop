@@ -11,8 +11,18 @@ class User {
     public: 
         User(const std::string &username, const std::string &password, const bool &isAdmin): username(username), password(password), isAdmin(isAdmin) {};
         // Virtual function : it exists in Customer and Administrator Class but with different functionality
-        virtual void viewProduct(const Product &product) = 0;
-        void searchProduct();
+        virtual void searchProduct() = 0;
+        virtual void addProduct() = 0; //const Product &product
+        virtual void updateProduct() = 0;
+        virtual void removeProduct() = 0;
+
+        virtual void unavailableProducts(){}
+        virtual void top5Products(){}
+
+        virtual void makeOrder(){}
+        virtual void viewOrderHistory(){}
+        virtual void showCart(){}
+
         std::string getUsername() const { return username; };
         std::string getPassword() const { return password; };
         int getIsAdmin() const { return isAdmin; };

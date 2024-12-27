@@ -5,6 +5,13 @@
 class Administrator : public User {
     public:
     Administrator(const std::string &username, const std::string &password, const bool &isAdmin): User(username, password, isAdmin) {};
-    void viewProduct(const Product &product) {std::cout << "Product2\n";};
     ~Administrator() {};
+    
+    void searchProduct();
+    void addProduct(); //const Product &product
+    void updateProduct();
+    void removeProduct();
+    
+    void unavailableProducts();
+    void top5Products();
 };

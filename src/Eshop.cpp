@@ -1,4 +1,5 @@
 #include "../include/Eshop.h"
+#include "../include/Customer.h"
 
 /////////////////////////////////////// Constructor & Initialization Methods ///////////////////////////////////////
 
@@ -247,22 +248,22 @@ void Eshop::showMenu(){
 
       switch(choice){
         case 1:
-          std::cout << "addProduct()\n";
+          activeUser->addProduct();
           break;
         case 2:
-          std::cout << "editProduct()\n";
+          activeUser->updateProduct();
           break;
         case 3:
-          std::cout << "removeProduct()\n";
+          activeUser->removeProduct();
           break;
         case 4:
-          std::cout << "searchProduct()\n";
+          activeUser->searchProduct();
           break;
         case 5:
-          std::cout << "unavailableProducts()\n";
+          activeUser->unavailableProducts();
           break;
         case 6:
-          std::cout << "top5Products()\n";
+          activeUser->top5Products();
           break;
         case 7:
           std::cout << "Goodbye!\n";
@@ -295,25 +296,25 @@ void Eshop::showMenu(){
 
       switch(choice){
         case 1:
-          std::cout << "searchProduct()\n";
+          activeUser->searchProduct();
           break;
         case 2:
-          std::cout << "addProduct()\n";
+          activeUser->addProduct();
           break;
         case 3:
-          std::cout << "updateProduct()\n";
+          activeUser->updateProduct();
           break;
         case 4:
-          std::cout << "removeProduct()\n";
+          activeUser->removeProduct();
           break;
         case 5:
-          std::cout << "completeOrder()\n";
+          activeUser->makeOrder();
           break;
         case 6:
-          std::cout << "orderHistory()\n";
+          activeUser->viewOrderHistory();
           break;
         case 7:
-          std::cout << "cart()\n";
+          activeUser->showCart();
           break;
         case 8:
           std::cout << "Goodbye!\n";

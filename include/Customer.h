@@ -11,12 +11,14 @@ class Customer : public User {
 
     public:
         Customer(const std::string &username, const std::string &password, const bool &isAdmin): User(username, password, isAdmin) {};
-        void addToShoppingCart(const Product &product);
-        void showShoppingCart();
-        void removeFromShoppingCart();
-        void editShoppingCart();
-        void viewProduct(const Product &product) {std::cout << "Product1\n";};
+        ~Customer() {};
+
+        void searchProduct();
+        void addProduct(); //const Product &product
+        void updateProduct();
+        void removeProduct();
+        
         void makeOrder();
         void viewOrderHistory();
-        ~Customer() {};
+        void showCart();
 };
