@@ -1,6 +1,7 @@
 INCLUDE = -I./include -I../include
 SRC = ./src/
 CC = g++
+TEST_FILE = unit_tests
 
 # Compile options
 CFLAGS = -Wall $(INCLUDE)
@@ -44,3 +45,6 @@ valgrind_run: $(EXEC)
 # Clean build artifacts
 clean:
 	rm -f $(SRC)*.o $(SRC)*.d $(EXEC)
+
+run_test: 
+	./$(TEST_FILE)
