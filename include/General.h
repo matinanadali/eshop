@@ -15,8 +15,5 @@ float readFloat(const std::string &prompt, float min, float max = std::numeric_l
 std::string readMultiWordInput(const std::string &prompt);
 int readNumericOption(int minOption, int maxOption);
 std::string readTitle(std::map<std::string, Product> products);
-std::string readTitle_empty(std::map<std::string, Product> products);
 std::string readCategory(std::map<std::string, std::vector<std::string>> &map);
-std::string readCategory_empty(std::map<std::string, std::vector<std::string>> &map);
 std::string readSubcategory(std::vector<std::string> &subcategories);
-std::string readSubcategory_empty(std::vector<std::string> &subcategories);

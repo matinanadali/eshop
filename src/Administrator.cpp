@@ -130,31 +130,33 @@ void Administrator::removeProduct(Eshop *eshop) {
 
 void Administrator::searchProduct(Eshop* eshop) {
 
-  std::string title;
-  title = readTitle_empty(eshop->getProducts()); //Title is either a valid title or ""
-  
-  std::string category;
-  category = readCategory_empty(eshop->getCategories()); //Category is either a valid category or ""
+  std::cout << "Product Search Options:\n"
+               "1. Search for a specific product (by title).\n"
+               "2. View the products of a specific category.\n"
+               "3. Show all the available products.\n";
 
-  std::string subcategory;
-  if(category != ""){ //Ask for subcategory, only if category exists
-    subcategory = readSubcategory_empty(eshop->getCategories()[category]); //SUbcategory is either a valid subcategory or ""
-    std::cout<<":"<<subcategory<<":\n";
-  }
-
-  if(title != ""){
-    std::cout<<"showProduct(title)\n";
-  }
-  else if(category != ""){
-    if(subcategory != ""){
-      std::cout<<"showSubcategory(subcategory)\n";
-    }
-    else{
-      std::cout<<"showCategory(category)\n";
-    }
-  }
-  else{
-    std::cout<<"showProducts()\n";
+  int fieldOption = readNumericOption(1, 3);
+  // Process choice
+  switch(fieldOption){
+    case 1:
+      std::cout << "Type a product title: ";
+      // cin >> product (validation check)
+      // showProductInfo(product)
+      break;
+    case 2:
+      std::cout << "Select Category: " << "showCategories()";
+      // cin >> category (validation and multiline)
+      std::cout << "Results: " << "showCategory(category)\n";
+      std::cout << "Select a product title: ";
+      // cin >> product (validation check)
+      // showProductInfo(product)
+      break;
+    case 3:
+      std::cout << "Results: " << "showProducts()\n";
+      std::cout << "Select a product title: ";
+      // cin >> product (validation check)
+      // showProductInfo(product)
+      break;
   }
   
 }

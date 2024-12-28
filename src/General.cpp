@@ -152,29 +152,6 @@ std::string readTitle(std::map<std::string, Product> products) {
   return title;
 }
 
-std::string readTitle_empty(std::map<std::string, Product> products) {
-  std::string title;
-
-  std::vector<std::string> validOptions;  // Vector of all product titles in eshop
-  for (const auto &[title, product] : products) {
-    validOptions.push_back(title);
-  }
-
-  std::cout << "Give one of the following titles (Press ENTER for nothing): ";
-  // print all categories available.
-  for (const auto &title : validOptions) {
-    std::cout << "|" << title << "| ";
-  }
-  do {
-    title = readMultiWordInput("\n");
-    if(title == "") break; // since an empty title is acceptable
-    if (products.find(title) == products.end())
-      std::cout
-          << "Invalid title. Please choose one of the titles above or press ENTER for nothing: ";
-  } while (products.find(title) == products.end());
-  return title;
-}
-
 std::string readCategory(std::map<std::string, std::vector<std::string>> &categories) {
   std::string category;
 
@@ -188,24 +165,6 @@ std::string readCategory(std::map<std::string, std::vector<std::string>> &catego
     if (categories.find(category) == categories.end())
       std::cout
           << "Invalid category. Please choose one of the categories above: \n";
-  } while (categories.find(category) == categories.end());
-  return category;
-}
-
-std::string readCategory_empty(std::map<std::string, std::vector<std::string>> &categories) {
-  std::string category;
-
-  std::cout << "Give one of the following categories (Press ENTER for nothing): ";
-  // print all categories available.
-  for (const auto &category : categories) {
-    std::cout << category.first << ' ';
-  }
-  do {
-    category = readMultiWordInput("\n");
-    if(category == "") break;
-    if (categories.find(category) == categories.end())
-      std::cout
-          << "Invalid category. Please choose one of the categories above or press ENTER for nothing: \n";
   } while (categories.find(category) == categories.end());
   return category;
 }
@@ -225,27 +184,6 @@ std::string readSubcategory(std::vector<std::string> &subcategories) {
                   subcategory) == subcategories.end()) {
       std::cout << "Invalid subcategory. Please choose one of the "
                    "subcategories above: \n";
-    }
-  } while (std::find(subcategories.begin(), subcategories.end(),
-                     subcategory) == subcategories.end());
-  return subcategory;
-}
-
-std::string readSubcategory_empty(std::vector<std::string> &subcategories) {
-  std::string subcategory;
-
-  std::cout << "Give one of the following subcategories (Press ENTER for nothing): ";
-  // print all subcategories available.
-  for (const auto &subcategory : subcategories) {
-    std::cout << subcategory << ' ';
-  }
-  do {
-    subcategory = readMultiWordInput("\n");
-    if(subcategory == "") break;
-    if (std::find(subcategories.begin(), subcategories.end(),
-                  subcategory) == subcategories.end()) {
-      std::cout << "Invalid subcategory. Please choose one of the "
-                   "subcategories above or press ENTER for nothing: \n";
     }
   } while (std::find(subcategories.begin(), subcategories.end(),
                      subcategory) == subcategories.end());
