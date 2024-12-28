@@ -18,5 +18,5 @@ jobs:
       run: make  
 
     - name: Run Tests
-      run: make run_tests
+      run: make run_test
 
