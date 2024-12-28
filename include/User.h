@@ -18,7 +18,7 @@ class User {
         virtual void updateProduct(Eshop* eshop) = 0;
         virtual void removeProduct(Eshop* eshop) = 0;
 
-        virtual void unavailableProducts(){}
+        virtual void unavailableProducts(Eshop* eshop){}
         virtual void top5Products(){}
 
         virtual void makeOrder(){}

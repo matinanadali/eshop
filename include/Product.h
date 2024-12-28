@@ -26,8 +26,9 @@ public:
           category(other.category), subcategory(other.subcategory),
           price(other.price), measurementType(other.measurementType),
           amount(other.amount) {}
-  void showProductDetails();
+  void showProductDetails() const;
   std::string getTitle() const { return title; };
+  float getAmount() const { return amount; };
   void setTitle(const std::string &title) { this->title = title; };
   void setDescription(const std::string &description) { this->description = description; };
   void setCategory(const std::string &category) { this->category = category; };

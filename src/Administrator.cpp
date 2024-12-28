@@ -190,6 +190,8 @@ void Administrator::updateProduct(Eshop *eshop) {
  // eshop->showProducts();
 }
 
+/////////////////////////////////////// Remove Product Methods ///////////////////////////////////////
+
 void Administrator::removeProduct(Eshop *eshop) {
   std::string title;
 
@@ -210,8 +212,15 @@ void Administrator::searchProduct() {
   std::cout << "Administrator Search product\n";
 }
 
-void Administrator::unavailableProducts() {
-  std::cout << "Administrator unavailable products\n";
+/////////////////////////////////////// View Eshop Statistics Methods ///////////////////////////////////////
+
+void Administrator::unavailableProducts(Eshop* eshop) {
+  std::map<std::string, Product> products = eshop->getProducts();
+  for (const auto &[title, product] : products) {
+    if (abs(product.getAmount()) < 10e-6) {
+      product.showProductDetails();
+    }
+  }
 }
 
 void Administrator::top5Products() {

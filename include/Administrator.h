@@ -13,6 +13,6 @@ class Administrator : public User {
     void removeProduct(Eshop* eshop);
     void searchProduct();
 
-    void unavailableProducts();
+    void unavailableProducts(Eshop* eshop);
     void top5Products();
 };

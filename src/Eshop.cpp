@@ -282,7 +282,7 @@ void Eshop::showMenu(){
           activeUser->searchProduct();
           break;
         case 5:
-          activeUser->unavailableProducts();
+          activeUser->unavailableProducts(this);
           break;
         case 6:
           activeUser->top5Products();
