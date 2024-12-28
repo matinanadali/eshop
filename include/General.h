@@ -5,8 +5,13 @@
 #include <algorithm>
 #include <cctype>
 #include <climits>
-std::string readStringOption(const std::vector<std::string> &validOptions, const std::string &prompt);
+#include <limits>
+#include <map>
+
+std::string readStringOption(const std::vector<std::string> &validOptions, const std::string &prompt, const std::string &invalidOptionPrompt);
 int readInteger(const std::string &prompt, int min, int max = INT_MAX);
-float readFloat(const std::string &prompt, float min, float max = INT_MAX);
+float readFloat(const std::string &prompt, float min, float max = std::numeric_limits<std::streamsize>::max());
 std::string readMultiWordInput(const std::string &prompt);
 int readNumericOption(int minOption, int maxOption);
+std::string readCategory(std::map<std::string, std::vector<std::string>> &map);
+std::string readSubcategory(std::vector<std::string> &subcategories);

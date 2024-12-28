@@ -10,70 +10,17 @@ void Administrator::addProduct(Eshop *eshop) {
 
   title = readMultiWordInput("Give product title: ");
   description = readMultiWordInput("Give product description: ");
+  category = readCategory(eshop->getCategories());
+  subcategory = readSubcategory(eshop->getCategories()[category]);
+  price = readFloat("Give product price: ", 0);
+  measurementType = readStringOption({"Kg", "Unit"}, "Give measurement type[Kg/Unit]: ", "Invalid type. Please pick Kg or Unit: ");
 
-  std::cout << "Give one of the following categories: ";
-  // print all categories available.
-  std::map<std::string, std::vector<std::string>> &categories =
-      eshop->getCategories();
-  for (const auto &category : categories) {
-    std::cout << category.first << ' ';
-  }
-  std::cout << '\n';
-  do {
-    std::cin >> category;
-    if (categories.find(category) == categories.end())
-      std::cout
-          << "Invalid category. Please choose one of the categories above: \n";
-  } while (categories.find(category) == categories.end());
-  std::cout << "Give one of the following subcategories: ";
-  // print all subcategories available.
-  for (const auto &subcategory : categories[category]) {
-    std::cout << subcategory << ' ';
-  }
-  std::cout << '\n';
-  do {
-    std::cin >> subcategory;
-    if (std::find(categories[category].begin(), categories[category].end(),
-                  subcategory) == categories[category].end()) {
-      std::cout << "Invalid subcategory. Please choose one of the "
-                   "subcategories above: \n";
-    }
-  } while (std::find(categories[category].begin(), categories[category].end(),
-                     subcategory) == categories[category].end());
-  std::cout << "Give product price: ";
-  while (1) {
-    std::cin >> price;
-
-    if (std::cin.fail() || price < 0) {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cout << "Invalid input. Please enter a valid number: ";
-    } else {
-      break;
-    }
-  }
-  std::cout << "Give measurement type[Kg/Unit]: ";
-  do {
-    std::cin >> measurementType;
-    if (measurementType != "Kg" && measurementType != "Unit")
-      std::cout << "Invalid type. Please pick Kg or Unit: ";
-  } while (measurementType != "Kg" && measurementType != "Unit");
   if (measurementType == "Kg") {
-    std::cout << "Give amount of Kilograms: ";
+    amount = readFloat("Give amount of Kilograms: ", 0);
   } else {
-    std::cout << "Give amount of Unit: ";
+    amount = readFloat("Give amount of Unit: ", 0);
   }
-  while (1) {
-    std::cin >> amount;
 
-    if (std::cin.fail() || amount < 0) {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      std::cout << "Invalid input. Please enter a valid number: ";
-    } else {
-      break;
-    }
-  }
   Product product = Product(title, description, category, subcategory, price,
                             measurementType, amount);
   std::cout << "Product added successfully!\n";
@@ -93,33 +40,8 @@ void updateProductDescription(Product &product) {
 }
 
 void updateProductCategory(Product &product, Eshop *eshop) {
-  std::string newCategory, newSubcategory;
-  std::map<std::string, std::vector<std::string>> categories = eshop->getCategories();
-  for (const auto &category : categories) {
-    std::cout << category.first << ' ';
-  }
-  std::cout << '\n';
-  do {
-    std::cin >> newCategory;
-    if (categories.find(newCategory) == categories.end())
-      std::cout
-          << "Invalid category. Please choose one of the categories above: \n";
-  } while (categories.find(newCategory) == categories.end());
-  std::cout << "Give one of the following subcategories: ";
-  // print all subcategories available.
-  for (const auto &subcategory : categories[newCategory]) {
-    std::cout << subcategory << ' ';
-  }
-  std::cout << '\n';
-  do {
-    std::cin >> newSubcategory;
-    if (std::find(categories[newCategory].begin(), categories[newCategory].end(),
-                  newSubcategory) == categories[newCategory].end()) {
-      std::cout << "Invalid subcategory. Please choose one of the "
-                   "subcategories above: \n";
-    }
-  } while (std::find(categories[newCategory].begin(), categories[newCategory].end(),
-                     newSubcategory) == categories[newCategory].end());
+  std::string newCategory = readCategory(eshop->getCategories());
+  std::string newSubcategory = readSubcategory(eshop->getCategories()[newCategory]);
   product.setCategory(newCategory);
   product.setSubcategory(newSubcategory);
 }
@@ -146,7 +68,7 @@ void Administrator::updateProduct(Eshop *eshop) {
 
   // Read title
   title =
-      readStringOption(validOptions, "Enter product title you wish to edit: ");
+      readStringOption(validOptions, "Enter product title you wish to edit: ", "Product not found. Please enter a different product title: ");
 
   // Get product
   Product oldProduct = eshop->getProducts()[title];
@@ -198,7 +120,7 @@ void Administrator::removeProduct(Eshop *eshop) {
 
   // Read title
   title =
-      readStringOption(validOptions, "Enter product title you wish to remove: ");
+      readStringOption(validOptions, "Enter product title you wish to remove: ", "Product not found. Please enter a different product title: ");
   
   eshop->removeProductByTitle(title);
   std::cout << "Product removed!\n";

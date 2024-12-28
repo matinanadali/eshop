@@ -155,7 +155,7 @@ void Eshop::registerUser() {
     std::string option = readStringOption(
         {"login", "register", "cancel"},
         "Would you like to login or register "
-        "with a different username? (enter option login/register/cancel): ");
+        "with a different username? (enter option login/register/cancel): ", "Invalid option. Please pick login, register or cancel: ");
 
     if (option == "login") {
       // Redirect to login
@@ -176,7 +176,7 @@ void Eshop::registerUser() {
 
   // Ask if user is an administrator
   std::string isAdminString =
-      readStringOption({"y", "n"}, "Are you an admin user? (Y/N): ");
+      readStringOption({"y", "n"}, "Are you an admin user? (Y/N): ", "Invalid option. Please pick Y or N: ");
   isAdmin = (isAdminString == "y");
 
   // Create new user
@@ -206,7 +206,7 @@ void Eshop::loginUser() {
     std::string option = readStringOption(
         {"yes", "no"}, "Can't find user. "
                        "Would you like to register as a new user? "
-                       "(enter option yes/no): ");
+                       "(enter option yes/no): ", "Invalid option. Please pick yes or no: ");
     if (option == "yes") {
       // Redirect to registration
       registerUser();
@@ -225,7 +225,7 @@ void Eshop::loginUser() {
     // Username and password don't match -> ask user to try logging in again
     std::cout << "Incorrect credentials. ";
     std::string option =
-        readStringOption({"y", "n"}, "Would you like to try again (Y/N)? ");
+        readStringOption({"y", "n"}, "Would you like to try again (Y/N)? ", "Invalid option. Please pick Y or N: ");
     if (option == "y") {
       loginUser();
       return;
@@ -245,7 +245,7 @@ void Eshop::showLoginPrompt() {
   std::cout << "Welcome to the e-shop!!!\n";
   std::string option =
       readStringOption({"login", "register"},
-                       "Do you want to login or register? (enter option): ");
+                       "Do you want to login or register? (enter option): ", "Invalid option. Please pick login or register: ");
   if (option == "login") {
     loginUser();
   } else {

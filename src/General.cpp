@@ -21,7 +21,7 @@ void toLowerCase(std::string &s) {
 
 // Helper function to handle bad input
 std::string readStringOption(const std::vector<std::string> &validOptions,
-                             const std::string &prompt) {
+                             const std::string &prompt, const std::string &invalidOptionPrompt) {
   // Display prompt
   std::cout << prompt;
   fflush(stdout);
@@ -31,7 +31,7 @@ std::string readStringOption(const std::vector<std::string> &validOptions,
 
   // While input is not valid, ask for new input
   while (validOptions.size() != 0 && indexOf(validOptions, option) == -1) {
-    std::cout << "Invalid option. " << prompt;
+    std::cout << invalidOptionPrompt;
     fflush(stdout);
     std::cin >> option;
   }
@@ -125,4 +125,43 @@ int readNumericOption(int minOption, int maxOption) {
   } while (1);
   std::cin.ignore();
   return choice;
+}
+
+std::string readCategory(std::map<std::string, std::vector<std::string>> &categories) {
+  std::string category;
+
+  std::cout << "Give one of the following categories: ";
+  // print all categories available.
+  for (const auto &category : categories) {
+    std::cout << category.first << ' ';
+  }
+  std::cout << '\n';
+  do {
+    std::cin >> category;
+    if (categories.find(category) == categories.end())
+      std::cout
+          << "Invalid category. Please choose one of the categories above: \n";
+  } while (categories.find(category) == categories.end());
+  return category;
+}
+
+std::string readSubcategory(std::vector<std::string> &subcategories) {
+  std::string subcategory;
+
+  std::cout << "Give one of the following subcategories: ";
+  // print all subcategories available.
+  for (const auto &subcategory : subcategories) {
+    std::cout << subcategory << ' ';
+  }
+  std::cout << '\n';
+  do {
+    std::cin >> subcategory;
+    if (std::find(subcategories.begin(), subcategories.end(),
+                  subcategory) == subcategories.end()) {
+      std::cout << "Invalid subcategory. Please choose one of the "
+                   "subcategories above: \n";
+    }
+  } while (std::find(subcategories.begin(), subcategories.end(),
+                     subcategory) == subcategories.end());
+  return subcategory;
 }
