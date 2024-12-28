@@ -9,14 +9,15 @@ class Product {
   std::string category;
   std::string subcategory;
   float price;
-  bool measuredInKilos;
+  std::string measurementType;
+  float amount;
 
 public:
   Product(const std::string &title, const std::string &description,
           const std::string &category, const std::string &subcategory,
-          float price, bool measuredInKilos)
+          const float &price, const std::string &measurementType, const float &amount)
       : title(title), description(description), category(category),
         subcategory(subcategory), price(price),
-        measuredInKilos(measuredInKilos){};
-  void showProductDetails(float quantity);
+        measurementType(measurementType), amount(amount){};
+  // void showProductDetails(float quantity);
 };

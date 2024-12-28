@@ -11,6 +11,7 @@ Eshop::Eshop(const std::string &categoriesFilePath,
   // Initialize E-shop with data from files
   fetchUsers(usersFilePath);
   fetchProducts(productsFilePath);
+  fetchCategories(categoriesFilePath);
 };
 
 int Eshop::fetchUsers(const std::string &usersFilePath) {
@@ -82,30 +83,52 @@ int Eshop::fetchProducts(const std::string &productsFilePath) {
     line = line.substr(priceString.size() + 3);
 
     // Read measurement unit
-    std::string measurementUnit = line.substr(0, line.find(" @ "));
-    bool measuredInKilos = (measurementUnit == "Kg");
-    line = line.substr(measurementUnit.size() + 3);
+    std::string measurementType = line.substr(0, line.find(" @ "));
+    line = line.substr(measurementType.size() + 3);
 
     // Read quantity
-    float quantity = stof(line);
+    float amount = stof(line);
 
     // Create product
-    Product product = Product(title, description, category, subcategory, price,
-                              measuredInKilos);
+    Product product = Product(title, description, category, subcategory, price, measurementType, amount);
     // Add product-quantity pair to E-shop
-    products.push_back({product, quantity});
+    products.push_back(product);
   }
   file.close(); // Close the file
   return 0;
 }
 
-/////////////////////////////////////// View Information Methods ///////////////////////////////////////
+int Eshop::fetchCategories(const std::string &categoriesFilePath){
+  std::ifstream file(categoriesFilePath); // Open the file
 
-// Displays all products
-void Eshop::showProducts() {
-  for (auto [product, quantity] : products) {
-    product.showProductDetails(quantity);
+  if (!file.is_open()) {
+    std::cerr << "Error opening file!" << std::endl;
+    return 1;
   }
+
+  std::string line;
+  while(std::getline(file, line)){ // Read the file line by line
+    // Read category
+    std::string category = line.substr(0, line.find(" ("));
+    line = line.substr(category.size() + 2); // Discard category
+
+    // Extract subcategories between the two parentheses
+    std::string subcategoriesstring = line.substr(0, line.find(')'));
+
+    std::vector<std::string> subcategories;
+
+    size_t position = 0;
+    while((position = subcategoriesstring.find(" @ ")) != std::string::npos){
+      subcategories.push_back(subcategoriesstring.substr(0, position));
+      subcategoriesstring = subcategoriesstring.substr(position + 3);
+    }
+    subcategories.push_back(subcategoriesstring); // Add the last subcategory
+
+    categories[category] = subcategories;
+  }
+
+  file.close(); // Close the file
+  return 0;
 }
 
 /////////////////////////////////////// User Registration/Login Methods ///////////////////////////////////////
@@ -248,7 +271,7 @@ void Eshop::showMenu(){
 
       switch(choice){
         case 1:
-          activeUser->addProduct();
+          activeUser->addProduct(this);
           break;
         case 2:
           activeUser->updateProduct();
@@ -299,7 +322,7 @@ void Eshop::showMenu(){
           activeUser->searchProduct();
           break;
         case 2:
-          activeUser->addProduct();
+          activeUser->addProduct(this);
           break;
         case 3:
           activeUser->updateProduct();

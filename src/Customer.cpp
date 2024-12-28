@@ -1,10 +1,11 @@
 #include <iostream>
 #include "Customer.h"
+#include "../include/Eshop.h"
 
 void Customer::searchProduct(){
   std::cout << "Customer Search product\n";  
 }
-void Customer::addProduct(){
+void Customer::addProduct(Eshop* eshop){
   std::cout << "Customer Add product\n"; 
 }
 void Customer::updateProduct(){

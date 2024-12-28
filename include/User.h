@@ -2,6 +2,8 @@
 #include <string>
 #include "Product.h"
 
+class Eshop; // Forward declaration, in order to use "this" pointer
+
 // Abstract User Class
 class User {
     std::string username;
@@ -12,7 +14,7 @@ class User {
         User(const std::string &username, const std::string &password, const bool &isAdmin): username(username), password(password), isAdmin(isAdmin) {};
         // Virtual function : it exists in Customer and Administrator Class but with different functionality
         virtual void searchProduct() = 0;
-        virtual void addProduct() = 0; //const Product &product
+        virtual void addProduct(Eshop* eshop) = 0;
         virtual void updateProduct() = 0;
         virtual void removeProduct() = 0;
 
