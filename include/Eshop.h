@@ -35,7 +35,10 @@ public:
   void showLoginPrompt();
   void showProducts();
   void addProduct(const Product &product) { products[product.getTitle()] = product; };
-
+  
+  // TODO: add extra logic to remove product from all open user orders
+  void removeProductByTitle(const std::string &title) { products.erase(title); };
+  
   std::map<std::string, Product> getProducts() const { return products; }
 
   ~Eshop() {

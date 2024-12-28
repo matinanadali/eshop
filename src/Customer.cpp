@@ -11,7 +11,7 @@ void Customer::addProduct(Eshop* eshop){
 void Customer::updateProduct(Eshop* eshop){
   std::cout << "Customer Update product\n"; 
 }
-void Customer::removeProduct(){
+void Customer::removeProduct(Eshop* eshop){
   std::cout << "Customer Remove product\n"; 
 }
 void Customer::makeOrder(){

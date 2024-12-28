@@ -9,7 +9,7 @@ class Product {
   std::string category;
   std::string subcategory;
   float price;
-  std::string measurementType;
+  std::string measurementType; // "Kg" or "Unit"
   float amount;
 
 public:
@@ -26,7 +26,7 @@ public:
           category(other.category), subcategory(other.subcategory),
           price(other.price), measurementType(other.measurementType),
           amount(other.amount) {}
-  // void showProductDetails(float quantity);
+  void showProductDetails();
   std::string getTitle() const { return title; };
   void setTitle(const std::string &title) { this->title = title; };
   void setDescription(const std::string &description) { this->description = description; };

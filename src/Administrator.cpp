@@ -129,23 +129,23 @@ void updateProductCategory(Product &product, Eshop *eshop) {
 }
 
 void updateProductPrice(Product &product) {
-  float newPrice = readFloatOption("Enter new price: ", 0, 10000);
+  float newPrice = readFloatOption("Enter new price: ", 0);
   product.setPrice(newPrice);
 }
 
 void updateProductAmount(Product &product) {
-  float newAmount = readFloatOption("Enter new amount: ", 0, 10000);
+  float newAmount = readFloatOption("Enter new amount: ", 0);
   product.setAmount(newAmount);
 }
 
 // Main Update Product Method
 void Administrator::updateProduct(Eshop *eshop) {
+  // eshop->showProducts();
   std::string title;
 
   std::vector<std::string> validOptions;  // Vector of all product titles in eshop
   for (const auto &[title, product] : eshop->getProducts()) {
     validOptions.push_back(title);
-    std::cout << title << "\n";
   }
 
   // Read title
@@ -182,15 +182,28 @@ void Administrator::updateProduct(Eshop *eshop) {
       break;
   }
 
- // TODO: Remove old product
- // eshop->removeProduct(oldProduct);
+ // Remove old product
+ eshop->removeProductByTitle(title);
  // Add new product
  eshop->addProduct(newProduct);
  std::cout << "Product updated!\n";
+ // eshop->showProducts();
 }
 
-void Administrator::removeProduct() {
-  std::cout << "Administrator Remove product\n";
+void Administrator::removeProduct(Eshop *eshop) {
+  std::string title;
+
+  std::vector<std::string> validOptions;  // Vector of all product titles in eshop
+  for (const auto &[title, product] : eshop->getProducts()) {
+    validOptions.push_back(title);
+  }
+
+  // Read title
+  title =
+      readStringOption(validOptions, "Enter product title you wish to remove: ");
+  
+  eshop->removeProductByTitle(title);
+  std::cout << "Product removed!\n";
 }
 
 void Administrator::searchProduct() {

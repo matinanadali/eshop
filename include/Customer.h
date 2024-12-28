@@ -17,7 +17,7 @@ class Customer : public User {
         void searchProduct();
         void addProduct(Eshop* eshop);
         void updateProduct(Eshop* eshop);
-        void removeProduct();
+        void removeProduct(Eshop* eshop);
         
         void makeOrder();
         void viewOrderHistory();

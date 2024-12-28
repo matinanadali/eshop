@@ -10,7 +10,7 @@ class Administrator : public User {
 
     void addProduct(Eshop* eshop);
     void updateProduct(Eshop* eshop);
-    void removeProduct();
+    void removeProduct(Eshop* eshop);
     void searchProduct();
 
     void unavailableProducts();

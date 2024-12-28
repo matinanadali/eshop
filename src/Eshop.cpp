@@ -276,7 +276,7 @@ void Eshop::showMenu(){
           activeUser->updateProduct(this);
           break;
         case 3:
-          activeUser->removeProduct();
+          activeUser->removeProduct(this);
           break;
         case 4:
           activeUser->searchProduct();
@@ -327,7 +327,7 @@ void Eshop::showMenu(){
           activeUser->updateProduct(this);
           break;
         case 4:
-          activeUser->removeProduct();
+          activeUser->removeProduct(this);
           break;
         case 5:
           activeUser->makeOrder();
@@ -345,5 +345,11 @@ void Eshop::showMenu(){
 
     } while(choice != 8);
 
+  }
+}
+
+void Eshop::showProducts() {
+  for (auto &[title, product] : products) {
+    product.showProductDetails();
   }
 }
