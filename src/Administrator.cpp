@@ -1,99 +1,206 @@
-#include <iostream>
 #include "Administrator.h"
 #include "../include/Eshop.h"
+#include <iostream>
 #include <limits>
 
-Product Administrator::addProduct(Eshop* eshop){
+
+void Administrator::addProduct(Eshop *eshop) {
   std::string title, description, category, subcategory, measurementType;
   float price, amount;
 
   std::cout << "Give product title: ";
-  std::cin.ignore(); // to clear buffer
+  std::cin.ignore();             // to clear buffer
   std::getline(std::cin, title); // to include spaces
   std::cout << "Give product description: ";
-  std::cin.ignore(); // to clear buffer
+  std::cin.ignore();             // to clear buffer
   std::getline(std::cin, title); // to include spaces
   std::cout << "Give one of the following categories: ";
   // print all categories available.
-  std::map<std::string, std::vector<std::string>>& categories = eshop->getCategories();
-  for(const auto& category : categories){
+  std::map<std::string, std::vector<std::string>> &categories =
+      eshop->getCategories();
+  for (const auto &category : categories) {
     std::cout << category.first << ' ';
   }
   std::cout << '\n';
-  do{
+  do {
     std::cin >> category;
-    if(categories.find(category) == categories.end()) std::cout << "Invalid category. Please choose one of the categories above: \n";
-  } while(categories.find(category) == categories.end());
+    if (categories.find(category) == categories.end())
+      std::cout
+          << "Invalid category. Please choose one of the categories above: \n";
+  } while (categories.find(category) == categories.end());
   std::cout << "Give one of the following subcategories: ";
   // print all subcategories available.
-  for(const auto& subcategory : categories[category]){
+  for (const auto &subcategory : categories[category]) {
     std::cout << subcategory << ' ';
   }
   std::cout << '\n';
-  do{
+  do {
     std::cin >> subcategory;
-    if(std::find(categories[category].begin(), categories[category].end(), subcategory) == categories[category].end()){
-      std::cout << "Invalid subcategory. Please choose one of the subcategories above: \n";
+    if (std::find(categories[category].begin(), categories[category].end(),
+                  subcategory) == categories[category].end()) {
+      std::cout << "Invalid subcategory. Please choose one of the "
+                   "subcategories above: \n";
     }
-  } while(std::find(categories[category].begin(), categories[category].end(), subcategory) == categories[category].end());
+  } while (std::find(categories[category].begin(), categories[category].end(),
+                     subcategory) == categories[category].end());
   std::cout << "Give product price: ";
-  while(1){
+  while (1) {
     std::cin >> price;
 
-    if(std::cin.fail() || price < 0){
+    if (std::cin.fail() || price < 0) {
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
       std::cout << "Invalid input. Please enter a valid number: ";
-    }
-    else{
+    } else {
       break;
     }
   }
   std::cout << "Give measurement type[Kg/Unit]: ";
-  do{
+  do {
     std::cin >> measurementType;
-    if(measurementType != "Kg" && measurementType != "Unit") std::cout << "Invalid type. Please pick Kg or Unit: ";
-  } while(measurementType != "Kg" && measurementType != "Unit");
-  if(measurementType == "Kg"){
+    if (measurementType != "Kg" && measurementType != "Unit")
+      std::cout << "Invalid type. Please pick Kg or Unit: ";
+  } while (measurementType != "Kg" && measurementType != "Unit");
+  if (measurementType == "Kg") {
     std::cout << "Give amount of Kilograms: ";
-  }
-  else{
+  } else {
     std::cout << "Give amount of Unit: ";
   }
-  while(1){
+  while (1) {
     std::cin >> amount;
 
-    if(std::cin.fail() || amount < 0){
+    if (std::cin.fail() || amount < 0) {
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
       std::cout << "Invalid input. Please enter a valid number: ";
-    }
-    else{
+    } else {
       break;
     }
   }
 
-  Product product = Product(title, description, category, subcategory, price, measurementType, amount);
+  Product product = Product(title, description, category, subcategory, price,
+                            measurementType, amount);
   std::cout << "Product added successfully!\n";
-  return product;
+  eshop->addProduct(product);
 }
 
-void Administrator::updateProduct(){
-  std::cout << "Administrator Update product\n"; 
+/////////////////////////////////////// Update Product Methods ///////////////////////////////////////
+
+void updateProductTitle(Product &product) {
+  std::string newTitle = readStringOption({}, "Enter new title: ");
+  product.setTitle(newTitle);
 }
 
-void Administrator::removeProduct(){
-  std::cout << "Administrator Remove product\n"; 
+void updateProductDescription(Product &product) {
+  std::string newDescription = readStringOption({}, "Enter new description: ");
+  product.setDescription(newDescription);
 }
 
-void Administrator::searchProduct(){
-  std::cout << "Administrator Search product\n";  
+void updateProductCategory(Product &product, Eshop *eshop) {
+  std::string newCategory, newSubcategory;
+  std::map<std::string, std::vector<std::string>> categories = eshop->getCategories();
+  for (const auto &category : categories) {
+    std::cout << category.first << ' ';
+  }
+  std::cout << '\n';
+  do {
+    std::cin >> newCategory;
+    if (categories.find(newCategory) == categories.end())
+      std::cout
+          << "Invalid category. Please choose one of the categories above: \n";
+  } while (categories.find(newCategory) == categories.end());
+  std::cout << "Give one of the following subcategories: ";
+  // print all subcategories available.
+  for (const auto &subcategory : categories[newCategory]) {
+    std::cout << subcategory << ' ';
+  }
+  std::cout << '\n';
+  do {
+    std::cin >> newSubcategory;
+    if (std::find(categories[newCategory].begin(), categories[newCategory].end(),
+                  newSubcategory) == categories[newCategory].end()) {
+      std::cout << "Invalid subcategory. Please choose one of the "
+                   "subcategories above: \n";
+    }
+  } while (std::find(categories[newCategory].begin(), categories[newCategory].end(),
+                     newSubcategory) == categories[newCategory].end());
+  product.setCategory(newCategory);
+  product.setSubcategory(newSubcategory);
 }
 
-void Administrator::unavailableProducts(){
+void updateProductPrice(Product &product) {
+  float newPrice = readFloatOption("Enter new price: ", 0, 10000);
+  product.setPrice(newPrice);
+}
+
+void updateProductAmount(Product &product) {
+  float newAmount = readFloatOption("Enter new amount: ", 0, 10000);
+  product.setAmount(newAmount);
+}
+
+// Main Update Product Method
+void Administrator::updateProduct(Eshop *eshop) {
+  std::string title;
+
+  std::vector<std::string> validOptions;  // Vector of all product titles in eshop
+  for (const auto &[title, product] : eshop->getProducts()) {
+    validOptions.push_back(title);
+    std::cout << title << "\n";
+  }
+
+  // Read title
+  title =
+      readStringOption(validOptions, "Enter product title you wish to edit: ");
+
+  // Get product
+  Product oldProduct = eshop->getProducts()[title];
+  Product newProduct = oldProduct;  // Create a copy of the old product
+
+  // Read choice
+  int fieldOption = readNumericOption(
+      "Enter number of field you want to edit: 1.Title 2.Description "
+      "3.Category and Subcategory 4.Price 5.Available Kg 6.Nothing\n", 1, 6);
+
+  // Process choice
+  switch(fieldOption) {
+    case 1:
+      updateProductTitle(newProduct);
+      break;
+    case 2:
+      updateProductDescription(newProduct);
+      break;
+    case 3:
+      updateProductCategory(newProduct, eshop);
+      break;
+    case 4:
+      updateProductPrice(newProduct);
+      break;
+    case 5:
+      updateProductAmount(newProduct);
+      break;
+    case 6:
+      break;
+  }
+
+ // TODO: Remove old product
+ // eshop->removeProduct(oldProduct);
+ // Add new product
+ eshop->addProduct(newProduct);
+ std::cout << "Product updated!\n";
+}
+
+void Administrator::removeProduct() {
+  std::cout << "Administrator Remove product\n";
+}
+
+void Administrator::searchProduct() {
+  std::cout << "Administrator Search product\n";
+}
+
+void Administrator::unavailableProducts() {
   std::cout << "Administrator unavailable products\n";
 }
 
-void Administrator::top5Products(){
+void Administrator::top5Products() {
   std::cout << "Administrator top5 products\n";
 }

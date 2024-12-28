@@ -1,14 +1,15 @@
 #pragma once
 #include "User.h"
 #include <iostream>
+#include "General.h"
 
 class Administrator : public User {
     public:
     Administrator(const std::string &username, const std::string &password, const bool &isAdmin): User(username, password, isAdmin) {};
     ~Administrator() {};
 
-    Product addProduct(Eshop* eshop);
-    void updateProduct();
+    void addProduct(Eshop* eshop);
+    void updateProduct(Eshop* eshop);
     void removeProduct();
     void searchProduct();
 

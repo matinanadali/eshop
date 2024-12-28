@@ -15,8 +15,8 @@ class Customer : public User {
         ~Customer() {};
 
         void searchProduct();
-        Product addProduct(Eshop* eshop);
-        void updateProduct();
+        void addProduct(Eshop* eshop);
+        void updateProduct(Eshop* eshop);
         void removeProduct();
         
         void makeOrder();

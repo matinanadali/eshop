@@ -91,8 +91,8 @@ int Eshop::fetchProducts(const std::string &productsFilePath) {
 
     // Create product
     Product product = Product(title, description, category, subcategory, price, measurementType, amount);
-    // Add product-quantity pair to E-shop
-    products.push_back(product);
+    // Add product to E-shop
+    products[product.getTitle()] = product;
   }
   file.close(); // Close the file
   return 0;
@@ -270,10 +270,10 @@ void Eshop::showMenu(){
 
       switch(choice){
         case 1:
-          products.push_back(activeUser->addProduct(this));
+          activeUser->addProduct(this);
           break;
         case 2:
-          activeUser->updateProduct();
+          activeUser->updateProduct(this);
           break;
         case 3:
           activeUser->removeProduct();
@@ -324,7 +324,7 @@ void Eshop::showMenu(){
           activeUser->addProduct(this);
           break;
         case 3:
-          activeUser->updateProduct();
+          activeUser->updateProduct(this);
           break;
         case 4:
           activeUser->removeProduct();

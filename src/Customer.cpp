@@ -5,10 +5,10 @@
 void Customer::searchProduct(){
   std::cout << "Customer Search product\n";  
 }
-Product Customer::addProduct(Eshop* eshop){
+void Customer::addProduct(Eshop* eshop){
   std::cout << "Customer Add product\n"; 
 }
-void Customer::updateProduct(){
+void Customer::updateProduct(Eshop* eshop){
   std::cout << "Customer Update product\n"; 
 }
 void Customer::removeProduct(){
