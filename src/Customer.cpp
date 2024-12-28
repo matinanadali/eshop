@@ -2,7 +2,7 @@
 #include "Customer.h"
 #include "../include/Eshop.h"
 
-void Customer::searchProduct(){
+void Customer::searchProduct(Eshop* eshop){
   std::cout << "Customer Search product\n";  
 }
 void Customer::addProduct(Eshop* eshop){

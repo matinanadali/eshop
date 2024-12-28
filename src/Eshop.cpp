@@ -274,7 +274,7 @@ void Eshop::showMenu() {
         activeUser->removeProduct(this);
         break;
       case 4:
-        activeUser->searchProduct();
+        activeUser->searchProduct(this);
         break;
       case 5:
         activeUser->unavailableProducts(this);
@@ -300,7 +300,7 @@ void Eshop::showMenu() {
       choice = readNumericOption(1, 8);
       switch (choice) {
       case 1:
-        activeUser->searchProduct();
+        activeUser->searchProduct(this);
         break;
       case 2:
         activeUser->addProduct(this);

@@ -126,8 +126,37 @@ void Administrator::removeProduct(Eshop *eshop) {
   std::cout << "Product removed!\n";
 }
 
-void Administrator::searchProduct() {
-  std::cout << "Administrator Search product\n";
+/////////////////////////////////////// Search Product Methods ///////////////////////////////////////
+
+void Administrator::searchProduct(Eshop* eshop) {
+
+  std::string title;
+  title = readTitle_empty(eshop->getProducts()); //Title is either a valid title or ""
+  
+  std::string category;
+  category = readCategory_empty(eshop->getCategories()); //Category is either a valid category or ""
+
+  std::string subcategory;
+  if(category != ""){ //Ask for subcategory, only if category exists
+    subcategory = readSubcategory_empty(eshop->getCategories()[category]); //SUbcategory is either a valid subcategory or ""
+    std::cout<<":"<<subcategory<<":\n";
+  }
+
+  if(title != ""){
+    std::cout<<"showProduct(title)\n";
+  }
+  else if(category != ""){
+    if(subcategory != ""){
+      std::cout<<"showSubcategory(subcategory)\n";
+    }
+    else{
+      std::cout<<"showCategory(category)\n";
+    }
+  }
+  else{
+    std::cout<<"showProducts()\n";
+  }
+  
 }
 
 /////////////////////////////////////// View Eshop Statistics Methods ///////////////////////////////////////

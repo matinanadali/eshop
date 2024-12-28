@@ -14,7 +14,7 @@ class Customer : public User {
         Customer(const std::string &username, const std::string &password, const bool &isAdmin): User(username, password, isAdmin) {};
         ~Customer() {};
 
-        void searchProduct();
+        void searchProduct(Eshop* eshop);
         void addProduct(Eshop* eshop);
         void updateProduct(Eshop* eshop);
         void removeProduct(Eshop* eshop);
