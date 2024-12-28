@@ -8,8 +8,8 @@ void Administrator::addProduct(Eshop *eshop) {
   std::string title, description, category, subcategory, measurementType;
   float price, amount;
 
-  title = readMultiWordInput("Give product title: ");
-  description = readMultiWordInput("Give product description: ");
+  title = readMultiWordInput({}, "Give product title: ", "");
+  description = readMultiWordInput({}, "Give product description: ", "");
   category = readCategory(eshop->getCategories());
   subcategory = readSubcategory(eshop->getCategories()[category]);
   price = readFloat("Give product price: ", 0);
@@ -30,12 +30,12 @@ void Administrator::addProduct(Eshop *eshop) {
 /////////////////////////////////////// Update Product Methods ///////////////////////////////////////
 
 void updateProductTitle(Product &product) {
-  std::string newTitle = readMultiWordInput("Enter new title: ");
+  std::string newTitle = readMultiWordInput({}, "Enter new title: ", "");
   product.setTitle(newTitle);
 }
 
 void updateProductDescription(Product &product) {
-  std::string newDescription = readMultiWordInput("Enter new description: ");
+  std::string newDescription = readMultiWordInput({}, "Enter new description: ", "");
   product.setDescription(newDescription);
 }
 
@@ -124,41 +124,6 @@ void Administrator::removeProduct(Eshop *eshop) {
   
   eshop->removeProductByTitle(title);
   std::cout << "Product removed!\n";
-}
-
-/////////////////////////////////////// Search Product Methods ///////////////////////////////////////
-
-void Administrator::searchProduct(Eshop* eshop) {
-
-  std::cout << "Product Search Options:\n"
-               "1. Search for a specific product (by title).\n"
-               "2. View the products of a specific category.\n"
-               "3. Show all the available products.\n";
-
-  int fieldOption = readNumericOption(1, 3);
-  // Process choice
-  switch(fieldOption){
-    case 1:
-      std::cout << "Type a product title: ";
-      // cin >> product (validation check)
-      // showProductInfo(product)
-      break;
-    case 2:
-      std::cout << "Select Category: " << "showCategories()";
-      // cin >> category (validation and multiline)
-      std::cout << "Results: " << "showCategory(category)\n";
-      std::cout << "Select a product title: ";
-      // cin >> product (validation check)
-      // showProductInfo(product)
-      break;
-    case 3:
-      std::cout << "Results: " << "showProducts()\n";
-      std::cout << "Select a product title: ";
-      // cin >> product (validation check)
-      // showProductInfo(product)
-      break;
-  }
-  
 }
 
 /////////////////////////////////////// View Eshop Statistics Methods ///////////////////////////////////////

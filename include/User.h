@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Product.h"
+#include "General.h"
 
 class Eshop; // Forward declaration, in order to use "this" pointer
 
@@ -10,10 +11,12 @@ class User {
     std::string password;
     bool isAdmin;
 
+    void searchProductByTitle(Eshop* eshop, const std::vector<std::string> &validTitles);
+
     public: 
         User(const std::string &username, const std::string &password, const bool &isAdmin): username(username), password(password), isAdmin(isAdmin) {};
         // Virtual function : it exists in Customer and Administrator Class but with different functionality
-        virtual void searchProduct(Eshop* eshop) = 0;
+        void searchProduct(Eshop* eshop);
         virtual void addProduct(Eshop* eshop) = 0;
         virtual void updateProduct(Eshop* eshop) = 0;
         virtual void removeProduct(Eshop* eshop) = 0;

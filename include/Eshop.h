@@ -1,4 +1,6 @@
 #pragma once
+#ifndef ESHOP_H
+#define ESHOP_H
 #include "Administrator.h"
 #include "Customer.h"
 #include "General.h"
@@ -64,3 +66,5 @@ public:
 
   ~Eshop();
 };
+
+#endif

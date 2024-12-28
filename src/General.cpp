@@ -22,7 +22,8 @@ void toLowerCase(std::string &s) {
 
 // Helper function to handle bad input
 std::string readStringOption(const std::vector<std::string> &validOptions,
-                             const std::string &prompt, const std::string &invalidOptionPrompt) {
+                             const std::string &prompt,
+                             const std::string &invalidOptionPrompt) {
   // Display prompt
   std::cout << prompt;
   fflush(stdout);
@@ -36,6 +37,8 @@ std::string readStringOption(const std::vector<std::string> &validOptions,
     fflush(stdout);
     std::cin >> option;
   }
+
+  std::cin.ignore();
 
   return option;
 }
@@ -75,8 +78,7 @@ bool isFloat(const std::string &str) {
   return (*ptr) == '\0';
 }
 
-float readFloat(const std::string &prompt, float min,
-                      float max) {
+float readFloat(const std::string &prompt, float min, float max) {
   // Display prompt
   std::cout << prompt;
   fflush(stdout);
@@ -95,12 +97,36 @@ float readFloat(const std::string &prompt, float min,
   return stof(option);
 }
 
-std::string readMultiWordInput(const std::string &prompt) {
+std::string readMultiWordInput(const std::vector<std::string> &validOptions,
+                               const std::string &prompt,
+                               const std::string &invalidOptionPrompt) {
   std::string input;
   // Display prompt
   std::cout << prompt;
+
   // Get input
   std::getline(std::cin, input);
+
+  if (validOptions.size() == 0) {
+    // No valid options are give -> every input is valid
+    return input;
+  } else if (invalidOptionPrompt == "-") {
+    // User should not be prompt to enter a new answer
+    if (indexOf(validOptions, input) != -1) {
+      return input;
+    } else {
+      return "";
+    }
+  } else {
+    // If valid options are given, `input` does not match any of them and
+    // the user should be prompt to enter a new answer (invalidOptionPrompt !=
+    // "-"), ask for new input
+    while (indexOf(validOptions, input) == -1) {
+      std::cout << invalidOptionPrompt;
+      fflush(stdout);
+      std::getline(std::cin, input);
+    }
+  }
   return input;
 }
 
@@ -118,7 +144,7 @@ int readNumericOption(int minOption, int maxOption) {
                 << " and " << maxOption << ".\n";
       continue;
     }
-    choice = choicestring[0] - '0'; // Conversion to integer
+    choice = choicestring[0] - '0';                 // Conversion to integer
     if (choice < minOption || choice > maxOption) { // Out of bounds case
       std::cout << "Invalid choice! Please enter a number between " << minOption
                 << " and " << maxOption << ".\n";
@@ -130,62 +156,36 @@ int readNumericOption(int minOption, int maxOption) {
   return choice;
 }
 
-std::string readTitle(std::map<std::string, Product> products) {
-  std::string title;
-
-  std::vector<std::string> validOptions;  // Vector of all product titles in eshop
-  for (const auto &[title, product] : products) {
-    validOptions.push_back(title);
-  }
-
-  std::cout << "Give one of the following titles: ";
-  // print all categories available.
-  for (const auto &title : validOptions) {
-    std::cout << "|" << title << "| ";
-  }
-  do {
-    title = readMultiWordInput("\n");
-    if (products.find(title) == products.end())
-      std::cout
-          << "Invalid title. Please choose one of the titles above: ";
-  } while (products.find(title) == products.end());
-  return title;
-}
-
-std::string readCategory(std::map<std::string, std::vector<std::string>> &categories) {
+std::string
+readCategory(std::map<std::string, std::vector<std::string>> &categories) {
   std::string category;
+  std::vector<std::string> categoriesList;
 
   std::cout << "Give one of the following categories: ";
   // print all categories available.
   for (const auto &category : categories) {
     std::cout << category.first << ' ';
+    categoriesList.push_back(category.first);
   }
-  do {
-    category = readMultiWordInput("\n");
-    if (categories.find(category) == categories.end())
-      std::cout
-          << "Invalid category. Please choose one of the categories above: \n";
-  } while (categories.find(category) == categories.end());
+
+  category = readMultiWordInput(categoriesList, "\n", "Invalid category. Please choose one of the categories above: \n");
+
   return category;
 }
 
 std::string readSubcategory(std::vector<std::string> &subcategories) {
   std::string subcategory;
+  std::vector<std::string> subcategoriesList;
 
   std::cout << "Give one of the following subcategories: ";
   // print all subcategories available.
   for (const auto &subcategory : subcategories) {
     std::cout << subcategory << ' ';
+    subcategories.push_back(subcategory);
   }
-  std::cout << '\n';
-  do {
-    std::cin >> subcategory;
-    if (std::find(subcategories.begin(), subcategories.end(),
-                  subcategory) == subcategories.end()) {
-      std::cout << "Invalid subcategory. Please choose one of the "
-                   "subcategories above: \n";
-    }
-  } while (std::find(subcategories.begin(), subcategories.end(),
-                     subcategory) == subcategories.end());
+
+  subcategory = readMultiWordInput(subcategories, "\n", "Invalid subcategory. Please choose one of the "
+                   "subcategories above: \n");
+   
   return subcategory;
 }
