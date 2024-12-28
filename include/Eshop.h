@@ -26,12 +26,14 @@ public:
   // Maybe we should split these and create a new init method instead
   Eshop(const std::string &categoriesFilePath,
         const std::string &productsFilePath, const std::string &usersFilePath);
-  void product_push_back(const Product& product){
-    products.push_back(product);
-  }
   std::map<std::string, std::vector<std::string>>& getCategories(){
     return categories;
   }
   void showLoginPrompt();
   void showProducts();
+  ~Eshop() {
+    for (const auto &[username, user] : users) {
+      delete user;
+    }
+  }
 };

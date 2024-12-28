@@ -1,26 +1,46 @@
 INCLUDE = -I./include -I../include
-SRC = ./src
-
+SRC = ./src/
 CC = g++
 
 # Compile options
 CFLAGS = -Wall $(INCLUDE)
 LDFLAGS = -lm
 
-%.o: %.cpp
-	$(CC) -c $(CFLAGS) $< -o $@
+# Detect all source files and generate object file list
+SRCS = $(wildcard $(SRC)*.cpp)
+OBJS = $(SRCS:.cpp=.o)
+DEPS = $(OBJS:.o=.d)
 
-# Object files for native build
-OBJS = $(SRC)/User.o $(SRC)/main.o $(SRC)/Eshop.o $(SRC)/Administrator.o $(SRC)/Customer.o  $(SRC)/Product.o $(SRC)/General.o
+# Output executable name
 EXEC = oop24
 ARGS = ./files/categories.txt ./files/products.txt ./files/users.txt
 
 # Default target (native build with GCC)
 all: $(EXEC)
 
+# Link the object files into the final executable
 $(EXEC): $(OBJS)
 	$(CC) $(OBJS) -o $(EXEC) $(LDFLAGS)
 
+# Compile individual source files into object files and generate dependencies
+%.o: %.cpp
+	$(CC) -c $(CFLAGS) $< -o $@
+
+# Include auto-generated dependency files
+-include $(DEPS)
+
+# Generate dependency files
+%.d: %.cpp
+	@$(CC) $(CFLAGS) -MM -MT $(@:.d=.o) $< > $@
+
+# Run the program with default arguments
 run: $(EXEC)
 	./$(EXEC) $(ARGS)
 
+# Run the program with valgrind
+valgrind_run: $(EXEC)
+	valgrind ./$(EXEC) $(ARGS)
+
+# Clean build artifacts
+clean:
+	rm -f $(SRC)*.o $(SRC)*.d $(EXEC)

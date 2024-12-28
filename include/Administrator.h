@@ -7,7 +7,7 @@ class Administrator : public User {
     Administrator(const std::string &username, const std::string &password, const bool &isAdmin): User(username, password, isAdmin) {};
     ~Administrator() {};
 
-    void addProduct(Eshop* eshop);
+    Product addProduct(Eshop* eshop);
     void updateProduct();
     void removeProduct();
     void searchProduct();

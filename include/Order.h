@@ -3,9 +3,9 @@
 #include <vector>
 
 class Order {
-    std::vector<std::pair<Product, float>> products;
+    std::vector<Product> products;
     float totalCost;
 
     public:
-    Order(const std::vector<std::pair<Product, float>> &products, float totalCost): products(products), totalCost(totalCost) {};
+    Order(const std::vector<Product> &products, float totalCost): products(products), totalCost(totalCost) {};
 };

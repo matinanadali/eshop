@@ -7,7 +7,7 @@
 #include "Eshop.h"
 
 class Customer : public User {
-    std::vector<std::pair<Product, float>> shoppingCart;
+    std::vector<Product> shoppingCart;
     std::vector<Order> orderHistory;
 
     public:
@@ -15,7 +15,7 @@ class Customer : public User {
         ~Customer() {};
 
         void searchProduct();
-        void addProduct(Eshop* eshop);
+        Product addProduct(Eshop* eshop);
         void updateProduct();
         void removeProduct();
         

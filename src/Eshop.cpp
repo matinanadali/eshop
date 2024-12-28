@@ -171,7 +171,6 @@ void Eshop::registerUser() {
   isAdmin = (isAdminString == "y");
 
   // Create new user
-  // User *newUser; - Should we keep this pointer?
   if (isAdmin) {
     users[username] = new Administrator(username, password, isAdmin);
   } else {
@@ -247,7 +246,7 @@ void Eshop::showLoginPrompt() {
 
 /////////////////////////////////////// Menus ///////////////////////////////////////
 void Eshop::showMenu(){
-  if(activeUser->getIsAdmin() == 1){ // Menu for Admin
+  if(activeUser->getIsAdmin()){ // Menu for Admin
 
     int choice;
     do{
@@ -271,7 +270,7 @@ void Eshop::showMenu(){
 
       switch(choice){
         case 1:
-          activeUser->addProduct(this);
+          products.push_back(activeUser->addProduct(this));
           break;
         case 2:
           activeUser->updateProduct();

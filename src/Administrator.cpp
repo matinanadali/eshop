@@ -3,7 +3,7 @@
 #include "../include/Eshop.h"
 #include <limits>
 
-void Administrator::addProduct(Eshop* eshop){
+Product Administrator::addProduct(Eshop* eshop){
   std::string title, description, category, subcategory, measurementType;
   float price, amount;
 
@@ -74,9 +74,8 @@ void Administrator::addProduct(Eshop* eshop){
   }
 
   Product product = Product(title, description, category, subcategory, price, measurementType, amount);
-  eshop->product_push_back(product);
-
-std::cout << "Product added successfully!\n";
+  std::cout << "Product added successfully!\n";
+  return product;
 }
 
 void Administrator::updateProduct(){
