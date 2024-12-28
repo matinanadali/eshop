@@ -255,8 +255,8 @@ void Eshop::showLoginPrompt() {
 /////////////////////////// Menus /////////////////////////////////////
 void Eshop::showMenu() {
   if (activeUser->getIsAdmin()) { // Menu for Admin
-
     int choice;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     do {
       std::cout << "\n---Admin Menu---\n1. Add Product\n2. Edit Product\n3. "
                    "Remove Product\n4. Search Product\n5. Show Unavailable "
@@ -291,9 +291,13 @@ void Eshop::showMenu() {
 
   } else { // Menu for Customer
     int choice;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     do {
-      choice = readNumericOption(1, 8);
+      std::cout << "\n---Customer Menu---\n1. Search for a product\n2. Add product to cart\n3. "
+                   "Update product from cart\n4. Remove product from cart\n5. Complete order\n"
+                   "6. View order history\n7. View cart\n8. Exit\n";
 
+      choice = readNumericOption(1, 8);
       switch (choice) {
       case 1:
         activeUser->searchProduct();

@@ -108,22 +108,24 @@ int readNumericOption(int minOption, int maxOption) {
   int choice;
   do {
     std::cout << "Enter your choice: ";
-    std::cin >> choicestring;
+    // std::cin >> choicestring;
+    std::getline(std::cin, choicestring);
+
     if (choicestring.length() != 1 ||
         !isdigit(choicestring[0])) { // Make sure input is an one-digit integer
-      std::cout << "Invalid choice! Please enter a number between" << minOption
+      std::cout << "Invalid choice! Please enter a number between " << minOption
                 << " and " << maxOption << ".\n";
       continue;
     }
     choice = choicestring[0] - '0'; // Conversion to integer
     if (choice < minOption || choice > maxOption) { // Out of bounds case
-      std::cout << "Invalid choice! Please enter a number between" << minOption
+      std::cout << "Invalid choice! Please enter a number between " << minOption
                 << " and " << maxOption << ".\n";
       continue;
     }
     break;
   } while (1);
-  std::cin.ignore();
+  // std::cin.ignore();
   return choice;
 }
 
