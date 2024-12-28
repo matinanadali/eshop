@@ -8,12 +8,9 @@ void Administrator::addProduct(Eshop *eshop) {
   std::string title, description, category, subcategory, measurementType;
   float price, amount;
 
-  std::cout << "Give product title: ";
-  std::cin.ignore();             // to clear buffer
-  std::getline(std::cin, title); // to include spaces
-  std::cout << "Give product description: ";
-  std::cin.ignore();             // to clear buffer
-  std::getline(std::cin, title); // to include spaces
+  title = readMultiWordInput("Give product title: ");
+  description = readMultiWordInput("Give product description: ");
+
   std::cout << "Give one of the following categories: ";
   // print all categories available.
   std::map<std::string, std::vector<std::string>> &categories =
@@ -77,7 +74,6 @@ void Administrator::addProduct(Eshop *eshop) {
       break;
     }
   }
-
   Product product = Product(title, description, category, subcategory, price,
                             measurementType, amount);
   std::cout << "Product added successfully!\n";
@@ -87,12 +83,12 @@ void Administrator::addProduct(Eshop *eshop) {
 /////////////////////////////////////// Update Product Methods ///////////////////////////////////////
 
 void updateProductTitle(Product &product) {
-  std::string newTitle = readStringOption({}, "Enter new title: ");
+  std::string newTitle = readMultiWordInput("Enter new title: ");
   product.setTitle(newTitle);
 }
 
 void updateProductDescription(Product &product) {
-  std::string newDescription = readStringOption({}, "Enter new description: ");
+  std::string newDescription = readMultiWordInput("Enter new description: ");
   product.setDescription(newDescription);
 }
 
@@ -129,12 +125,12 @@ void updateProductCategory(Product &product, Eshop *eshop) {
 }
 
 void updateProductPrice(Product &product) {
-  float newPrice = readFloatOption("Enter new price: ", 0);
+  float newPrice = readFloat("Enter new price: ", 0);
   product.setPrice(newPrice);
 }
 
 void updateProductAmount(Product &product) {
-  float newAmount = readFloatOption("Enter new amount: ", 0);
+  float newAmount = readFloat("Enter new amount: ", 0);
   product.setAmount(newAmount);
 }
 
@@ -157,9 +153,9 @@ void Administrator::updateProduct(Eshop *eshop) {
   Product newProduct = oldProduct;  // Create a copy of the old product
 
   // Read choice
-  int fieldOption = readNumericOption(
-      "Enter number of field you want to edit: 1.Title 2.Description "
-      "3.Category and Subcategory 4.Price 5.Available Kg 6.Nothing\n", 1, 6);
+  std::cout <<  "Enter number of field you want to edit: 1.Title 2.Description "
+      "3.Category and Subcategory 4.Price 5.Available Kg 6.Nothing\n";
+  int fieldOption = readNumericOption(1, 6);
 
   // Process choice
   switch(fieldOption) {
@@ -187,7 +183,7 @@ void Administrator::updateProduct(Eshop *eshop) {
  // Add new product
  eshop->addProduct(newProduct);
  std::cout << "Product updated!\n";
- // eshop->showProducts();
+  eshop->showProducts();
 }
 
 /////////////////////////////////////// Remove Product Methods ///////////////////////////////////////

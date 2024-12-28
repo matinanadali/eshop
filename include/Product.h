@@ -13,7 +13,7 @@ class Product {
   float amount;
 
 public:
-  Product() {};
+  Product(){};
   Product(const std::string &title, const std::string &description,
           const std::string &category, const std::string &subcategory,
           const float &price, const std::string &measurementType,
@@ -22,19 +22,27 @@ public:
         subcategory(subcategory), price(price),
         measurementType(measurementType), amount(amount){};
   Product(const Product &other)
-        : title(other.title), description(other.description),
-          category(other.category), subcategory(other.subcategory),
-          price(other.price), measurementType(other.measurementType),
-          amount(other.amount) {}
+      : title(other.title), description(other.description),
+        category(other.category), subcategory(other.subcategory),
+        price(other.price), measurementType(other.measurementType),
+        amount(other.amount) {}
   void showProductDetails() const;
   std::string getTitle() const { return title; };
+  std::string getDescription() const { return description; };
+  std::string getCategory() const { return category; };
+  std::string getSubcategory() const { return subcategory; };
+  float getPrice() const { return price; };
+  std::string getMeasurementType() const { return measurementType; };
   float getAmount() const { return amount; };
+
   void setTitle(const std::string &title) { this->title = title; };
-  void setDescription(const std::string &description) { this->description = description; };
+  void setDescription(const std::string &description) {
+    this->description = description;
+  };
   void setCategory(const std::string &category) { this->category = category; };
-  void setSubcategory(const std::string &subcategory) { this->subcategory = subcategory; };
+  void setSubcategory(const std::string &subcategory) {
+    this->subcategory = subcategory;
+  };
   void setPrice(float newPrice) { this->price = newPrice; };
   void setAmount(float newAmount) { this->amount = newAmount; };
-
-
 };

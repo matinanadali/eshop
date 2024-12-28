@@ -1,7 +1,7 @@
 #include "../include/Eshop.h"
 #include "../include/Customer.h"
 
-/////////////////////////////////////// Constructor & Initialization Methods ///////////////////////////////////////
+//////////// Constructor & Initialization Methods //////////////
 
 Eshop::Eshop(const std::string &categoriesFilePath,
              const std::string &productsFilePath,
@@ -17,7 +17,6 @@ Eshop::Eshop(const std::string &categoriesFilePath,
     // Initially every product appears in 0 orders
     productsByOrder.insert({0, product});
   }
-
 };
 
 int Eshop::fetchUsers(const std::string &usersFilePath) {
@@ -96,7 +95,8 @@ int Eshop::fetchProducts(const std::string &productsFilePath) {
     float amount = stof(line);
 
     // Create product
-    Product product = Product(title, description, category, subcategory, price, measurementType, amount);
+    Product product = Product(title, description, category, subcategory, price,
+                              measurementType, amount);
     // Add product to E-shop
     products[product.getTitle()] = product;
   }
@@ -104,7 +104,7 @@ int Eshop::fetchProducts(const std::string &productsFilePath) {
   return 0;
 }
 
-int Eshop::fetchCategories(const std::string &categoriesFilePath){
+int Eshop::fetchCategories(const std::string &categoriesFilePath) {
   std::ifstream file(categoriesFilePath); // Open the file
 
   if (!file.is_open()) {
@@ -113,7 +113,7 @@ int Eshop::fetchCategories(const std::string &categoriesFilePath){
   }
 
   std::string line;
-  while(std::getline(file, line)){ // Read the file line by line
+  while (std::getline(file, line)) { // Read the file line by line
     // Read category
     std::string category = line.substr(0, line.find(" ("));
     line = line.substr(category.size() + 2); // Discard category
@@ -124,7 +124,7 @@ int Eshop::fetchCategories(const std::string &categoriesFilePath){
     std::vector<std::string> subcategories;
 
     size_t position = 0;
-    while((position = subcategoriesstring.find(" @ ")) != std::string::npos){
+    while ((position = subcategoriesstring.find(" @ ")) != std::string::npos) {
       subcategories.push_back(subcategoriesstring.substr(0, position));
       subcategoriesstring = subcategoriesstring.substr(position + 3);
     }
@@ -137,7 +137,8 @@ int Eshop::fetchCategories(const std::string &categoriesFilePath){
   return 0;
 }
 
-/////////////////////////////////////// User Registration/Login Methods ///////////////////////////////////////
+/////////////////////////////////////// User Registration/Login Methods
+//////////////////////////////////////////
 
 // Processes user registration
 void Eshop::registerUser() {
@@ -148,7 +149,8 @@ void Eshop::registerUser() {
   std::cin >> username;
 
   if (users.find(username) != users.end()) {
-    // Username already exists -> redirect user to login or to register with different username
+    // Username already exists -> redirect user to login or to register with
+    // different username
     std::cout << "Username already exists. ";
     std::string option = readStringOption(
         {"login", "register", "cancel"},
@@ -156,24 +158,25 @@ void Eshop::registerUser() {
         "with a different username? (enter option login/register/cancel): ");
 
     if (option == "login") {
-        // Redirect to login
-        loginUser();
-        return;
+      // Redirect to login
+      loginUser();
+      return;
     } else if (option == "register") {
-        registerUser();
-        return;
+      registerUser();
+      return;
     } else {
-        // End registration process
-        return;
+      // End registration process
+      return;
     }
   }
 
   // Ask for password
   std::cout << "Please enter your password: ";
   std::cin >> password;
-  
+
   // Ask if user is an administrator
-  std::string isAdminString = readStringOption({"y", "n"}, "Are you an admin user? (Y/N): ");
+  std::string isAdminString =
+      readStringOption({"y", "n"}, "Are you an admin user? (Y/N): ");
   isAdmin = (isAdminString == "y");
 
   // Create new user
@@ -184,7 +187,8 @@ void Eshop::registerUser() {
   }
 
   activeUser = users[username];
-  std::cout << "Thanks for signing up! You are automatically logged-in as " << activeUser->getUsername() << "\n";
+  std::cout << "Thanks for signing up! You are automatically logged-in as "
+            << activeUser->getUsername() << "\n";
 
   showMenu();
 }
@@ -242,7 +246,6 @@ void Eshop::showLoginPrompt() {
   std::string option =
       readStringOption({"login", "register"},
                        "Do you want to login or register? (enter option): ");
-
   if (option == "login") {
     loginUser();
   } else {
@@ -250,107 +253,76 @@ void Eshop::showLoginPrompt() {
   }
 }
 
-/////////////////////////////////////// Menus ///////////////////////////////////////
-void Eshop::showMenu(){
-  if(activeUser->getIsAdmin()){ // Menu for Admin
+/////////////////////////// Menus /////////////////////////////////////
+void Eshop::showMenu() {
+  if (activeUser->getIsAdmin()) { // Menu for Admin
 
     int choice;
-    do{
-      std::cout << "\n---Admin Menu---\n1. Add Product\n2. Edit Product\n3. Remove Product\n4. Search Product\n5. Show Unavailable Products\n6. Show Top 5 Products\n7. Exit\n";
-      
-      std::string choicestring;
-      do{
-        std::cout << "Enter your choice: ";
-        std::cin >> choicestring;
-        if(choicestring.length() != 1 || !isdigit(choicestring[0])){ // Make sure input is an one-digit integer
-          std::cout << "Invalid choice! Please enter a number between 1 and 7.\n";
-          continue;
-        }
-        choice = choicestring[0] - '0'; // Conversion to integer
-        if(choice < 1 || choice > 7){ // Out of bounds case
-          std::cout << "Invalid choice! Please enter a number between 1 and 7.\n";
-          continue;
-        }
+    do {
+      std::cout << "\n---Admin Menu---\n1. Add Product\n2. Edit Product\n3. "
+                   "Remove Product\n4. Search Product\n5. Show Unavailable "
+                   "Products\n6. Show Top 5 Products\n7. Exit\n";
+
+      choice = readNumericOption(1, 7);
+      switch (choice) {
+      case 1:
+        activeUser->addProduct(this);
         break;
-      } while (1);
+      case 2:
+        activeUser->updateProduct(this);
+        break;
+      case 3:
+        activeUser->removeProduct(this);
+        break;
+      case 4:
+        activeUser->searchProduct();
+        break;
+      case 5:
+        activeUser->unavailableProducts(this);
+        break;
+      case 6:
+        activeUser->top5Products(this);
+        break;
+      case 7:
+        std::cout << "Goodbye!\n";
+        break;
+      }
 
-      switch(choice){
-        case 1:
-          activeUser->addProduct(this);
-          break;
-        case 2:
-          activeUser->updateProduct(this);
-          break;
-        case 3:
-          activeUser->removeProduct(this);
-          break;
-        case 4:
-          activeUser->searchProduct();
-          break;
-        case 5:
-          activeUser->unavailableProducts(this);
-          break;
-        case 6:
-          activeUser->top5Products(this);
-          break;
-        case 7:
-          std::cout << "Goodbye!\n";
-          break;
-        }
+    } while (choice != 7);
 
-    } while(choice != 7);
-
-  }
-  else{ // Menu for Customer
+  } else { // Menu for Customer
     int choice;
-    do{
-      std::cout << "\n---Customer Menu---\n1. Search for a product\n2. Add product to cart\n3. Update product from cart\n4. Remove product from cart\n5. Complete order\n6. View order history\n7. View cart\n8. Exit\n";
-      
-      std::string choicestring;
-      do{
-        std::cout << "Enter your choice: ";
-        std::cin >> choicestring;
-        if(choicestring.length() != 1 || !isdigit(choicestring[0])){ // Make sure input is an one-digit integer
-          std::cout << "Invalid choice! Please enter a number between 1 and 8.\n";
-          continue;
-        }
-        choice = choicestring[0] - '0'; // Conversion to integer
-        if(choice < 1 || choice > 8){ // Out of bounds case
-          std::cout << "Invalid choice! Please enter a number between 1 and 8.\n";
-          continue;
-        }
+    do {
+      choice = readNumericOption(1, 8);
+
+      switch (choice) {
+      case 1:
+        activeUser->searchProduct();
         break;
-      } while (1);
+      case 2:
+        activeUser->addProduct(this);
+        break;
+      case 3:
+        activeUser->updateProduct(this);
+        break;
+      case 4:
+        activeUser->removeProduct(this);
+        break;
+      case 5:
+        activeUser->makeOrder();
+        break;
+      case 6:
+        activeUser->viewOrderHistory();
+        break;
+      case 7:
+        activeUser->showCart();
+        break;
+      case 8:
+        std::cout << "Goodbye!\n";
+        break;
+      }
 
-      switch(choice){
-        case 1:
-          activeUser->searchProduct();
-          break;
-        case 2:
-          activeUser->addProduct(this);
-          break;
-        case 3:
-          activeUser->updateProduct(this);
-          break;
-        case 4:
-          activeUser->removeProduct(this);
-          break;
-        case 5:
-          activeUser->makeOrder();
-          break;
-        case 6:
-          activeUser->viewOrderHistory();
-          break;
-        case 7:
-          activeUser->showCart();
-          break;
-        case 8:
-          std::cout << "Goodbye!\n";
-          break;
-        }
-
-    } while(choice != 8);
-
+    } while (choice != 8);
   }
 }
 
@@ -361,16 +333,52 @@ void Eshop::showProducts() {
 }
 
 std::vector<Product> Eshop::getTop5Products() {
-  std::set<std::pair<int, Product>>::iterator productIterator = productsByOrder.begin();
+  std::set<std::pair<int, Product>>::iterator productIterator =
+      productsByOrder.begin();
 
   std::vector<Product> topProducts;
   // Get top 5 products that appear in at least one order
   for (int i = 0; i < 5 && productIterator != productsByOrder.end(); i++) {
     int numOfOrders = productIterator->first;
-    if (numOfOrders == 0) break;  // Product does not appear in any order
-    topProducts.push_back(productIterator->second); // Add product to topProducts
-    productIterator++; 
+    if (numOfOrders == 0)
+      break; // Product does not appear in any order
+    topProducts.push_back(
+        productIterator->second); // Add product to topProducts
+    productIterator++;
   }
 
   return topProducts;
+}
+
+///////////////// Destructor and Data Storage ////////////////////
+
+void Eshop::storeProducts() {
+  std::ofstream file(productsFilePath); // Open the file
+
+  if (!file.is_open()) {
+    std::cerr << "Error opening file!" << std::endl;
+    return;
+  }
+
+  int size = products.size();
+  int counter = 0; // To track when to print the newline character
+
+  for (const auto &[title, product] : products) {
+    counter++;
+    file << product.getTitle() << " @ " << product.getDescription() << " @ "
+         << product.getCategory() << " @ " << product.getSubcategory() << " @ "
+         << std::fixed << std::setprecision(2) << product.getPrice() << " @ "
+         << product.getMeasurementType() << " @ " << std::fixed
+         << std::setprecision(0) << product.getAmount();
+
+    file << (counter == size ? "" : "\n"); // print newline character only if this is not the end of the file
+  }
+}
+
+Eshop::~Eshop() {
+  storeProducts();
+
+  for (const auto &[username, user] : users) {
+    delete user;
+  }
 }

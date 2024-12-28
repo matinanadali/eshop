@@ -8,6 +8,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <iomanip>
 
 class Eshop {
   std::string categoriesFilePath, productsFilePath, usersFilePath;
@@ -35,6 +36,8 @@ class Eshop {
   void registerUser();
   void showMenu();
 
+  void storeProducts();
+
 public:
   // IMPORTANT: At the moment, E-shop is initialized with input data when
   // constructed Maybe we should split these and create a new init method
@@ -58,9 +61,5 @@ public:
   std::map<std::string, Product> getProducts() const { return products; }
   std::vector<Product> getTop5Products();
 
-  ~Eshop() {
-    for (const auto &[username, user] : users) {
-      delete user;
-    }
-  }
+  ~Eshop();
 };
