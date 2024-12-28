@@ -137,8 +137,7 @@ int Eshop::fetchCategories(const std::string &categoriesFilePath) {
   return 0;
 }
 
-/////////////////////////////////////// User Registration/Login Methods
-//////////////////////////////////////////
+/////////////////////////////////////// User Registration/Login Methods //////////////////////////////////////////
 
 // Processes user registration
 void Eshop::registerUser() {
@@ -375,8 +374,28 @@ void Eshop::storeProducts() {
   }
 }
 
+void Eshop::storeUsers(){
+  std::ofstream file(usersFilePath); // Open the file
+
+  if (!file.is_open()) {
+    std::cerr << "Error opening file!" << std::endl;
+    return;
+  }
+
+  int size = users.size();
+  int counter = 0; // To track when to print the newline character
+
+  for (const auto &[username, User] : users) {
+    counter++;
+    file << User->getUsername() << "," << User->getPassword() << "," << User->getIsAdmin();
+    file << (counter == size ? "" : "\n"); // print newline character only if this is not the end of the file
+  }
+
+}
+
 Eshop::~Eshop() {
   storeProducts();
+  storeUsers();
 
   for (const auto &[username, user] : users) {
     delete user;

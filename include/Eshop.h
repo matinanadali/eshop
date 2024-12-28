@@ -37,6 +37,7 @@ class Eshop {
   void showMenu();
 
   void storeProducts();
+  void storeUsers();
 
 public:
   // IMPORTANT: At the moment, E-shop is initialized with input data when
