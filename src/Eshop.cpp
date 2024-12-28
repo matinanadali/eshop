@@ -224,8 +224,8 @@ void Eshop::loginUser() {
     // Username and password don't match -> ask user to try logging in again
     std::cout << "Incorrect credentials. ";
     std::string option =
-        readStringOption({"y", "n"}, "Would you like to try again (Y/N)? ", "Invalid option. Please pick Y or N: ");
-    if (option == "y") {
+        readStringOption({"Y", "N"}, "Would you like to try again (Y/N)? ", "Invalid option. Please pick Y or N: ");
+    if (option == "Y") {
       loginUser();
       return;
     } else {
