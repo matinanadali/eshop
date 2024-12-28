@@ -217,12 +217,22 @@ void Administrator::searchProduct() {
 void Administrator::unavailableProducts(Eshop* eshop) {
   std::map<std::string, Product> products = eshop->getProducts();
   for (const auto &[title, product] : products) {
+    // Equality check for floating point numbers
     if (abs(product.getAmount()) < 10e-6) {
       product.showProductDetails();
     }
   }
 }
 
-void Administrator::top5Products() {
-  std::cout << "Administrator top5 products\n";
+void Administrator::top5Products(Eshop* eshop) {
+  std::vector<Product> topProducts = eshop->getTop5Products();
+
+  if (topProducts.size() == 0) {
+    // No products have been purchased in any order
+    std::cout << "Not enough orders were made.\n";
+  } else {
+    for (const Product &product : topProducts) {
+      product.showProductDetails();
+    }
+  }
 }

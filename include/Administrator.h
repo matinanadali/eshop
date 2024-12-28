@@ -14,5 +14,5 @@ class Administrator : public User {
     void searchProduct();
 
     void unavailableProducts(Eshop* eshop);
-    void top5Products();
+    void top5Products(Eshop* eshop);
 };

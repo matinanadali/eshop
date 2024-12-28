@@ -19,7 +19,7 @@ class User {
         virtual void removeProduct(Eshop* eshop) = 0;
 
         virtual void unavailableProducts(Eshop* eshop){}
-        virtual void top5Products(){}
+        virtual void top5Products(Eshop* eshop){}
 
         virtual void makeOrder(){}
         virtual void viewOrderHistory(){}

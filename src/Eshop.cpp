@@ -12,6 +12,12 @@ Eshop::Eshop(const std::string &categoriesFilePath,
   fetchUsers(usersFilePath);
   fetchProducts(productsFilePath);
   fetchCategories(categoriesFilePath);
+
+  for (const auto &[title, product] : products) {
+    // Initially every product appears in 0 orders
+    productsByOrder.insert({0, product});
+  }
+
 };
 
 int Eshop::fetchUsers(const std::string &usersFilePath) {
@@ -285,7 +291,7 @@ void Eshop::showMenu(){
           activeUser->unavailableProducts(this);
           break;
         case 6:
-          activeUser->top5Products();
+          activeUser->top5Products(this);
           break;
         case 7:
           std::cout << "Goodbye!\n";
@@ -352,4 +358,19 @@ void Eshop::showProducts() {
   for (auto &[title, product] : products) {
     product.showProductDetails();
   }
+}
+
+std::vector<Product> Eshop::getTop5Products() {
+  std::set<std::pair<int, Product>>::iterator productIterator = productsByOrder.begin();
+
+  std::vector<Product> topProducts;
+  // Get top 5 products that appear in at least one order
+  for (int i = 0; i < 5 && productIterator != productsByOrder.end(); i++) {
+    int numOfOrders = productIterator->first;
+    if (numOfOrders == 0) break;  // Product does not appear in any order
+    topProducts.push_back(productIterator->second); // Add product to topProducts
+    productIterator++; 
+  }
+
+  return topProducts;
 }
