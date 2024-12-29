@@ -1,6 +1,58 @@
 #include "Customer.h"
 #include "../include/Eshop.h"
 
+void Customer::calculateProductDiscounts() {
+  std::map<std::string, std::vector<int>> productOrderIndices;
+
+  // Find the indices of the orders each product appears in
+  for (unsigned int orderIndex = 0; orderIndex < orderHistory.size(); orderIndex++) {
+
+    Order order = orderHistory[orderIndex];
+    for (const auto &product: order.getProducts()) {
+      // `product` appears in `orderHistory[orderIndex]`: 
+      productOrderIndices[product.getTitle()].push_back(orderIndex);
+    }
+  }
+
+  // For each product, check if the last three orders that contain it are consecutive
+  for (const auto &[title, orderIndices] : productOrderIndices) {
+    if (orderIndices.size() < 3) continue;
+
+    int size = orderIndices.size();
+    bool getsDiscount = true;
+
+    for (int i = size - 3; i < size - 1; i++) {
+      // Check that the last three order indices are consecutive
+      if (orderIndices[i + 1] != orderIndices[i] + 1) {
+        // If not, user does not get discount for this product
+        getsDiscount = false;
+      }
+    }
+
+    if (getsDiscount) {
+      productDiscount[title] = 0.2; // Add discount
+    }
+  }
+}
+
+void Customer::calculateCategoryDiscounts(Eshop* eshop, const Order &lastOrder) {
+  std::map<std::string, int> numOfProducts;
+  for (const auto &product : lastOrder.getProducts()) {
+    numOfProducts[product.getCategory()]++;
+  }
+
+  for (const auto &[category, _] : eshop->getCategories()) {
+    if (numOfProducts[category] >= eshop->getMinAmountForCategoryDiscount()[category]) {
+      categoryDiscount[category] = 0.3;
+    }
+  }
+}
+
+void Customer::calculateDiscounts(Eshop* eshop, const Order &lastOrder) {
+  calculateProductDiscounts();
+  calculateCategoryDiscounts(eshop, lastOrder);
+}
+
 void Customer::fetchOrderHistory(Eshop *eshop) {
   std::string filePath = "files/order_history/" + username + "_history.txt";
   std::ifstream file(filePath); // Open the file
@@ -13,6 +65,7 @@ void Customer::fetchOrderHistory(Eshop *eshop) {
   std::string startLine;
   while (!file.eof()) { // Reads ---CART START---
     std::getline(file, startLine);
+    if (startLine == "\n" || startLine == "") break;
     float amount;
     std::string title;
     float totalCost;
@@ -40,6 +93,10 @@ void Customer::fetchOrderHistory(Eshop *eshop) {
     Order order(products, totalCost);
     orderHistory.push_back(order);
 
+  }
+
+  if (orderHistory.size() > 1) {
+    calculateDiscounts(eshop, orderHistory.back());
   }
 }
 
@@ -144,14 +201,45 @@ void Customer::makeOrder(Eshop *eshop) {
   float totalCost = 0;
   // Calculate total cost
   for (const auto &[title, product] : shoppingCart) {
-    totalCost += product.getAmount() * product.getPrice();
+    float price = product.getPrice() * product.getAmount();
+    float finalDiscount = 0;
+
+    std::vector<std::string> discounts;
+
+    // Find if product has any type of discount
+    if (productDiscount.find(title) != productDiscount.end()) {
+      discounts.push_back("PRODUCT");
+    }
+    if (categoryDiscount.find(product.getCategory()) != categoryDiscount.end()) {
+      discounts.push_back("CATEGORY");
+    }
+
+    if (discounts.size() > 0) {
+      // Choose a random discount to apply
+      int randomDiscountIndex = rand() % discounts.size();
+
+      if (discounts[randomDiscountIndex] == "PRODUCT") {
+        // Get final discount
+        finalDiscount = productDiscount[title];
+        // Remove discount
+        productDiscount.erase(title);
+      } else if (discounts[randomDiscountIndex] == "CATEGORY") {
+        // Get final discount
+        finalDiscount = categoryDiscount[product.getCategory()];
+        // Remove discount
+        categoryDiscount.erase(product.getCategory());
+      }
+    }
+  
+    totalCost += price - finalDiscount * price;
+
     eshop->incrementProductOrders(title);
   }
   Order order = Order(mapValues(shoppingCart),
                       totalCost); // Add all products to a new order
   orderHistory.push_back(order);
   shoppingCart.clear(); // Empty cart
-
+  calculateDiscounts(eshop, orderHistory.back());
   std::cout << "Order Completed!\n";
 }
 

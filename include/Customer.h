@@ -11,6 +11,11 @@
 class Customer : public User {
     std::map<std::string, Product> shoppingCart;
     std::vector<Order> orderHistory;
+    std::map<std::string, float> productDiscount;
+    std::map<std::string, float> categoryDiscount;
+    void calculateProductDiscounts();
+    void calculateCategoryDiscounts(Eshop* eshop, const Order &lastOrder);
+    void calculateDiscounts(Eshop* eshop, const Order &lastOrder);
 
     public:
         Customer(const std::string &username, const std::string &password, const bool &isAdmin): User(username, password, isAdmin) {};
