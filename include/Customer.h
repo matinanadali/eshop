@@ -14,6 +14,7 @@ class Customer : public User {
 
     public:
         Customer(const std::string &username, const std::string &password, const bool &isAdmin): User(username, password, isAdmin) {};
+        std::vector<Order> getOrderHistory() const {return orderHistory;};
         ~Customer() {};
 
         void searchProduct(Eshop* eshop);
@@ -21,7 +22,7 @@ class Customer : public User {
         void updateProduct(Eshop* eshop);
         void removeProduct(Eshop* eshop);
         
-        void makeOrder();
+        void makeOrder(Eshop* eshop);
         void viewOrderHistory();
         void showCart();
 };

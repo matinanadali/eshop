@@ -2,6 +2,7 @@
 #include <string>
 #include "Product.h"
 #include "General.h"
+#include "Order.h"
 
 class Eshop; // Forward declaration, in order to use "this" pointer
 
@@ -24,7 +25,7 @@ class User {
         virtual void unavailableProducts(Eshop* eshop){}
         virtual void top5Products(Eshop* eshop){}
 
-        virtual void makeOrder(){}
+        virtual void makeOrder(Eshop* eshop){}
         virtual void viewOrderHistory(){}
         virtual void showCart(){}
 

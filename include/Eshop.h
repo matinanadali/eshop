@@ -1,6 +1,5 @@
 #pragma once
-#ifndef ESHOP_H
-#define ESHOP_H
+
 #include "Administrator.h"
 #include "Customer.h"
 #include "General.h"
@@ -11,6 +10,9 @@
 #include <set>
 #include <vector>
 #include <iomanip>
+#include <memory>
+
+class Customer;
 
 class Eshop {
   std::string categoriesFilePath, productsFilePath, usersFilePath;
@@ -31,6 +33,9 @@ class Eshop {
   // Container that automatically sorts products based on the number of orders
   // they appear in
   std::set<std::pair<int, Product>, CompareByOrder> productsByOrder;
+  // Container that stores the number of orders each products appears in
+  std::map<std::string, int> productOrders;
+
   int fetchUsers(const std::string &usersFilePath);
   int fetchProducts(const std::string &productsFilePath);
   int fetchCategories(const std::string &categoriesFilePath);
@@ -40,6 +45,7 @@ class Eshop {
 
   void storeProducts();
   void storeUsers();
+  void storeUserHistory(Customer* customer);
 
 public:
   // IMPORTANT: At the moment, E-shop is initialized with input data when
@@ -63,6 +69,13 @@ public:
 
   void editProductAmount(const std::string &title, float newAmount) {
     products[title].setAmount(newAmount);
+  };
+  
+  void incrementProductOrders(const std::string &title) {
+    int numOfOrders = productOrders[title]; // Number of orders product currently appears in
+    productsByOrder.erase({numOfOrders, products[title]});  // Remove product from set
+    productOrders[title]++;  // Increment the number of orders the products appears in
+    productsByOrder.insert({productOrders[title], products[title]}); // Add the product back in set
   }
 
   std::map<std::string, Product> getProducts() const { return products; }
@@ -71,4 +84,3 @@ public:
   ~Eshop();
 };
 
-#endif

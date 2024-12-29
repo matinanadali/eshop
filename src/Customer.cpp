@@ -50,6 +50,7 @@ void Customer::updateProduct(Eshop* eshop){
     }
   } 
 }
+
 void Customer::removeProduct(Eshop* eshop){
   // Ask for input
   std::string title = readMultiWordInput(mapKeys(shoppingCart), "Which product would you like to remove? ", "-");
@@ -68,11 +69,12 @@ void Customer::removeProduct(Eshop* eshop){
   } 
 }
 
-void Customer::makeOrder(){
+void Customer::makeOrder(Eshop* eshop){
   float totalCost = 0;
   // Calculate total cost
   for (const auto &[title, product] : shoppingCart) {
     totalCost += product.getAmount() * product.getPrice();
+    eshop->incrementProductOrders(title); 
   }
   Order order = Order(mapValues(shoppingCart), totalCost); // Add all products to a new order
   orderHistory.push_back(order);
@@ -84,7 +86,8 @@ void Customer::makeOrder(){
 void Customer::viewOrderHistory(){
   int orderIndex = 1;
   for (const auto &order : orderHistory) {
-    order.showOrderDetails(orderIndex++);
+    // Print order to cout
+    order.showOrderDetails(std::cout, orderIndex++);
   }
 }
 

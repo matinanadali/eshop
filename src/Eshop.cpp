@@ -16,6 +16,7 @@ Eshop::Eshop(const std::string &categoriesFilePath,
   for (const auto &[title, product] : products) {
     // Initially every product appears in 0 orders
     productsByOrder.insert({0, product});
+    productOrders[title] = 0;
   }
 };
 
@@ -175,7 +176,7 @@ void Eshop::registerUser() {
 
   // Ask if user is an administrator
   std::string isAdminString =
-      readStringOption({"y", "n"}, "Are you an admin user? (Y/N): ", "Invalid option. Please pick Y or N: ");
+      readStringOption({"y", "n"}, "Are you an admin user? (y/n): ", "Invalid option. Please pick y or n: ");
   isAdmin = (isAdminString == "y");
 
   // Create new user
@@ -188,7 +189,7 @@ void Eshop::registerUser() {
   activeUser = users[username];
   std::cout << "Thanks for signing up! You are automatically logged-in as "
             << activeUser->getUsername() << "\n";
-
+  fflush(stdout);
   showMenu();
 }
 
@@ -256,7 +257,6 @@ void Eshop::showLoginPrompt() {
 void Eshop::showMenu() {
   if (activeUser->getIsAdmin()) { // Menu for Admin
     int choice;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     do {
       std::cout << "\n---Admin Menu---\n1. Add Product\n2. Edit Product\n3. "
                    "Remove Product\n4. Search Product\n5. Show Unavailable "
@@ -291,7 +291,6 @@ void Eshop::showMenu() {
 
   } else { // Menu for Customer
     int choice;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     do {
       std::cout << "\n---Customer Menu---\n1. Search for a product\n2. Add product to cart\n3. "
                    "Update product from cart\n4. Remove product from cart\n5. Complete order\n"
@@ -312,7 +311,7 @@ void Eshop::showMenu() {
         activeUser->removeProduct(this);
         break;
       case 5:
-        activeUser->makeOrder();
+        activeUser->makeOrder(this);
         break;
       case 6:
         activeUser->viewOrderHistory();
@@ -378,6 +377,22 @@ void Eshop::storeProducts() {
   }
 }
 
+void Eshop::storeUserHistory(Customer* customer) {
+    std::string filePath = "files/order_history/" + customer->getUsername() + "_history.txt";
+    std::ofstream file(filePath);
+
+    if (!file.is_open()) {
+      std::cerr << "Error opening file!" << std::endl;
+      return;
+    }
+    int orderIndex = 1;
+    for (const auto &order : customer->getOrderHistory()) {
+      // Print order to file
+      order.showOrderDetails(file, orderIndex++);
+    }
+}
+
+
 void Eshop::storeUsers(){
   std::ofstream file(usersFilePath); // Open the file
 
@@ -393,6 +408,11 @@ void Eshop::storeUsers(){
     counter++;
     file << User->getUsername() << "," << User->getPassword() << "," << User->getIsAdmin();
     file << (counter == size ? "" : "\n"); // print newline character only if this is not the end of the file
+
+    if (!User->getIsAdmin()) {
+      // If `User` is a customer, store his order history
+      storeUserHistory(dynamic_cast<Customer*>(User));
+    }
   }
 
 }
