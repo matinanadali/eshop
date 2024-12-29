@@ -68,7 +68,7 @@ void Administrator::updateProduct(Eshop *eshop) {
 
   // Read title
   title =
-      readStringOption(validOptions, "Enter product title you wish to edit: ", "Product not found. Please enter a different product title: ");
+      readMultiWordInput(validOptions, "Enter product title you wish to edit: ", "Product not found. Please enter a different product title: ");
 
   // Get product
   Product oldProduct = eshop->getProducts()[title];
@@ -120,7 +120,7 @@ void Administrator::removeProduct(Eshop *eshop) {
 
   // Read title
   title =
-      readStringOption(validOptions, "Enter product title you wish to remove: ", "Product not found. Please enter a different product title: ");
+      readMultiWordInput(validOptions, "Enter product title you wish to remove: ", "Product not found. Please enter a different product title: ");
   
   eshop->removeProductByTitle(title);
   std::cout << "Product removed!\n";
