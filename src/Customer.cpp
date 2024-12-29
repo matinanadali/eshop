@@ -54,19 +54,21 @@ void Customer::addProduct(Eshop *eshop) {
     // Product was not found
     std::cout << "Product not found.\n";
   } else {
-    Product product = products[title];
-    float customerAmount =
+      Product product = products[title];
+      float eshopAmount = product.getAmount();
+      if(eshopAmount == 0) std::cout << "Product currently unavailable.\n";
+    else{
+      float customerAmount =
         readFloat("Enter quantity: ", 10e-6); // To avoid 0 amount
-    float eshopAmount = product.getAmount();
-
-    if (customerAmount > eshopAmount) {
-      std::cout << "Product currently unavailable.\n";
-    } else {
-      eshop->editProductAmount(title,
-                               eshopAmount - customerAmount); // Update stock
-      // Set product amount and add it to cart
-      product.setAmount(customerAmount);
-      shoppingCart[title] = product;
+      if (customerAmount > eshopAmount) {
+        std::cout << "Quantity not available. Current quantity: " << eshopAmount << '\n';
+      } else {
+        eshop->editProductAmount(title,
+                                eshopAmount - customerAmount); // Update stock
+        // Set product amount and add it to cart
+        product.setAmount(customerAmount);
+        shoppingCart[title] = product;
+    }
     }
   }
 }
