@@ -4,10 +4,12 @@
 #include "Product.h"
 #include "Order.h"
 #include <iostream>
+#include <map>
 #include "Eshop.h"
+#include "General.h"
 
 class Customer : public User {
-    std::vector<Product> shoppingCart;
+    std::map<std::string, Product> shoppingCart;
     std::vector<Order> orderHistory;
 
     public:

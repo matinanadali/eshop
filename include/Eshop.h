@@ -61,6 +61,10 @@ public:
     products.erase(title);
   };
 
+  void editProductAmount(const std::string &title, float newAmount) {
+    products[title].setAmount(newAmount);
+  }
+
   std::map<std::string, Product> getProducts() const { return products; }
   std::vector<Product> getTop5Products();
 

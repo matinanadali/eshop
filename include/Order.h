@@ -8,4 +8,5 @@ class Order {
 
     public:
     Order(const std::vector<Product> &products, float totalCost): products(products), totalCost(totalCost) {};
+    void showOrderDetails(int orderIndex) const;
 };

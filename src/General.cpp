@@ -1,5 +1,4 @@
 #include "General.h"
-#include "Product.h"
 
 // Template function that returns the index of the first occurence of `value` in
 // `vec` or -1 if the `value` does not exist
@@ -94,6 +93,8 @@ float readFloat(const std::string &prompt, float min, float max) {
     std::cin >> option;
   }
 
+  std::cin.ignore();
+
   return stof(option);
 }
 
@@ -108,7 +109,7 @@ std::string readMultiWordInput(const std::vector<std::string> &validOptions,
   std::getline(std::cin, input);
 
   if (validOptions.size() == 0) {
-    // No valid options are give -> every input is valid
+    // No valid options are given -> every input is valid
     return input;
   } else if (invalidOptionPrompt == "-") {
     // User should not be prompt to enter a new answer
