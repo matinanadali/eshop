@@ -14,7 +14,7 @@ Eshop::Eshop(const std::string &categoriesFilePath,
 
   for (const auto &[title, product] : products) {
     // Initially every product appears in 0 orders
-    productsByOrder.insert({0, product});
+    productsByOrder.insert({0, title});
     productOrders[title] = 0;
   }
 
@@ -259,7 +259,7 @@ void Eshop::loginUser() {
 
   activeUser = users[username];
   std::cout << "\nWelcome " << activeUser->getUsername() << "!\n";
-
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   showMenu();
 }
 
@@ -279,6 +279,7 @@ void Eshop::showLoginPrompt() {
 void Eshop::showMenu() {
   if (activeUser->getIsAdmin()) { // Menu for Admin
     int choice;
+    // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     do {
       std::cout << "\n---Admin Menu---\n1. Add Product\n2. Edit Product\n3. "
                    "Remove Product\n4. Search Product\n5. Show Unavailable "
@@ -357,17 +358,18 @@ void Eshop::showProducts() {
 }
 
 std::vector<Product> Eshop::getTop5Products() {
-  std::set<std::pair<int, Product>>::iterator productIterator =
+  std::set<std::pair<int, std::string>>::iterator productIterator =
       productsByOrder.begin();
 
   std::vector<Product> topProducts;
   // Get top 5 products that appear in at least one order
   for (int i = 0; i < 5 && productIterator != productsByOrder.end(); i++) {
     int numOfOrders = productIterator->first;
+    std::cout << productIterator->second << " " << numOfOrders << "\n";
     if (numOfOrders == 0)
       break; // Product does not appear in any order
     topProducts.push_back(
-        productIterator->second); // Add product to topProducts
+        products[productIterator->second]); // Add product to topProducts
     productIterator++;
   }
 
@@ -381,7 +383,7 @@ void Eshop::removeProductByTitle(const std::string &title) {
     for (auto &[username, User] : users) {
       if (User->getIsAdmin()) continue;
       Customer* customer = dynamic_cast<Customer*>(User);
-      customer->removeProductFromCart(title);
+      customer->removeProductFromCart(this, title);
     }
   }
 
@@ -427,17 +429,23 @@ void Eshop::storeUsers(){
     file << (counter == size ? "" : "\n"); // print newline character only if this is not the end of the file
 
     if (!User->getIsAdmin()) {
-      // If `User` is a customer, store his order history
       Customer* customer = dynamic_cast<Customer*>(User);
+      
+      // If `User` is a customer, store his order history
       customer->storeOrderHistory(this);
     }
   }
 
+  if (!activeUser->getIsAdmin()) {
+    Customer* activeCustomer = dynamic_cast<Customer*>(activeUser);
+    // If `activeUser` didn't complete his order, cancel it and update stock accordingly before storing data to file
+    activeCustomer->emptyCart(this);
+  }
 }
 
 Eshop::~Eshop() {
-  storeProducts();
   storeUsers();
+  storeProducts();
 
   for (const auto &[username, user] : users) {
     delete user;
