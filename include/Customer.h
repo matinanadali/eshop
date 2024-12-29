@@ -26,5 +26,6 @@ class Customer : public User {
         void makeOrder(Eshop* eshop);
         void viewOrderHistory();
         void showCart();
-        void removeProductFromCart(const std::string &title) { shoppingCart.erase(title); };
+        void removeProductFromCart(Eshop* eshop, const std::string &title);
+        void emptyCart(Eshop* eshop);
 };

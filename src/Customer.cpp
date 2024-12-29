@@ -39,6 +39,7 @@ void Customer::fetchOrderHistory(Eshop *eshop) {
     // Create order and add it to order history
     Order order(products, totalCost);
     orderHistory.push_back(order);
+
   }
 }
 
@@ -63,11 +64,19 @@ void Customer::addProduct(Eshop *eshop) {
       if (customerAmount > eshopAmount) {
         std::cout << "Quantity not available. Current quantity: " << eshopAmount << '\n';
       } else {
+        if (shoppingCart.find(title) == shoppingCart.end()) {
+          // Product not found in cart 
+          // Set product amount and add it to cart
+          product.setAmount(customerAmount);
+          shoppingCart[title] = product;
+        } else {
+          // Product found in cart -> update its amount
+          float currentAmount = shoppingCart[title].getAmount();
+          shoppingCart[title].setAmount(currentAmount + customerAmount);
+        }
         eshop->editProductAmount(title,
                                 eshopAmount - customerAmount); // Update stock
-        // Set product amount and add it to cart
-        product.setAmount(customerAmount);
-        shoppingCart[title] = product;
+        
     }
     }
   }
@@ -110,6 +119,11 @@ void Customer::removeProduct(Eshop *eshop) {
     // Product was not found
     std::cout << "Product not found in your shopping cart.\n";
   } else {
+    removeProductFromCart(eshop, title);
+  }
+}
+
+void Customer::removeProductFromCart(Eshop* eshop, const std::string &title) { 
     Product product = shoppingCart[title];
 
     float customerAmount = product.getAmount();
@@ -118,6 +132,11 @@ void Customer::removeProduct(Eshop *eshop) {
     eshop->editProductAmount(title,
                              eshopAmount + customerAmount); // Update stock
     shoppingCart.erase(title);
+};
+
+void Customer::emptyCart(Eshop* eshop) {
+  while(shoppingCart.size() > 0) {
+    removeProductFromCart(eshop, shoppingCart.begin()->first);  // Remove first product from cart until it's empty
   }
 }
 
