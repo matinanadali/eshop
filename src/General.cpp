@@ -176,13 +176,11 @@ readCategory(std::map<std::string, std::vector<std::string>> &categories) {
 
 std::string readSubcategory(std::vector<std::string> &subcategories) {
   std::string subcategory;
-  std::vector<std::string> subcategoriesList;
 
   std::cout << "Give one of the following subcategories: ";
   // print all subcategories available.
   for (const auto &subcategory : subcategories) {
     std::cout << subcategory << ' ';
-    subcategories.push_back(subcategory);
   }
 
   subcategory = readMultiWordInput(subcategories, "\n", "Invalid subcategory. Please choose one of the "
