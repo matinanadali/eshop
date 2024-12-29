@@ -48,9 +48,37 @@ void Customer::calculateCategoryDiscounts(Eshop* eshop, const Order &lastOrder) 
   }
 }
 
+void Customer::calculateFavoriteProductDiscount(Eshop* eshop) {
+  // If user has already taken this discount or has less than 5 orders, he cannot take the discount
+  if (!canGetFavoriteProductDiscount || orderHistory.size() < 5) return;
+
+  for (const auto &order : orderHistory) {
+    for (const auto &product : order.getProducts()) {
+      float amountOfProductBought = amountBought[product.getTitle()];
+      productsByAmountBought.erase({amountOfProductBought, product.getTitle()});
+      amountBought[product.getTitle()] += product.getAmount();
+      productsByAmountBought.insert({amountBought[product.getTitle()], product.getTitle()});
+    }
+  }
+
+  // Find favorite product
+  std::string favoriteProduct = productsByAmountBought.begin()->second;
+  favoriteDiscount[favoriteProduct] = 0.4; 
+}
+
 void Customer::calculateDiscounts(Eshop* eshop, const Order &lastOrder) {
   calculateProductDiscounts();
   calculateCategoryDiscounts(eshop, lastOrder);
+  calculateFavoriteProductDiscount(eshop);
+}
+
+bool cartStart(const std::string &line) {
+  std::string prefix = "---Cart";
+  if (line.size() < prefix.size()) return false;
+  for (unsigned int i = 0; i < prefix.size(); i++) {
+    if (line[i] != prefix[i]) return false;
+  }
+  return true;
 }
 
 void Customer::fetchOrderHistory(Eshop *eshop) {
@@ -65,7 +93,7 @@ void Customer::fetchOrderHistory(Eshop *eshop) {
   std::string startLine;
   while (!file.eof()) { // Reads ---CART START---
     std::getline(file, startLine);
-    if (startLine == "\n" || startLine == "") break;
+    if (!cartStart(startLine)) break;
     float amount;
     std::string title;
     float totalCost;
@@ -94,6 +122,11 @@ void Customer::fetchOrderHistory(Eshop *eshop) {
     orderHistory.push_back(order);
 
   }
+
+  std::string fProductDiscountString;
+  file >> fProductDiscountString >> fProductDiscountString >> fProductDiscountString;  // Ignore "Favorite Product Discount: "
+  // Read if user can get the "Favorite Product Discount"
+  file >> canGetFavoriteProductDiscount;
 
   if (orderHistory.size() > 1) {
     calculateDiscounts(eshop, orderHistory.back());
@@ -209,9 +242,16 @@ void Customer::makeOrder(Eshop *eshop) {
     // Find if product has any type of discount
     if (productDiscount.find(title) != productDiscount.end()) {
       discounts.push_back("PRODUCT");
+      std::cout << "product discount\n";
     }
     if (categoryDiscount.find(product.getCategory()) != categoryDiscount.end()) {
       discounts.push_back("CATEGORY");
+      std::cout << "category discount\n";
+
+    }
+    if (title == productsByAmountBought.begin()->second) {
+      discounts.push_back("FAVORITE");
+      std::cout << "favorite discount\n";
     }
 
     if (discounts.size() > 0) {
@@ -228,6 +268,11 @@ void Customer::makeOrder(Eshop *eshop) {
         finalDiscount = categoryDiscount[product.getCategory()];
         // Remove discount
         categoryDiscount.erase(product.getCategory());
+      } else {
+        // Favorite product discount
+        finalDiscount = favoriteDiscount[product.getTitle()];
+        // Disable discount
+        canGetFavoriteProductDiscount = false;
       }
     }
   
@@ -235,6 +280,14 @@ void Customer::makeOrder(Eshop *eshop) {
 
     eshop->incrementProductOrders(title);
   }
+
+  for (const auto &[title, product] : shoppingCart) {
+    float amountOfProductBought = amountBought[title];
+    productsByAmountBought.erase({amountOfProductBought, title});
+    amountBought[title] += product.getAmount();
+    productsByAmountBought.insert({amountBought[title], title});
+  }
+
   Order order = Order(mapValues(shoppingCart),
                       totalCost); // Add all products to a new order
   orderHistory.push_back(order);
@@ -275,8 +328,8 @@ void Customer::storeOrderHistory(Eshop *eshop) {
   for (const auto &order : orderHistory) {
     // Print order to file
     order.showOrderDetails(file, orderIndex++);
-    if (orderIndex != (int)orderHistory.size() + 1) {
-      file << "\n";
-    }
+    file << "\n";
   }
+
+  file << "Favorite Product Discount: " << canGetFavoriteProductDiscount;
 }

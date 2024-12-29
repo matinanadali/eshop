@@ -1,0 +1,21 @@
+---Cart 1 START---
+1 Apple
+---Cart 1 END---
+Total Cost: 1.8
+---Cart 2 START---
+1 Apple
+---Cart 2 END---
+Total Cost: 1.8
+---Cart 3 START---
+1 Apple
+---Cart 3 END---
+Total Cost: 1.8
+---Cart 4 START---
+1 Apple
+---Cart 4 END---
+Total Cost: 1.8
+---Cart 5 START---
+1 Apple
+---Cart 5 END---
+Total Cost: 1.8
+Favorite Product Discount: 1
