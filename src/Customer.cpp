@@ -146,11 +146,14 @@ void Customer::viewOrderHistory() {
 }
 
 void Customer::showCart() {
-  std::cout << "---CART START---\n";
+  std::cout << "\n---CART START---\n";
+  float totalCost = 0;
   for (const auto &[_, product] : shoppingCart) {
+    totalCost += product.getAmount() * product.getPrice();
     std::cout << product.getAmount() << " " << product.getTitle() << "\n";
   }
   std::cout << "---CART END---\n";
+  std::cout << "Total Cost: " << totalCost << '\n';
 }
 
 void Customer::storeOrderHistory(Eshop *eshop) {
