@@ -134,11 +134,31 @@ void Eshop::fetchCategories(const std::string &categoriesFilePath) {
     subcategories.push_back(subcategoriesstring); // Add the last subcategory
 
     categories[category] = subcategories;
+
   }
 
   file.close(); // Close the file
-}
 
+  // Read minimum amounts to get category discount
+  std::string filePath = "files/discounts.txt";
+  file = std::ifstream(filePath); // Open the file
+
+  if (!file.is_open()) {
+    std::cerr << "Error opening file!" << std::endl;
+    return;
+  }
+
+  for (unsigned int i = 0; i < categories.size(); i++) {
+    std::string category; // Read category
+    file >> category;
+    
+    file.ignore(); file.ignore(); file.ignore();  // ignore " @ "
+    float minAmount;
+    file >> minAmount;   // Read min amount
+
+    minAmountForCategoryDiscounts[category] = minAmount;
+  }
+}
 
 /////////////////////////////////////// User Registration/Login Methods //////////////////////////////////////////
 

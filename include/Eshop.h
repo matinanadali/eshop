@@ -22,6 +22,8 @@ class Eshop {
       categories; // Map to store categories and their subcategories
   User *activeUser =
       nullptr; // Defined as pointer because User is an abstract class
+  
+  std::map<std::string, float> minAmountForCategoryDiscounts;
 
   // Custom comparator to store numOfOrders-Product pairs by numOfOrders
   struct CompareByOrder {
@@ -74,6 +76,7 @@ public:
   }
 
   std::map<std::string, Product> getProducts() const { return products; }
+  std::map<std::string, float> getMinAmountForCategoryDiscount() const { return minAmountForCategoryDiscounts; };
   std::vector<Product> getTop5Products();
 
   ~Eshop();
