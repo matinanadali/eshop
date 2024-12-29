@@ -239,7 +239,7 @@ void Eshop::loginUser() {
 
   activeUser = users[username];
   std::cout << "\nWelcome " << activeUser->getUsername() << "!\n";
-
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   showMenu();
 }
 
@@ -259,6 +259,7 @@ void Eshop::showLoginPrompt() {
 void Eshop::showMenu() {
   if (activeUser->getIsAdmin()) { // Menu for Admin
     int choice;
+    // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     do {
       std::cout << "\n---Admin Menu---\n1. Add Product\n2. Edit Product\n3. "
                    "Remove Product\n4. Search Product\n5. Show Unavailable "
