@@ -12,9 +12,8 @@
 class Customer : public User {
     std::map<std::string, Product> shoppingCart;
     std::vector<Order> orderHistory;
-    std::map<std::string, float> productDiscount;
-    std::map<std::string, float> categoryDiscount;
-    std::map<std::string, float> favoriteDiscount;
+    std::set<std::string> discountedProducts;   // Map to store which products get the 1st type of discount
+    std::set<std::string> discountedCategories;  // Map to store which categories get the 2nd type of discount
 
     void calculateProductDiscounts();
     void calculateCategoryDiscounts(Eshop* eshop, const Order &lastOrder);

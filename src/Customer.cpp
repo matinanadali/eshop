@@ -1,80 +1,13 @@
 #include "Customer.h"
 #include "../include/Eshop.h"
 
-void Customer::calculateProductDiscounts() {
-  std::map<std::string, std::vector<int>> productOrderIndices;
+//////////////////////////////////// Initialization //////////////////////////////////////////////
 
-  // Find the indices of the orders each product appears in
-  for (unsigned int orderIndex = 0; orderIndex < orderHistory.size(); orderIndex++) {
-
-    Order order = orderHistory[orderIndex];
-    for (const auto &product: order.getProducts()) {
-      // `product` appears in `orderHistory[orderIndex]`: 
-      productOrderIndices[product.getTitle()].push_back(orderIndex);
-    }
-  }
-
-  // For each product, check if the last three orders that contain it are consecutive
-  for (const auto &[title, orderIndices] : productOrderIndices) {
-    if (orderIndices.size() < 3) continue;
-
-    int size = orderIndices.size();
-    bool getsDiscount = true;
-
-    for (int i = size - 3; i < size - 1; i++) {
-      // Check that the last three order indices are consecutive
-      if (orderIndices[i + 1] != orderIndices[i] + 1) {
-        // If not, user does not get discount for this product
-        getsDiscount = false;
-      }
-    }
-
-    if (getsDiscount) {
-      productDiscount[title] = 0.2; // Add discount
-    }
-  }
-}
-
-void Customer::calculateCategoryDiscounts(Eshop* eshop, const Order &lastOrder) {
-  std::map<std::string, int> numOfProducts;
-  for (const auto &product : lastOrder.getProducts()) {
-    numOfProducts[product.getCategory()]++;
-  }
-
-  for (const auto &[category, _] : eshop->getCategories()) {
-    if (numOfProducts[category] >= eshop->getMinAmountForCategoryDiscount()[category]) {
-      categoryDiscount[category] = 0.3;
-    }
-  }
-}
-
-void Customer::calculateFavoriteProductDiscount(Eshop* eshop) {
-  // If user has already taken this discount or has less than 5 orders, he cannot take the discount
-  if (!canGetFavoriteProductDiscount || orderHistory.size() < 5) return;
-
-  for (const auto &order : orderHistory) {
-    for (const auto &product : order.getProducts()) {
-      float amountOfProductBought = amountBought[product.getTitle()];
-      productsByAmountBought.erase({amountOfProductBought, product.getTitle()});
-      amountBought[product.getTitle()] += product.getAmount();
-      productsByAmountBought.insert({amountBought[product.getTitle()], product.getTitle()});
-    }
-  }
-
-  // Find favorite product
-  std::string favoriteProduct = productsByAmountBought.begin()->second;
-  favoriteDiscount[favoriteProduct] = 0.4; 
-}
-
-void Customer::calculateDiscounts(Eshop* eshop, const Order &lastOrder) {
-  calculateProductDiscounts();
-  calculateCategoryDiscounts(eshop, lastOrder);
-  calculateFavoriteProductDiscount(eshop);
-}
-
+// Helper function to check if a line read from file is the begin of a cart
 bool cartStart(const std::string &line) {
   std::string prefix = "---Cart";
   if (line.size() < prefix.size()) return false;
+  // Match "---Cart" prefix to the `line` read
   for (unsigned int i = 0; i < prefix.size(); i++) {
     if (line[i] != prefix[i]) return false;
   }
@@ -133,6 +66,87 @@ void Customer::fetchOrderHistory(Eshop *eshop) {
   }
 }
 
+//////////////////////////////////// Discount Calculation //////////////////////////////////////////////
+
+void Customer::calculateProductDiscounts() {
+  std::map<std::string, std::vector<int>> productOrderIndices;
+
+  // Find the indices of the orders each product appears in
+  for (unsigned int orderIndex = 0; orderIndex < orderHistory.size(); orderIndex++) {
+
+    Order order = orderHistory[orderIndex];
+    for (const auto &product: order.getProducts()) {
+      // `product` appears in `orderHistory[orderIndex]`: 
+      productOrderIndices[product.getTitle()].push_back(orderIndex);
+    }
+  }
+
+  // For each product, check if the last three orders that contain it are consecutive
+  for (const auto &[title, orderIndices] : productOrderIndices) {
+    if (orderIndices.size() < 3) continue;
+
+    int size = orderIndices.size();
+    bool getsDiscount = true;
+
+    for (int i = size - 3; i < size - 1; i++) {
+      // Check that the last three order indices are consecutive
+      if (orderIndices[i + 1] != orderIndices[i] + 1) {
+        // If not, user does not get discount for this product
+        getsDiscount = false;
+      }
+    }
+
+    if (getsDiscount) {
+      discountedProducts.insert(title);
+    }
+  }
+}
+
+void Customer::calculateCategoryDiscounts(Eshop* eshop, const Order &lastOrder) {
+  std::map<std::string, float> amountOfProductsBought; // Amount of products bought from each category
+  for (const auto &product : lastOrder.getProducts()) {
+    amountOfProductsBought[product.getCategory()] += product.getAmount();
+  }
+
+  for (const auto &[category, _] : eshop->getCategories()) {
+    // If the amount of products of this category is at least equal to the minimum amount of the category,
+    // user can get this discount
+    if (amountOfProductsBought[category] >= eshop->getMinAmountForCategoryDiscount()[category]) {
+      discountedCategories.insert(category);
+    }
+  }
+}
+
+void Customer::calculateFavoriteProductDiscount(Eshop* eshop) {
+  srand(time(0)); // For the random discount calculation
+
+  // If user has already taken this discount or has less than 5 orders, he cannot take the discount
+  if (!canGetFavoriteProductDiscount || orderHistory.size() < 5) return;
+
+  for (const auto &order : orderHistory) {
+    for (const auto &product : order.getProducts()) {
+      float amountOfProductBought = amountBought[product.getTitle()];
+      // Remove product from set
+      productsByAmountBought.erase({amountOfProductBought, product.getTitle()});  
+      // Increment the amount that was bought
+      amountBought[product.getTitle()] += product.getAmount();  
+      // Add product back to set with the updated amount bought
+      productsByAmountBought.insert({amountBought[product.getTitle()], product.getTitle()}); 
+    }
+  }
+
+  // Find favorite product
+  std::string favoriteProduct = productsByAmountBought.begin()->second;
+}
+
+void Customer::calculateDiscounts(Eshop* eshop, const Order &lastOrder) {
+  calculateProductDiscounts();
+  calculateCategoryDiscounts(eshop, lastOrder);
+  calculateFavoriteProductDiscount(eshop);
+}
+
+//////////////////////////////////// Add Product //////////////////////////////////////////////
+
 void Customer::addProduct(Eshop *eshop) {
   std::map<std::string, Product> products = eshop->getProducts();
 
@@ -147,30 +161,32 @@ void Customer::addProduct(Eshop *eshop) {
   } else {
       Product product = products[title];
       float eshopAmount = product.getAmount();
-      if(eshopAmount == 0) std::cout << "Product currently unavailable.\n";
-    else{
-      float customerAmount =
-        readFloat("Enter quantity: ", 10e-6); // To avoid 0 amount
-      if (customerAmount > eshopAmount) {
-        std::cout << "Quantity not available. Current quantity: " << eshopAmount << '\n';
+      if(eshopAmount == 0) {
+        std::cout << "Product currently unavailable.\n";
       } else {
-        if (shoppingCart.find(title) == shoppingCart.end()) {
-          // Product not found in cart 
-          // Set product amount and add it to cart
-          product.setAmount(customerAmount);
-          shoppingCart[title] = product;
+        float customerAmount =
+          readFloat("Enter quantity: ", 10e-6); // To avoid 0 amount
+        if (customerAmount > eshopAmount) {
+          std::cout << "Quantity not available. Current quantity: " << eshopAmount << '\n';
         } else {
-          // Product found in cart -> update its amount
-          float currentAmount = shoppingCart[title].getAmount();
-          shoppingCart[title].setAmount(currentAmount + customerAmount);
-        }
-        eshop->editProductAmount(title,
-                                eshopAmount - customerAmount); // Update stock
-        
-    }
+          if (shoppingCart.find(title) == shoppingCart.end()) {
+            // Product not found in cart 
+            // Set product amount and add it to cart
+            product.setAmount(customerAmount);
+            shoppingCart[title] = product;
+          } else {
+            // Product found in cart -> update its amount
+            float currentAmount = shoppingCart[title].getAmount();
+            shoppingCart[title].setAmount(currentAmount + customerAmount);
+          }
+          eshop->editProductAmount(title,
+                                  eshopAmount - customerAmount); // Update stock
+      }
     }
   }
 }
+
+//////////////////////////////////// Update Product //////////////////////////////////////////////
 
 void Customer::updateProduct(Eshop *eshop) {
   // Ask for input
@@ -200,6 +216,8 @@ void Customer::updateProduct(Eshop *eshop) {
   }
 }
 
+//////////////////////////////////// Remove Product //////////////////////////////////////////////
+
 void Customer::removeProduct(Eshop *eshop) {
   // Ask for input
   std::string title = readMultiWordInput(
@@ -218,40 +236,41 @@ void Customer::removeProductFromCart(Eshop* eshop, const std::string &title) {
 
     float customerAmount = product.getAmount();
     float eshopAmount = eshop->getProducts()[title].getAmount();
+    // Return product amount back to Eshop
+    eshop->editProductAmount(title, eshopAmount + customerAmount); 
 
-    eshop->editProductAmount(title,
-                             eshopAmount + customerAmount); // Update stock
+    // Remove product
     shoppingCart.erase(title);
 };
 
 void Customer::emptyCart(Eshop* eshop) {
   while(shoppingCart.size() > 0) {
-    removeProductFromCart(eshop, shoppingCart.begin()->first);  // Remove first product from cart until it's empty
+    // Remove first product from cart until it's empty
+    removeProductFromCart(eshop, shoppingCart.begin()->first);  
   }
 }
+
+//////////////////////////////////// Make Order //////////////////////////////////////////////
 
 void Customer::makeOrder(Eshop *eshop) {
   float totalCost = 0;
   // Calculate total cost
   for (const auto &[title, product] : shoppingCart) {
+    // Base price with no discounts applied
     float price = product.getPrice() * product.getAmount();
     float finalDiscount = 0;
 
     std::vector<std::string> discounts;
 
     // Find if product has any type of discount
-    if (productDiscount.find(title) != productDiscount.end()) {
+    if (discountedProducts.find(title) != discountedProducts.end()) {
       discounts.push_back("PRODUCT");
-      std::cout << "product discount\n";
     }
-    if (categoryDiscount.find(product.getCategory()) != categoryDiscount.end()) {
+    if (discountedCategories.find(product.getCategory()) != discountedCategories.end()) {
       discounts.push_back("CATEGORY");
-      std::cout << "category discount\n";
-
     }
     if (title == productsByAmountBought.begin()->second) {
       discounts.push_back("FAVORITE");
-      std::cout << "favorite discount\n";
     }
 
     if (discounts.size() > 0) {
@@ -260,41 +279,52 @@ void Customer::makeOrder(Eshop *eshop) {
 
       if (discounts[randomDiscountIndex] == "PRODUCT") {
         // Get final discount
-        finalDiscount = productDiscount[title];
-        // Remove discount
-        productDiscount.erase(title);
+        finalDiscount = eshop->getProductDiscount();
+        // Discount cannot be used again
+        discountedProducts.erase(title);
       } else if (discounts[randomDiscountIndex] == "CATEGORY") {
         // Get final discount
-        finalDiscount = categoryDiscount[product.getCategory()];
-        // Remove discount
-        categoryDiscount.erase(product.getCategory());
+        finalDiscount = eshop->getCategoryDiscount();
+        // Discount cannot be used again
+        discountedCategories.erase(product.getCategory());
       } else {
         // Favorite product discount
-        finalDiscount = favoriteDiscount[product.getTitle()];
+        finalDiscount = eshop->getFavoriteDiscount();
         // Disable discount
         canGetFavoriteProductDiscount = false;
       }
     }
-  
+
+    // Inform user
+    std::cout << "Congratulations! You've earned a " << (finalDiscount * 100) 
+              << "% discount on \"" << title << "\"!\n";
+
+    // Apply discount and get final price
     totalCost += price - finalDiscount * price;
 
+    // Mark that product appers in this order
     eshop->incrementProductOrders(title);
   }
 
   for (const auto &[title, product] : shoppingCart) {
-    float amountOfProductBought = amountBought[title];
-    productsByAmountBought.erase({amountOfProductBought, title});
-    amountBought[title] += product.getAmount();
-    productsByAmountBought.insert({amountBought[title], title});
+      float amountOfProductBought = amountBought[product.getTitle()];
+      // Remove product from set
+      productsByAmountBought.erase({amountOfProductBought, product.getTitle()});  
+      // Increment the amount that was bought
+      amountBought[product.getTitle()] += product.getAmount();  
+      // Add product back to set with the updated amount bought
+      productsByAmountBought.insert({amountBought[product.getTitle()], product.getTitle()}); 
   }
 
-  Order order = Order(mapValues(shoppingCart),
-                      totalCost); // Add all products to a new order
+  Order order = Order(mapValues(shoppingCart), totalCost); // Add all products to a new order
   orderHistory.push_back(order);
+
   shoppingCart.clear(); // Empty cart
   calculateDiscounts(eshop, orderHistory.back());
   std::cout << "Order Completed!\n";
 }
+
+//////////////////////////////////// Show Data Methods //////////////////////////////////////////////
 
 void Customer::viewOrderHistory() {
   int orderIndex = 1;
@@ -308,6 +338,7 @@ void Customer::viewOrderHistory() {
 void Customer::showCart() {
   std::cout << "\n---CART START---\n";
   float totalCost = 0;
+  // Print products and calculate total cost
   for (const auto &[_, product] : shoppingCart) {
     totalCost += product.getAmount() * product.getPrice();
     std::cout << product.getAmount() << " " << product.getTitle() << "\n";
@@ -316,7 +347,9 @@ void Customer::showCart() {
   std::cout << "Total Cost: " << totalCost << '\n';
 }
 
+//////////////////////////////////// Store Data //////////////////////////////////////////////
 void Customer::storeOrderHistory(Eshop *eshop) {
+  // Open file
   std::string filePath = "files/order_history/" + username + "_history.txt";
   std::ofstream file(filePath);
 
@@ -331,5 +364,6 @@ void Customer::storeOrderHistory(Eshop *eshop) {
     file << "\n";
   }
 
+  // Store whether user can still get his "Favorite Product" discount
   file << "Favorite Product Discount: " << canGetFavoriteProductDiscount;
 }

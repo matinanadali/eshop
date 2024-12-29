@@ -18,13 +18,15 @@ class Eshop {
   std::string categoriesFilePath, productsFilePath, usersFilePath;
   std::map<std::string, User *> users;     // Map to store users by username
   std::map<std::string, Product> products; // Map to store products by title
-  std::map<std::string, std::vector<std::string>>
-      categories; // Map to store categories and their subcategories
-  User *activeUser =
-      nullptr; // Defined as pointer because User is an abstract class
-  
-  std::map<std::string, float> minAmountForCategoryDiscounts;
+  std::map<std::string, std::vector<std::string>> categories; // Map to store categories and their subcategories
 
+  std::map<std::string, float> minAmountForCategoryDiscounts;
+  float productDiscount;
+  float categoryDiscount;
+  float favoriteDiscount;
+
+  User *activeUser = nullptr; // Defined as pointer because User is an abstract class
+  
   struct SortByOrder {
     bool operator()(const std::pair<int, std::string> &a,
                         const std::pair<int, std::string> &b) const {
@@ -50,34 +52,28 @@ class Eshop {
   void storeUsers();
 
 public:
-  Eshop(const std::string &categoriesFilePath,
-        const std::string &productsFilePath, const std::string &usersFilePath);
-  std::map<std::string, std::vector<std::string>> &getCategories() {
-    return categories;
-  }
-  void showLoginPrompt();
-  void showProducts();
-  void addProduct(const Product &product) {
-    products[product.getTitle()] = product;
-  };
+  Eshop(const std::string &categoriesFilePath, const std::string &productsFilePath, const std::string &usersFilePath);
 
-  void removeProductByTitle(const std::string &title);
-
-  void editProductAmount(const std::string &title, float newAmount) {
-    products[title].setAmount(newAmount);
-  };
-  
-  void incrementProductOrders(const std::string &title) {
-    int numOfOrders = productOrders[title]; // Number of orders product currently appears in
-    productsByOrder.erase({numOfOrders, title});  // Remove product from set
-    productOrders[title]++;  // Increment the number of orders the products appears in
-    productsByOrder.insert({productOrders[title], title}); // Add the product back in set
-  }
-
-  std::map<std::string, Product> getProducts() const { return products; }
+  // Get Methods
+  std::map<std::string, std::vector<std::string>> &getCategories() { return categories; };
+  std::map<std::string, Product> getProducts() const { return products; };
   std::map<std::string, float> getMinAmountForCategoryDiscount() const { return minAmountForCategoryDiscounts; };
   std::vector<Product> getTop5Products();
+  float getProductDiscount() const { return productDiscount; };
+  float getCategoryDiscount() const { return categoryDiscount; };
+  float getFavoriteDiscount() const { return favoriteDiscount; };
 
+  // Show Methods
+  void showLoginPrompt();
+  void showProducts();
+
+  // Edit Methods
+  void addProduct(const Product &product) { products[product.getTitle()] = product; };
+  void removeProductByTitle(const std::string &title);
+  void editProductAmount(const std::string &title, float newAmount) { products[title].setAmount(newAmount); };
+  void incrementProductOrders(const std::string &title);
+
+  // Destructor
   ~Eshop();
 };
 

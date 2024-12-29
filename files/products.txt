@@ -1,4 +1,4 @@
-Apple @ A healthy fruit @ Food @ Fruit @ 1.80 @ Kg @ 95
+Apple @ A healthy fruit @ Food @ Fruit @ 1.80 @ Kg @ 100
 Bad Smartphone @ Latest model with advanced features @ Tech @ Phone @ 800.00 @ Unit @ 40
 Baseball Cap @ A trendy headwear @ Clothing @ Hat @ 8.00 @ Unit @ 100
 Bottle of Beer @ A refreshing alcoholic beverage @ Drink @ Alcohol @ 2.50 @ Unit @ 60

@@ -1,7 +1,7 @@
 #include "../include/Eshop.h"
 #include "../include/Customer.h"
 
-//////////// Constructor & Initialization Methods //////////////
+////////////////////////// Constructor & Initialization Methods /////////////////////////////////
 
 Eshop::Eshop(const std::string &categoriesFilePath,
              const std::string &productsFilePath,
@@ -105,6 +105,11 @@ void Eshop::fetchProducts(const std::string &productsFilePath) {
     products[product.getTitle()] = product;
   }
   file.close(); // Close the file
+
+  // Note discounts
+  productDiscount = 0.2;
+  categoryDiscount = 0.3;
+  favoriteDiscount = 0.4;
 }
 
 void Eshop::fetchCategories(const std::string &categoriesFilePath) {
@@ -275,7 +280,8 @@ void Eshop::showLoginPrompt() {
   }
 }
 
-/////////////////////////// Menus /////////////////////////////////////
+/////////////////////////////////////// Menus /////////////////////////////////////
+
 void Eshop::showMenu() {
   if (activeUser->getIsAdmin()) { // Menu for Admin
     int choice;
@@ -351,7 +357,10 @@ void Eshop::showMenu() {
   }
 }
 
+/////////////////////////////////////// Varius Functions /////////////////////////////////////
+
 void Eshop::showProducts() {
+  // Show all products
   for (auto &[title, product] : products) {
     product.showProductDetails();
   }
@@ -379,15 +388,21 @@ std::vector<Product> Eshop::getTop5Products() {
 void Eshop::removeProductByTitle(const std::string &title) {
     products.erase(title);
 
-    // Remove product from all open user orders
-    for (auto &[username, User] : users) {
-      if (User->getIsAdmin()) continue;
-      Customer* customer = dynamic_cast<Customer*>(User);
+    // Remove product from active user cart
+    if (!activeUser->getIsAdmin()) {
+      Customer* customer = dynamic_cast<Customer*>(activeUser);
       customer->removeProductFromCart(this, title);
     }
-  }
+}
 
-///////////////// Destructor and Data Storage ////////////////////
+void Eshop::incrementProductOrders(const std::string &title) {
+    int numOfOrders = productOrders[title]; // Number of orders product currently appears in
+    productsByOrder.erase({numOfOrders, title});  // Remove product from set
+    productOrders[title]++;  // Increment the number of orders the products appears in
+    productsByOrder.insert({productOrders[title], title}); // Add the product back in set
+}
+
+///////////////////////////////////// Destructor and Data Storage ////////////////////////////
 
 void Eshop::storeProducts() {
   std::ofstream file(productsFilePath); // Open the file
