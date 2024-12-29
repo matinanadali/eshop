@@ -11,7 +11,6 @@ class Administrator : public User {
     void addProduct(Eshop* eshop);
     void updateProduct(Eshop* eshop);
     void removeProduct(Eshop* eshop);
-    void searchProduct(Eshop* eshop);
 
     void unavailableProducts(Eshop* eshop);
     void top5Products(Eshop* eshop);

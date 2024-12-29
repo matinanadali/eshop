@@ -1,0 +1,15 @@
+---Cart 1 START---
+1 T-Shirt
+---Cart 1 END---
+Total Cost: 10
+---Cart 2 START---
+3 Jeans
+1 Laptop
+---Cart 2 END---
+Total Cost: 1260
+---Cart 3 START---
+1 Baseball Cap
+2 Bottle of Beer
+1 Chicken Breast
+---Cart 3 END---
+Total Cost: 18.5

@@ -140,7 +140,6 @@ void Administrator::unavailableProducts(Eshop* eshop) {
 
 void Administrator::top5Products(Eshop* eshop) {
   std::vector<Product> topProducts = eshop->getTop5Products();
-
   if (topProducts.size() < 5) {
     // No products have been purchased in any order
     std::cout << "Not enough orders were made.\n";

@@ -8,6 +8,8 @@ class Eshop; // Forward declaration, in order to use "this" pointer
 
 // Abstract User Class
 class User {
+
+    protected:
     std::string username;
     std::string password;
     bool isAdmin;

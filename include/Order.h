@@ -9,6 +9,7 @@ class Order {
     float totalCost;
 
     public:
+    Order() {};
     Order(const std::vector<Product> &products, float totalCost): products(products), totalCost(totalCost) {};
     void showOrderDetails(std::ostream &out, int orderIndex) const;
 };

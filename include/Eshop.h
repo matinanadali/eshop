@@ -27,6 +27,7 @@ class Eshop {
   struct CompareByOrder {
     bool operator()(const std::pair<int, Product> &a,
                     const std::pair<int, Product> &b) const {
+      if (a.first == b.first) return &a < &b; // Handle equality in orders
       return a.first > b.first; // Sort by the first element in descending order
     }
   };
@@ -36,21 +37,18 @@ class Eshop {
   // Container that stores the number of orders each products appears in
   std::map<std::string, int> productOrders;
 
-  int fetchUsers(const std::string &usersFilePath);
-  int fetchProducts(const std::string &productsFilePath);
-  int fetchCategories(const std::string &categoriesFilePath);
+  void fetchUsers(const std::string &usersFilePath);
+  void fetchProducts(const std::string &productsFilePath);
+  void fetchCategories(const std::string &categoriesFilePath);
+
   void loginUser();
   void registerUser();
   void showMenu();
 
   void storeProducts();
   void storeUsers();
-  void storeUserHistory(Customer* customer);
 
 public:
-  // IMPORTANT: At the moment, E-shop is initialized with input data when
-  // constructed Maybe we should split these and create a new init method
-  // instead
   Eshop(const std::string &categoriesFilePath,
         const std::string &productsFilePath, const std::string &usersFilePath);
   std::map<std::string, std::vector<std::string>> &getCategories() {
@@ -62,10 +60,7 @@ public:
     products[product.getTitle()] = product;
   };
 
-  // TODO: add extra logic to remove product from all open user orders
-  void removeProductByTitle(const std::string &title) {
-    products.erase(title);
-  };
+  void removeProductByTitle(const std::string &title);
 
   void editProductAmount(const std::string &title, float newAmount) {
     products[title].setAmount(newAmount);

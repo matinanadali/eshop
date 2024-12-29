@@ -9,7 +9,6 @@ Eshop::Eshop(const std::string &categoriesFilePath,
     : categoriesFilePath(categoriesFilePath),
       productsFilePath(productsFilePath), usersFilePath(usersFilePath) {
   // Initialize E-shop with data from files
-  fetchUsers(usersFilePath);
   fetchProducts(productsFilePath);
   fetchCategories(categoriesFilePath);
 
@@ -18,14 +17,16 @@ Eshop::Eshop(const std::string &categoriesFilePath,
     productsByOrder.insert({0, product});
     productOrders[title] = 0;
   }
+
+  fetchUsers(usersFilePath);
 };
 
-int Eshop::fetchUsers(const std::string &usersFilePath) {
+void Eshop::fetchUsers(const std::string &usersFilePath) {
   std::ifstream file(usersFilePath); // Open the file
 
   if (!file.is_open()) {
     std::cerr << "Error opening file!" << std::endl;
-    return 1;
+    return;
   }
 
   std::string line;
@@ -46,22 +47,24 @@ int Eshop::fetchUsers(const std::string &usersFilePath) {
 
     // Store user
     if (isAdmin) {
-      users[username] = new Administrator(username, password, isAdmin);
+      Administrator* admin = new Administrator(username, password, isAdmin);
+      users[username] = admin;
     } else {
-      users[username] = new Customer(username, password, isAdmin);
+      Customer* customer = new Customer(username, password, isAdmin);
+      users[username] = customer;
+      customer->fetchOrderHistory(this);
     }
   }
 
   file.close(); // Close the file
-  return 0;
 }
 
-int Eshop::fetchProducts(const std::string &productsFilePath) {
+void Eshop::fetchProducts(const std::string &productsFilePath) {
   std::ifstream file(productsFilePath); // Open the file
 
   if (!file.is_open()) {
     std::cerr << "Error opening file!" << std::endl;
-    return 1;
+    return;
   }
 
   std::string line;
@@ -102,15 +105,14 @@ int Eshop::fetchProducts(const std::string &productsFilePath) {
     products[product.getTitle()] = product;
   }
   file.close(); // Close the file
-  return 0;
 }
 
-int Eshop::fetchCategories(const std::string &categoriesFilePath) {
+void Eshop::fetchCategories(const std::string &categoriesFilePath) {
   std::ifstream file(categoriesFilePath); // Open the file
 
   if (!file.is_open()) {
     std::cerr << "Error opening file!" << std::endl;
-    return 1;
+    return;
   }
 
   std::string line;
@@ -135,8 +137,8 @@ int Eshop::fetchCategories(const std::string &categoriesFilePath) {
   }
 
   file.close(); // Close the file
-  return 0;
 }
+
 
 /////////////////////////////////////// User Registration/Login Methods //////////////////////////////////////////
 
@@ -352,6 +354,17 @@ std::vector<Product> Eshop::getTop5Products() {
   return topProducts;
 }
 
+void Eshop::removeProductByTitle(const std::string &title) {
+    products.erase(title);
+
+    // Remove product from all open user orders
+    for (auto &[username, User] : users) {
+      if (User->getIsAdmin()) continue;
+      Customer* customer = dynamic_cast<Customer*>(User);
+      customer->removeProductFromCart(title);
+    }
+  }
+
 ///////////////// Destructor and Data Storage ////////////////////
 
 void Eshop::storeProducts() {
@@ -377,22 +390,6 @@ void Eshop::storeProducts() {
   }
 }
 
-void Eshop::storeUserHistory(Customer* customer) {
-    std::string filePath = "files/order_history/" + customer->getUsername() + "_history.txt";
-    std::ofstream file(filePath);
-
-    if (!file.is_open()) {
-      std::cerr << "Error opening file!" << std::endl;
-      return;
-    }
-    int orderIndex = 1;
-    for (const auto &order : customer->getOrderHistory()) {
-      // Print order to file
-      order.showOrderDetails(file, orderIndex++);
-    }
-}
-
-
 void Eshop::storeUsers(){
   std::ofstream file(usersFilePath); // Open the file
 
@@ -411,7 +408,8 @@ void Eshop::storeUsers(){
 
     if (!User->getIsAdmin()) {
       // If `User` is a customer, store his order history
-      storeUserHistory(dynamic_cast<Customer*>(User));
+      Customer* customer = dynamic_cast<Customer*>(User);
+      customer->storeOrderHistory(this);
     }
   }
 
