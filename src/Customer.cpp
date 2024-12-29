@@ -1,6 +1,40 @@
 #include "Customer.h"
 #include "../include/Eshop.h"
 
+void Customer::calculateDiscounts() {
+  std::map<std::string, std::vector<int>> productOrderIndices;
+
+  // Find the indices of the orders each product appears in
+  for (unsigned int orderIndex = 0; orderIndex < orderHistory.size(); orderIndex++) {
+
+    Order order = orderHistory[orderIndex];
+    for (const auto &product: order.getProducts()) {
+      // `product` appears in `orderHistory[orderIndex]`: 
+      productOrderIndices[product.getTitle()].push_back(orderIndex);
+    }
+  }
+
+  // For each product, check if the last three orders that contain it are consecutive
+  for (const auto &[title, orderIndices] : productOrderIndices) {
+    if (orderIndices.size() < 3) continue;
+
+    int size = orderIndices.size();
+    bool getsDiscount = true;
+
+    for (int i = size - 3; i < size - 1; i++) {
+      // Check that the last three order indices are consecutive
+      if (orderIndices[i + 1] != orderIndices[i] + 1) {
+        // If not, user does not get discount for this product
+        getsDiscount = false;
+      }
+    }
+
+    if (getsDiscount) {
+      productDiscount[title] = 0.2; // Add discount
+    }
+  }
+}
+
 void Customer::fetchOrderHistory(Eshop *eshop) {
   std::string filePath = "files/order_history/" + username + "_history.txt";
   std::ifstream file(filePath); // Open the file
@@ -13,6 +47,7 @@ void Customer::fetchOrderHistory(Eshop *eshop) {
   std::string startLine;
   while (!file.eof()) { // Reads ---CART START---
     std::getline(file, startLine);
+    if (startLine == "\n" || startLine == "") break;
     float amount;
     std::string title;
     float totalCost;
@@ -40,6 +75,8 @@ void Customer::fetchOrderHistory(Eshop *eshop) {
     Order order(products, totalCost);
     orderHistory.push_back(order);
   }
+  
+  calculateDiscounts();
 }
 
 void Customer::addProduct(Eshop *eshop) {
@@ -123,14 +160,21 @@ void Customer::makeOrder(Eshop *eshop) {
   float totalCost = 0;
   // Calculate total cost
   for (const auto &[title, product] : shoppingCart) {
-    totalCost += product.getAmount() * product.getPrice();
+    float price = product.getPrice();
+    if (productDiscount.find(title) != productDiscount.end()) {
+      // Apply discount
+      price -= productDiscount[title] * price;
+      // Remove discount
+      productDiscount.erase(title);
+    }
+    totalCost += product.getAmount() * price;
     eshop->incrementProductOrders(title);
   }
   Order order = Order(mapValues(shoppingCart),
                       totalCost); // Add all products to a new order
   orderHistory.push_back(order);
   shoppingCart.clear(); // Empty cart
-
+  calculateDiscounts();
   std::cout << "Order Completed!\n";
 }
 
