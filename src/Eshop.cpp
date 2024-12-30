@@ -451,7 +451,7 @@ void Eshop::storeUsers(){
     }
   }
 
-  if (!activeUser->getIsAdmin()) {
+  if (activeUser && !activeUser->getIsAdmin()) {
     Customer* activeCustomer = dynamic_cast<Customer*>(activeUser);
     // If `activeUser` didn't complete his order, cancel it and update stock accordingly before storing data to file
     activeCustomer->emptyCart(this);

@@ -15,6 +15,5 @@ int main(int argc, char *argv[]) {
   
   Eshop eshop = Eshop(categoriesFilePath, productsFilePath, usersFilePath);
   eshop.showLoginPrompt();
-  // eshop.showProducts();
   return 0;
 }
