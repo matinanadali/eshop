@@ -365,7 +365,7 @@ std::vector<Product> Eshop::getTop5Products() {
   // Get top 5 products that appear in at least one order
   for (int i = 0; i < 5 && productIterator != productsByOrder.end(); i++) {
     int numOfOrders = productIterator->first;
-    std::cout << productIterator->second << " " << numOfOrders << "\n";
+    // std::cout << productIterator->second << " " << numOfOrders << "\n";
     if (numOfOrders == 0)
       break; // Product does not appear in any order
     topProducts.push_back(
