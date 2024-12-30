@@ -295,6 +295,7 @@ void Customer::makeOrder(Eshop *eshop) {
       }
     }
 
+    if (finalDiscount > 0)
     // Inform user
     std::cout << "Congratulations! You've earned a " << (finalDiscount * 100) 
               << "% discount on \"" << title << "\"!\n";

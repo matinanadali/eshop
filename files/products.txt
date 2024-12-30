@@ -13,4 +13,3 @@ Space Odyssey @ An epic sci-fi tale @ Book @ Sci-Fi @ 15.00 @ Unit @ 30
 T-Shirt @ Casual and comfortable @ Clothing @ Shirt @ 10.00 @ Unit @ 80
 Tablet @ Ideal for reading and light work @ Tech @ Tablet @ 600.00 @ Unit @ 25
 Tomato @ A healthy vegetable @ Food @ Vegetable @ 2.00 @ Kg @ 100
-banana @ fdas @ Food @ Fruit @ 43.00 @ Kg @ 43
