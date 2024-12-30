@@ -1,32 +1,60 @@
-**Important**: To run the program, navigate to the root directory of the project and execute:
+# E-Shop
+
+## Οδηγίες εκτέλεσης
+Για να τρέξετε το πρόγραμμα, αρκεί να σιγουρευτείτε πως βρίσκεστε στο root directory του project και να εκτελέσετε την παρακάτω εντολή στο τερματικό σας:
 ```bash
 make run 
 ```
-This will run the program using the default command-line arguements: `./files/categories.txt ./files/products.txt ./files/users.txt`, as specified in the Makefile.
-**Important**: If you create a new .cpp file, don't forget to add the corresponding .o file to the Makefile.
+Το πρόγραμμα θα τρέξει χρησιμοποιώντας τις παραμέτρους των προδιαγραφών: `./files/categories.txt ./files/products.txt ./files/users.txt`, όπως ορίζεται στο αρχείο Makefile.
+**Προσοχή:** Αν δημιουργήσετε επιπλέον `.cpp` αρχεία, μην ξεχάσετε να τροποποιήσετε το Makefile, προσθέτοντας το αντίστοιχο `.o` αρχείο!
 
-# Done 28/21
--	Organized input-reading code to General.cpp
--	Added storeProducts() function to store products to the given file at the end of each session
--	Implemented admin.editProduct(), admin.removeProduct(), admin.unavailableProduct(), admin.top5Products()
-	-	To track the number of orders each product appears in, I created a set called productsByOrder (TODO: find a proper name). This set stores pairs in the format {numberOfOrders, product}, where numberOfOrders represents how many orders the product is part of.
-	Initially, in the Eshop constructor, this set is populated with all products, each starting with numberOfOrders set to 0. The values will be updated later as we process the customers' order histories and count the occurrences of each product in those orders. When a customer completes an order, the numberOfOrders should be updated for all products in that order.
+---
 
-# Done - To Do
--	[x] Initialize eshop from files
--	[x] Add user authentication
--	[x] Implement administrator functionalities
-	-	[x] Add products
-	-	[x] Edit products 
-	-	[x] View statistics (e.g. out of stock products, products with the highest demand (see assignment))
--	[ ] Implement customer functionalities
-	-	[ ] Add to cart
-	-	[ ] Edit cart
-	-	[ ] Complete order
-	-	[ ] View order history
--	[ ] Implement product search (by title, category etc. (see assignment))
--	[ ] Store data after each session
-	-	[ ] Save data to files when program terminates
-	-	[ ] Extend Eshop initialization to retrieve all user/product data (orders, cart..)
--	[ ] Bonus Part
+## Υλοποίηση βασικών λειτουργιών
 
+### Διαχειριστές
+
+Οι διαχειριστές μπορούν:
+1. να καταχωρίσουν νέα προϊόντα, επιλέγοντας `1` στο μενού επιλογών.
+2. να επεξεργαστούν οποιοδήποτε χαρακτηριστικό, οποιουδήποτε προϊόντος, επιλέγοντας `2` στο μενού επιλογών.
+3. να αναζητήσουν οποιοδήποτε προϊόν, επιλέγοντας `4` στο μενού επιλογών.
+4. a. να δουν τα μη διαθέσιμα προϊόντα, επιλέγοντας `5` στο μενού επιλογών.
+   b. να δουν τα 5 προϊόντα που έχουν εμφανιστεί τις περισσότερες φορές σε κάποια παραγγελία, ανεξαρτήτου ποσότητας, επιλέγοντας `6` στο μενού επιλογών.
+
+### Πελάτες
+
+Οι πελάτες μπορούν:
+1. να αναζητήσουν οποιοδήποτε προϊόν, επιλέγοντας `1` στο μενού επιλογών.
+2. να προσθέσουν προϊόντα στο καλάθι τους, επιλέγοντας `2` στο μενού επιλογών.
+3. να ενημερώσουν την ποσότητα ενός προϊόντος στο καλάθι τους, επιλέγοντας `3` και να το αφαιρέσουν τελείως, επιλέγοντας `4` στο μενού επιλογών.
+4. να ολοκληρώσουν την παραγγελία τους, επιλέγοντας `5` στο μενού επιλογών.
+5. να δουν το ιστορικό παραγγελιών τους, επιλέγοντας `6` στο μενού επιλογών.
+
+---
+
+## Κλάσεις που δημιουργήθηκαν
+
+
+---
+**Παρατήρηση:** Ο τρόπος εμφάνισης μηνυμάτων για τη λειτουργία του προγράμματος βασίστηκε στα `samples` που μας δόθηκαν.
+---
+
+## Σύνδεση/ Εγγραφή χρηστών
+
+
+---
+
+## Το αρχείο General.cpp
+
+
+---
+
+## Υλοποίηση αναλυτικών προδιαγραφών λογισμικού
+
+### Διαχειριστές
+
+### Πελάτες
+
+---
+
+## Bonus
