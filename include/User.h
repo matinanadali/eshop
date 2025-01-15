@@ -14,20 +14,24 @@ class User {
     std::string password;
     bool isAdmin;
 
-    void searchProductByTitle(Eshop* eshop, const std::vector<std::string> &validTitles);
+    // Every User is associated to exactly one eshop. 
+    // The User entity is meaningless without an Eshop to apply its functionalities on.
+    Eshop* eshop;   
+
+    void searchProductByTitle(const std::vector<std::string> &validTitles);
 
     public: 
-        User(const std::string &username, const std::string &password, const bool &isAdmin): username(username), password(password), isAdmin(isAdmin) {};
+        User(const std::string &username, const std::string &password, const bool &isAdmin, Eshop* eshop): username(username), password(password), isAdmin(isAdmin), eshop(eshop) {};
         // Virtual function : it exists in Customer and Administrator Class but with different functionality
-        void searchProduct(Eshop* eshop);
-        virtual void addProduct(Eshop* eshop) = 0;
-        virtual void updateProduct(Eshop* eshop) = 0;
-        virtual void removeProduct(Eshop* eshop) = 0;
+        void searchProduct();
+        virtual void addProduct() = 0;
+        virtual void updateProduct() = 0;
+        virtual void removeProduct() = 0;
 
-        virtual void unavailableProducts(Eshop* eshop){}
-        virtual void top5Products(Eshop* eshop){}
+        virtual void unavailableProducts(){}
+        virtual void top5Products(){}
 
-        virtual void makeOrder(Eshop* eshop){}
+        virtual void makeOrder(){}
         virtual void viewOrderHistory(){}
         virtual void showCart(){}
 

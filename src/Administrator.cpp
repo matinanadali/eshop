@@ -4,7 +4,7 @@
 #include <limits>
 
 
-void Administrator::addProduct(Eshop *eshop) {
+void Administrator::addProduct() {
   std::string title, description, category, subcategory, measurementType;
   float price, amount;
 
@@ -29,35 +29,35 @@ void Administrator::addProduct(Eshop *eshop) {
 
 /////////////////////////////////////// Update Product Methods ///////////////////////////////////////
 
-void updateProductTitle(Product &product) {
+void Administrator::updateProductTitle(Product &product) {
   std::string newTitle = readMultiWordInput({}, "Enter new title: ", "");
   product.setTitle(newTitle);
 }
 
-void updateProductDescription(Product &product) {
+void Administrator::updateProductDescription(Product &product) {
   std::string newDescription = readMultiWordInput({}, "Enter new description: ", "");
   product.setDescription(newDescription);
 }
 
-void updateProductCategory(Product &product, Eshop *eshop) {
+void Administrator::updateProductCategory(Product &product) {
   std::string newCategory = readCategory(eshop->getCategories());
   std::string newSubcategory = readSubcategory(eshop->getCategories()[newCategory]);
   product.setCategory(newCategory);
   product.setSubcategory(newSubcategory);
 }
 
-void updateProductPrice(Product &product) {
+void Administrator::updateProductPrice(Product &product) {
   float newPrice = readFloat("Enter new price: ", 0);
   product.setPrice(newPrice);
 }
 
-void updateProductAmount(Product &product) {
+void Administrator::updateProductAmount(Product &product) {
   float newAmount = readFloat("Enter new amount: ", 0);
   product.setAmount(newAmount);
 }
 
 // Main Update Product Method
-void Administrator::updateProduct(Eshop *eshop) {
+void Administrator::updateProduct() {
   // eshop->showProducts();
   std::string title;
 
@@ -88,7 +88,7 @@ void Administrator::updateProduct(Eshop *eshop) {
       updateProductDescription(newProduct);
       break;
     case 3:
-      updateProductCategory(newProduct, eshop);
+      updateProductCategory(newProduct);
       break;
     case 4:
       updateProductPrice(newProduct);
@@ -110,7 +110,7 @@ void Administrator::updateProduct(Eshop *eshop) {
 
 /////////////////////////////////////// Remove Product Methods ///////////////////////////////////////
 
-void Administrator::removeProduct(Eshop *eshop) {
+void Administrator::removeProduct() {
   std::string title;
 
   std::vector<std::string> validOptions;  // Vector of all product titles in eshop
@@ -128,7 +128,7 @@ void Administrator::removeProduct(Eshop *eshop) {
 
 /////////////////////////////////////// View Eshop Statistics Methods ///////////////////////////////////////
 
-void Administrator::unavailableProducts(Eshop* eshop) {
+void Administrator::unavailableProducts() {
   std::map<std::string, Product> products = eshop->getProducts();
   for (const auto &[title, product] : products) {
     // Equality check for floating point numbers
@@ -138,7 +138,7 @@ void Administrator::unavailableProducts(Eshop* eshop) {
   }
 }
 
-void Administrator::top5Products(Eshop* eshop) {
+void Administrator::top5Products() {
   std::vector<Product> topProducts = eshop->getTop5Products();
   if (topProducts.size() < 5) {
     // No products have been purchased in any order

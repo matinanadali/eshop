@@ -3,7 +3,7 @@
 
 /////////////////////////////////////// Search Product Methods ///////////////////////////////////////
 
-void User::searchProductByTitle(Eshop* eshop, const std::vector<std::string> &validTitles) {
+void User::searchProductByTitle(const std::vector<std::string> &validTitles) {
     std::string title = readMultiWordInput(validTitles, "Select a product title: ", "-");
     if (title == "") {
         // Product was not found - terminate search
@@ -13,7 +13,7 @@ void User::searchProductByTitle(Eshop* eshop, const std::vector<std::string> &va
     }
 }
 
-void User::searchProduct(Eshop* eshop) {
+void User::searchProduct() {
 
   std::cout << "Product Search Options:\n"
                "1. Search for a specific product (by title).\n"
@@ -28,7 +28,7 @@ void User::searchProduct(Eshop* eshop) {
       for (const auto &[title, product] : eshop->getProducts()) {
         validTitles.push_back(title);
       }
-      searchProductByTitle(eshop, validTitles);
+      searchProductByTitle(validTitles);
       break;
     }
     case 2: {
@@ -45,7 +45,7 @@ void User::searchProduct(Eshop* eshop) {
             std::cout << "\"" << title << "\" ";
         }
       }
-      searchProductByTitle(eshop, validTitles);
+      searchProductByTitle(validTitles);
       break;
     }
     case 3:
@@ -59,7 +59,7 @@ void User::searchProduct(Eshop* eshop) {
         std::cout << "\"" << title << "\" ";
       }
       std::cout << "\n";
-      searchProductByTitle(eshop, validTitles);
+      searchProductByTitle(validTitles);
       break;
     }
   }

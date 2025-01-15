@@ -47,12 +47,12 @@ void Eshop::fetchUsers(const std::string &usersFilePath) {
 
     // Store user
     if (isAdmin) {
-      Administrator* admin = new Administrator(username, password, isAdmin);
+      Administrator* admin = new Administrator(username, password, isAdmin, this);
       users[username] = admin;
     } else {
-      Customer* customer = new Customer(username, password, isAdmin);
+      Customer* customer = new Customer(username, password, isAdmin, this);
       users[username] = customer;
-      customer->fetchOrderHistory(this);
+      customer->fetchOrderHistory();
     }
   }
 
@@ -182,7 +182,8 @@ void Eshop::registerUser() {
     std::string option = readStringOption(
         {"login", "register", "cancel"},
         "Would you like to login or register "
-        "with a different username? (enter option login/register/cancel): ", "Invalid option. Please pick login, register or cancel: ");
+        "with a different username? (enter option login/register/cancel): ", 
+        "Invalid option. Please pick login, register or cancel: ");
 
     if (option == "login") {
       // Redirect to login
@@ -208,9 +209,9 @@ void Eshop::registerUser() {
 
   // Create new user
   if (isAdmin) {
-    users[username] = new Administrator(username, password, isAdmin);
+    users[username] = new Administrator(username, password, isAdmin, this);
   } else {
-    users[username] = new Customer(username, password, isAdmin);
+    users[username] = new Customer(username, password, isAdmin, this);
   }
 
   activeUser = users[username];
@@ -294,22 +295,22 @@ void Eshop::showMenu() {
       choice = readNumericOption(1, 7);
       switch (choice) {
       case 1:
-        activeUser->addProduct(this);
+        activeUser->addProduct();
         break;
       case 2:
-        activeUser->updateProduct(this);
+        activeUser->updateProduct();
         break;
       case 3:
-        activeUser->removeProduct(this);
+        activeUser->removeProduct();
         break;
       case 4:
-        activeUser->searchProduct(this);
+        activeUser->searchProduct();
         break;
       case 5:
-        activeUser->unavailableProducts(this);
+        activeUser->unavailableProducts();
         break;
       case 6:
-        activeUser->top5Products(this);
+        activeUser->top5Products();
         break;
       case 7:
         std::cout << "Goodbye!\n";
@@ -328,19 +329,19 @@ void Eshop::showMenu() {
       choice = readNumericOption(1, 8);
       switch (choice) {
       case 1:
-        activeUser->searchProduct(this);
+        activeUser->searchProduct();
         break;
       case 2:
-        activeUser->addProduct(this);
+        activeUser->addProduct();
         break;
       case 3:
-        activeUser->updateProduct(this);
+        activeUser->updateProduct();
         break;
       case 4:
-        activeUser->removeProduct(this);
+        activeUser->removeProduct();
         break;
       case 5:
-        activeUser->makeOrder(this);
+        activeUser->makeOrder();
         break;
       case 6:
         activeUser->viewOrderHistory();
@@ -391,7 +392,7 @@ void Eshop::removeProductByTitle(const std::string &title) {
     // Remove product from active user cart
     if (!activeUser->getIsAdmin()) {
       Customer* customer = dynamic_cast<Customer*>(activeUser);
-      customer->removeProductFromCart(this, title);
+      customer->removeProductFromCart(title);
     }
 }
 
@@ -447,14 +448,14 @@ void Eshop::storeUsers(){
       Customer* customer = dynamic_cast<Customer*>(User);
       
       // If `User` is a customer, store his order history
-      customer->storeOrderHistory(this);
+      customer->storeOrderHistory();
     }
   }
 
   if (activeUser && !activeUser->getIsAdmin()) {
     Customer* activeCustomer = dynamic_cast<Customer*>(activeUser);
     // If `activeUser` didn't complete his order, cancel it and update stock accordingly before storing data to file
-    activeCustomer->emptyCart(this);
+    activeCustomer->emptyCart();
   }
 }
 

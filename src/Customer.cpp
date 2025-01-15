@@ -14,7 +14,7 @@ bool cartStart(const std::string &line) {
   return true;
 }
 
-void Customer::fetchOrderHistory(Eshop *eshop) {
+void Customer::fetchOrderHistory() {
   std::string filePath = "files/order_history/" + username + "_history.txt";
   std::ifstream file(filePath); // Open the file
 
@@ -62,7 +62,7 @@ void Customer::fetchOrderHistory(Eshop *eshop) {
   file >> canGetFavoriteProductDiscount;
 
   if (orderHistory.size() > 1) {
-    calculateDiscounts(eshop, orderHistory.back());
+    calculateDiscounts(orderHistory.back());
   }
 }
 
@@ -102,7 +102,7 @@ void Customer::calculateProductDiscounts() {
   }
 }
 
-void Customer::calculateCategoryDiscounts(Eshop* eshop, const Order &lastOrder) {
+void Customer::calculateCategoryDiscounts(const Order &lastOrder) {
   std::map<std::string, float> amountOfProductsBought; // Amount of products bought from each category
   for (const auto &product : lastOrder.getProducts()) {
     amountOfProductsBought[product.getCategory()] += product.getAmount();
@@ -117,7 +117,7 @@ void Customer::calculateCategoryDiscounts(Eshop* eshop, const Order &lastOrder) 
   }
 }
 
-void Customer::calculateFavoriteProductDiscount(Eshop* eshop) {
+void Customer::calculateFavoriteProductDiscount() {
   srand(time(0)); // For the random discount calculation
 
   // If user has already taken this discount or has less than 5 orders, he cannot take the discount
@@ -139,15 +139,15 @@ void Customer::calculateFavoriteProductDiscount(Eshop* eshop) {
   std::string favoriteProduct = productsByAmountBought.begin()->second;
 }
 
-void Customer::calculateDiscounts(Eshop* eshop, const Order &lastOrder) {
+void Customer::calculateDiscounts(const Order &lastOrder) {
   calculateProductDiscounts();
-  calculateCategoryDiscounts(eshop, lastOrder);
-  calculateFavoriteProductDiscount(eshop);
+  calculateCategoryDiscounts(lastOrder);
+  calculateFavoriteProductDiscount();
 }
 
 //////////////////////////////////// Add Product //////////////////////////////////////////////
 
-void Customer::addProduct(Eshop *eshop) {
+void Customer::addProduct() {
   std::map<std::string, Product> products = eshop->getProducts();
 
   // Ask for input
@@ -188,7 +188,7 @@ void Customer::addProduct(Eshop *eshop) {
 
 //////////////////////////////////// Update Product //////////////////////////////////////////////
 
-void Customer::updateProduct(Eshop *eshop) {
+void Customer::updateProduct() {
   // Ask for input
   std::string title = readMultiWordInput(
       mapKeys(shoppingCart), "Which product would you like to update? ", "-");
@@ -218,7 +218,7 @@ void Customer::updateProduct(Eshop *eshop) {
 
 //////////////////////////////////// Remove Product //////////////////////////////////////////////
 
-void Customer::removeProduct(Eshop *eshop) {
+void Customer::removeProduct() {
   // Ask for input
   std::string title = readMultiWordInput(
       mapKeys(shoppingCart), "Which product would you like to remove? ", "-");
@@ -227,11 +227,11 @@ void Customer::removeProduct(Eshop *eshop) {
     // Product was not found
     std::cout << "Product not found in your shopping cart.\n";
   } else {
-    removeProductFromCart(eshop, title);
+    removeProductFromCart(title);
   }
 }
 
-void Customer::removeProductFromCart(Eshop* eshop, const std::string &title) { 
+void Customer::removeProductFromCart(const std::string &title) { 
     Product product = shoppingCart[title];
 
     float customerAmount = product.getAmount();
@@ -243,16 +243,16 @@ void Customer::removeProductFromCart(Eshop* eshop, const std::string &title) {
     shoppingCart.erase(title);
 };
 
-void Customer::emptyCart(Eshop* eshop) {
+void Customer::emptyCart() {
   while(shoppingCart.size() > 0) {
     // Remove first product from cart until it's empty
-    removeProductFromCart(eshop, shoppingCart.begin()->first);  
+    removeProductFromCart(shoppingCart.begin()->first);  
   }
 }
 
 //////////////////////////////////// Make Order //////////////////////////////////////////////
 
-void Customer::makeOrder(Eshop *eshop) {
+void Customer::makeOrder() {
   float totalCost = 0;
   // Calculate total cost
   for (const auto &[title, product] : shoppingCart) {
@@ -321,7 +321,7 @@ void Customer::makeOrder(Eshop *eshop) {
   orderHistory.push_back(order);
 
   shoppingCart.clear(); // Empty cart
-  calculateDiscounts(eshop, orderHistory.back());
+  calculateDiscounts(orderHistory.back());
   std::cout << "Order Completed!\n";
 }
 
@@ -349,7 +349,8 @@ void Customer::showCart() {
 }
 
 //////////////////////////////////// Store Data //////////////////////////////////////////////
-void Customer::storeOrderHistory(Eshop *eshop) {
+
+void Customer::storeOrderHistory() {
   // Open file
   std::string filePath = "files/order_history/" + username + "_history.txt";
   std::ofstream file(filePath);

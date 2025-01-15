@@ -1,17 +1,25 @@
 #pragma once
+#include "General.h"
 #include "User.h"
 #include <iostream>
-#include "General.h"
 
 class Administrator : public User {
-    public:
-    Administrator(const std::string &username, const std::string &password, const bool &isAdmin): User(username, password, isAdmin) {};
-    ~Administrator() {};
+  void updateProductTitle(Product &product);
+  void updateProductDescription(Product &product);
+  void updateProductCategory(Product &product);
+  void updateProductPrice(Product &product);
+  void updateProductAmount(Product &product);
 
-    void addProduct(Eshop* eshop);
-    void updateProduct(Eshop* eshop);
-    void removeProduct(Eshop* eshop);
+public:
+  Administrator(const std::string &username, const std::string &password,
+                const bool &isAdmin, Eshop *eshop)
+      : User(username, password, isAdmin, eshop){};
+  ~Administrator(){};
 
-    void unavailableProducts(Eshop* eshop);
-    void top5Products(Eshop* eshop);
+  void addProduct();
+  void updateProduct();
+  void removeProduct();
+
+  void unavailableProducts();
+  void top5Products();
 };
