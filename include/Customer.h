@@ -4,13 +4,14 @@
 #include "Order.h"
 #include "Product.h"
 #include "User.h"
+#include "Cart.h"
 #include <iostream>
 #include <map>
 #include <set>
 #include <vector>
 
 class Customer : public User {
-  std::map<std::string, Product> shoppingCart;
+  Cart shoppingCart;
   std::vector<Order> orderHistory;
   std::set<std::string> discountedProducts;   // Map to store which products get
                                               // the 1st type of discount
