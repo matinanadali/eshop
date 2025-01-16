@@ -32,11 +32,11 @@ void User::searchProduct() {
       break;
     }
     case 2: {
-      std::map<std::string, std::vector<std::string>> categories = eshop->getCategories();
+      std::unordered_map<std::string, std::vector<std::string>> categories = eshop->getCategories();
       std::string category = readCategory(categories);
       
       std::cout << "Results: ";
-      std::map<std::string, Product> products = eshop->getProducts();
+      std::unordered_map<std::string, Product> products = eshop->getProducts();
       std::vector<std::string> validTitles;
       // Find all products that belong to `category`, print them and add them to `validTitles`
       for (const auto& [title, product] : products) {
@@ -51,7 +51,7 @@ void User::searchProduct() {
     case 3:
     {
       std::cout << "Results: ";
-      std::map<std::string, Product> products = eshop->getProducts();
+      std::unordered_map<std::string, Product> products = eshop->getProducts();
       std::vector<std::string> validTitles;
       // Add all products to `validTitles`
       for (const auto& [title, product] : products) {

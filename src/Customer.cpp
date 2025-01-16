@@ -69,7 +69,7 @@ void Customer::fetchOrderHistory() {
 //////////////////////////////////// Discount Calculation //////////////////////////////////////////////
 
 void Customer::calculateProductDiscounts() {
-  std::map<std::string, std::vector<int>> productOrderIndices;
+  std::unordered_map<std::string, std::vector<int>> productOrderIndices;
 
   // Find the indices of the orders each product appears in
   for (unsigned int orderIndex = 0; orderIndex < orderHistory.size(); orderIndex++) {
@@ -148,7 +148,7 @@ void Customer::calculateDiscounts(const Order &lastOrder) {
 //////////////////////////////////// Add Product //////////////////////////////////////////////
 
 void Customer::addProduct() {
-  std::map<std::string, Product> products = eshop->getProducts();
+  std::unordered_map<std::string, Product> products = eshop->getProducts();
 
   // Ask for input
   std::string title =

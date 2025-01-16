@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <unordered_map>
 #include <set>
 #include <vector>
 #include <iomanip>
@@ -16,11 +17,11 @@ class Customer;
 
 class Eshop {
   std::string categoriesFilePath, productsFilePath, usersFilePath;
-  std::map<std::string, User *> users;     // Map to store users by username
-  std::map<std::string, Product> products; // Map to store products by title
-  std::map<std::string, std::vector<std::string>> categories; // Map to store categories and their subcategories
+  std::unordered_map<std::string, User *> users;     // Map to store users by username
+  std::unordered_map<std::string, Product> products; // Map to store products by title
+  std::unordered_map<std::string, std::vector<std::string>> categories; // Map to store categories and their subcategories
 
-  std::map<std::string, float> minAmountForCategoryDiscounts;
+  std::unordered_map<std::string, float> minAmountForCategoryDiscounts;
   float productDiscount;
   float categoryDiscount;
   float favoriteDiscount;
@@ -55,9 +56,9 @@ public:
   Eshop(const std::string &categoriesFilePath, const std::string &productsFilePath, const std::string &usersFilePath);
 
   // Get Methods
-  std::map<std::string, std::vector<std::string>> &getCategories() { return categories; };
-  std::map<std::string, Product> getProducts() const { return products; };
-  std::map<std::string, float> getMinAmountForCategoryDiscount() const { return minAmountForCategoryDiscounts; };
+  std::unordered_map<std::string, std::vector<std::string>> &getCategories() { return categories; };
+  std::unordered_map<std::string, Product> getProducts() const { return products; };
+  std::unordered_map<std::string, float> getMinAmountForCategoryDiscount() const { return minAmountForCategoryDiscounts; };
   std::vector<Product> getTop5Products();
   float getProductDiscount() const { return productDiscount; };
   float getCategoryDiscount() const { return categoryDiscount; };

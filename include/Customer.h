@@ -13,9 +13,9 @@
 class Customer : public User {
   Cart shoppingCart;
   std::vector<Order> orderHistory;
-  std::set<std::string> discountedProducts;   // Map to store which products get
+  std::set<std::string> discountedProducts;   // Set to store which products get
                                               // the 1st type of discount
-  std::set<std::string> discountedCategories; // Map to store which categories
+  std::set<std::string> discountedCategories; // Set to store which categories
                                               // get the 2nd type of discount
 
   void calculateProductDiscounts();

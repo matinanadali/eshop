@@ -158,7 +158,7 @@ int readNumericOption(int minOption, int maxOption) {
 }
 
 std::string
-readCategory(std::map<std::string, std::vector<std::string>> &categories) {
+readCategory(std::unordered_map<std::string, std::vector<std::string>> &categories) {
   std::string category;
   std::vector<std::string> categoriesList;
 

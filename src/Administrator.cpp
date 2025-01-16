@@ -129,7 +129,7 @@ void Administrator::removeProduct() {
 /////////////////////////////////////// View Eshop Statistics Methods ///////////////////////////////////////
 
 void Administrator::unavailableProducts() {
-  std::map<std::string, Product> products = eshop->getProducts();
+  std::unordered_map<std::string, Product> products = eshop->getProducts();
   for (const auto &[title, product] : products) {
     // Equality check for floating point numbers
     if (abs(product.getAmount()) < 10e-6) {
