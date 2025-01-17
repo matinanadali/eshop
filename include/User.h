@@ -34,6 +34,7 @@ class User {
         virtual void makeOrder(){}
         virtual void viewOrderHistory(){}
         virtual void showCart(){}
+        virtual void displayMenu() = 0;
 
         std::string getUsername() const { return username; };
         std::string getPassword() const { return password; };

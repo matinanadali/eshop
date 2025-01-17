@@ -9,6 +9,7 @@ class Administrator : public User {
   void updateProductCategory(Product &product);
   void updateProductPrice(Product &product);
   void updateProductAmount(Product &product);
+  void displayMenu();
 
 public:
   Administrator(const std::string &username, const std::string &password,

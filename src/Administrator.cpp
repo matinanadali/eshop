@@ -149,3 +149,41 @@ void Administrator::top5Products() {
     }
   }
 }
+
+//////////////////////////////////// Show Data Methods //////////////////////////////////////////////
+
+void Administrator::displayMenu() {
+  int choice;
+    // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    do {
+      std::cout << "\n---Admin Menu---\n1. Add Product\n2. Edit Product\n3. "
+                   "Remove Product\n4. Search Product\n5. Show Unavailable "
+                   "Products\n6. Show Top 5 Products\n7. Exit\n";
+
+      choice = readNumericOption(1, 7);
+      switch (choice) {
+      case 1:
+        addProduct();
+        break;
+      case 2:
+        updateProduct();
+        break;
+      case 3:
+        removeProduct();
+        break;
+      case 4:
+        searchProduct();
+        break;
+      case 5:
+        unavailableProducts();
+        break;
+      case 6:
+        top5Products();
+        break;
+      case 7:
+        std::cout << "Goodbye!\n";
+        break;
+      }
+
+    } while (choice != 7);
+}

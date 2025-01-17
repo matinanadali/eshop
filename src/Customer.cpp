@@ -337,6 +337,44 @@ void Customer::showCart() {
   shoppingCart.show();
 }
 
+void Customer::displayMenu() {
+  int choice;
+    do {
+      std::cout << "\n---Customer Menu---\n1. Search for a product\n2. Add product to cart\n3. "
+                   "Update product from cart\n4. Remove product from cart\n5. Complete order\n"
+                   "6. View order history\n7. View cart\n8. Exit\n";
+
+      choice = readNumericOption(1, 8);
+      switch (choice) {
+      case 1:
+        searchProduct();
+        break;
+      case 2:
+        addProduct();
+        break;
+      case 3:
+        updateProduct();
+        break;
+      case 4:
+        removeProduct();
+        break;
+      case 5:
+        makeOrder();
+        break;
+      case 6:
+        viewOrderHistory();
+        break;
+      case 7:
+        showCart();
+        break;
+      case 8:
+        std::cout << "Goodbye!\n";
+        break;
+      }
+
+    } while (choice != 8);
+}
+
 //////////////////////////////////// Store Data //////////////////////////////////////////////
 
 void Customer::storeOrderHistory() {

@@ -284,78 +284,7 @@ void Eshop::showLoginPrompt() {
 /////////////////////////////////////// Menus /////////////////////////////////////
 
 void Eshop::showMenu() {
-  if (activeUser->getIsAdmin()) { // Menu for Admin
-    int choice;
-    // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    do {
-      std::cout << "\n---Admin Menu---\n1. Add Product\n2. Edit Product\n3. "
-                   "Remove Product\n4. Search Product\n5. Show Unavailable "
-                   "Products\n6. Show Top 5 Products\n7. Exit\n";
-
-      choice = readNumericOption(1, 7);
-      switch (choice) {
-      case 1:
-        activeUser->addProduct();
-        break;
-      case 2:
-        activeUser->updateProduct();
-        break;
-      case 3:
-        activeUser->removeProduct();
-        break;
-      case 4:
-        activeUser->searchProduct();
-        break;
-      case 5:
-        activeUser->unavailableProducts();
-        break;
-      case 6:
-        activeUser->top5Products();
-        break;
-      case 7:
-        std::cout << "Goodbye!\n";
-        break;
-      }
-
-    } while (choice != 7);
-
-  } else { // Menu for Customer
-    int choice;
-    do {
-      std::cout << "\n---Customer Menu---\n1. Search for a product\n2. Add product to cart\n3. "
-                   "Update product from cart\n4. Remove product from cart\n5. Complete order\n"
-                   "6. View order history\n7. View cart\n8. Exit\n";
-
-      choice = readNumericOption(1, 8);
-      switch (choice) {
-      case 1:
-        activeUser->searchProduct();
-        break;
-      case 2:
-        activeUser->addProduct();
-        break;
-      case 3:
-        activeUser->updateProduct();
-        break;
-      case 4:
-        activeUser->removeProduct();
-        break;
-      case 5:
-        activeUser->makeOrder();
-        break;
-      case 6:
-        activeUser->viewOrderHistory();
-        break;
-      case 7:
-        activeUser->showCart();
-        break;
-      case 8:
-        std::cout << "Goodbye!\n";
-        break;
-      }
-
-    } while (choice != 8);
-  }
+  activeUser->displayMenu();
 }
 
 /////////////////////////////////////// Varius Functions /////////////////////////////////////

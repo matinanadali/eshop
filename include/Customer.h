@@ -22,6 +22,7 @@ class Customer : public User {
   void calculateCategoryDiscounts(const Order &lastOrder);
   void calculateFavoriteProductDiscount();
   void calculateDiscounts(const Order &lastOrder);
+  void displayMenu();
   bool canGetFavoriteProductDiscount = true;
 
   struct SortByAmount {
