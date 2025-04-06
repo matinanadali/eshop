@@ -1,192 +1,124 @@
 # E-Shop
 
-## Οδηγίες εκτέλεσης
-Για να τρέξετε το πρόγραμμα, αρκεί να σιγουρευτείτε πως βρίσκεστε στο root directory του project και να εκτελέσετε την παρακάτω εντολή στο τερματικό σας:
+## Execution Instructions
+To run the program, make sure you're in the root directory of the project and run the following command in your terminal:
 ```bash
-make run 
+make run
 ```
-Το πρόγραμμα θα τρέξει χρησιμοποιώντας τις παραμέτρους των προδιαγραφών: `./files/categories.txt ./files/products.txt ./files/users.txt`, όπως ορίζεται στο αρχείο Makefile.
-**Προσοχή:** Αν δημιουργήσετε επιπλέον `.cpp` αρχεία, μην ξεχάσετε να τροποποιήσετε το Makefile, προσθέτοντας το αντίστοιχο `.o` αρχείο!
+The program will run using the parameters defined in the specifications: `./files/categories.txt ./files/products.txt ./files/users.txt`, as specified in the Makefile.
+**Note:** If you create additional `.cpp` files, don’t forget to modify the Makefile by adding the corresponding `.o` file!
 
 ---
 
-## Υλοποίηση βασικών λειτουργιών
+## Implementation of Basic Functions
 
-### Διαχειριστές
+### Administrators
 
-Οι διαχειριστές μπορούν:
-1. να καταχωρίσουν νέα προϊόντα, επιλέγοντας `1` στο μενού επιλογών.
-2. να επεξεργαστούν οποιοδήποτε χαρακτηριστικό, οποιουδήποτε προϊόντος, επιλέγοντας `2` στο μενού επιλογών.
-3. να αναζητήσουν οποιοδήποτε προϊόν, επιλέγοντας `4` στο μενού επιλογών.
-4. a. να δουν τα μη διαθέσιμα προϊόντα, επιλέγοντας `5` στο μενού επιλογών.
-   b. να δουν τα 5 προϊόντα που έχουν εμφανιστεί τις περισσότερες φορές σε κάποια παραγγελία, ανεξαρτήτου ποσότητας, επιλέγοντας `6` στο μενού επιλογών.
+Administrators can:
+1. Add new products by selecting `1` from the options menu.
+2. Edit any attribute of any product by selecting `2` from the options menu.
+3. Search for any product by selecting `4` from the options menu.
+4. a. View unavailable products by selecting `5` from the options menu.
+   b. View the 5 most frequently ordered products, regardless of quantity, by selecting `6` from the options menu.
 
-### Πελάτες
+### Customers
 
-Οι πελάτες μπορούν:
-1. να αναζητήσουν οποιοδήποτε προϊόν, επιλέγοντας `1` στο μενού επιλογών.
-2. να προσθέσουν προϊόντα στο καλάθι τους, επιλέγοντας `2` στο μενού επιλογών.
-3. να ενημερώσουν την ποσότητα ενός προϊόντος στο καλάθι τους, επιλέγοντας `3` και να το αφαιρέσουν τελείως, επιλέγοντας `4` στο μενού επιλογών.
-4. να ολοκληρώσουν την παραγγελία τους, επιλέγοντας `5` στο μενού επιλογών.
-5. να δουν το ιστορικό παραγγελιών τους, επιλέγοντας `6` στο μενού επιλογών.
-
----
-
-## Κλάσεις που δημιουργήθηκαν
-
-- Κλάση User  
-  Η κλάση `User` περιέχει μεθόδους με κοινό όνομα, τόσο για τους διαχειριστές όσο και για τους πελάτες. Αποτελεί βασική κλάση, με τις κλάσεις `Administrator` και `Customer` να είναι παράγουσές της. Με αυτόν τον τρόπο, εκμεταλλευόμαστε την αρχή του πολυμορφισμού. Επιπλέον, περιέχει πληροφορίες για τον κάθε χρήστη, όπως το όνομά του, τον κωδικό του και τον ρόλο του. Τέλος, στο χρήστη User υπάρχει ένας δείκτης στο eshop στο οποίο αντιστοιχεί. Εφόσον κάθε χρήστης αντιστοιχίζεται σε ακριβώς ένα eshop και οι λειτουργίες του εξαρτώνται άμεσα από αυτό, θεωρήσαμε σκόπιμο να το συμπεριλάβουμε ως πεδίο της δομής, ώστε να μην χρειάζεται να το περνάμε σαν όρισμα σε κάθε μέθοδο του User που απαιτεί κάποια αλληλεπίδραση με αυτό. 
-
-- Κλάσεις Administrator και Customer  
-  Η κλάση `Administrator` ορίζει τις μεθόδους για τους διαχειριστές, όπως και η κλάση `Customer`, με την προσθήκη μερικών επιπλέον πεδίων και μεθόδων, για τη διαχείριση του καλαθιού αγορών και των εκπτώσεων.
-
-- Κλάση Eshop  
-  Η κλάση `Eshop` αποτελεί τη βασικότερη κλάση, στην οποία στηρίζεται όλο το E-shop. Σε αυτήν είναι αποθηκευμένοι όλοι οι χρήστες, τα προϊόντα, οι κατηγορίες προϊόντων και πληροφορίες για τα προϊόντα που θα μας βοηθήσουν στην υλοποίηση συναρτήσεων, όπως η `top5Products`. Επιπλέον, περίεχει τις απαραίτηες μεθόδους για την επιτυχή σύνδεση ή εγγραφή ενός χρήστη.
-
-- Κλάση Product  
-  Περιέχει όλες τις πληροφορίες ενός προϊόντος και μεθόδους για τη διαχείριση αυτών.
-
-- Κλάση Order  
-  Ένα αντικείμενο της κλάσης `Order` αποτελεί μία παραγγελία που πραγματοποιεί ένας χρήστης, περιλαμβάνοντας τα προϊόντα που περιέχει η παραγγελία και το κόστος αυτής.
-
----
-**Παρατήρηση:** Ο τρόπος εμφάνισης μηνυμάτων για τη λειτουργία του προγράμματος βασίστηκε στα `samples` που μας δόθηκαν.
----
-
-## Δομή αρχείων
-
-```bash
-├── files                        # Contains the data needed to initialize the project
-│   ├── order_history
-│   │   ├── user1_history.txt
-│   │   └── user2_history.txt
-│   ├── categories.txt
-│   ├── discounts.txt
-│   ├── products.txt
-│   └── users.txt
-├── include                     # Contains all the header files for the main files
-│   ├── acutest.h
-│   ├── Administrator.h
-│   ├── Customer.h
-│   ├── Eshop.h
-│   ├── General.h
-│   ├── Order.h
-│   ├── Product.h
-│   ├── Cart.h
-│   └── User.h
-├── samples                     # Contains example executions of the project
-│   ├── sample_admin_1.txt
-│   ├── sample_admin_2.txt
-│   ├── sample_admin_3.txt
-│   ├── sample_customer_1.txt
-│   ├── sample_customer_2.txt
-│   └── sample_customer_3.txt
-├── src                         # Contains the source code of all the main files
-│   ├── Administrator.cpp
-│   ├── Administrator.d
-│   ├── Administrator.o
-│   ├── Customer.cpp
-│   ├── Customer.d
-│   ├── Customer.o
-│   ├── Eshop.cpp
-│   ├── Eshop.d
-│   ├── Eshop.o
-│   ├── General.cpp
-│   ├── General.d
-│   ├── General.o
-│   ├── Order.cpp
-│   ├── Order.d
-│   ├── Order.o
-│   ├── Product.cpp
-│   ├── Product.d
-│   ├── Product.o
-│   ├── User.cpp
-│   ├── User.d
-│   ├── User.o
-│   ├── Cart.cpp
-│   ├── Cart.d
-│   ├── Cart.o
-│   ├── main.cpp
-│   ├── main.d
-│   └── main.o
-├── tests                     # Contains the unit_tests to test functionality of the program
-│   ├── admin_edit_category_subcategory.txt
-│   ├── admin_edit_description.txt
-│   ├── admin_edit_price.txt
-│   ├── admin_edit_quantity.txt
-│   ├── admin_edit_title.txt
-│   ├── admin_insert.txt
-│   ├── admin_remove.txt
-│   ├── customer_insert.txt
-│   ├── customer_remove.txt
-│   ├── customer_update.txt
-│   └── unit_tests.cpp
-```
-
-### Το αρχείο General.cpp
-Το αρχείο `General.cpp` περιέχει λειτουργίες που, όπως αποδείχθηκε, χρειάστηκε να χρησιμοποιηθούν σε πολλά σημεία του κώδικα. Για τον λόγο αυτόν, οι λειτουργίες συγκεντρώθηκαν σε συναρτήσεις σε αυτό το αρχείο, με στόχο να αρκεί μία απλή κλήση τους κάθε φορά. Προορίζεται κυρίως για τον έλεγχο εγκυρότητας των τιμών που διαβάζονται, εκτυπώνοντας κατάλληλα μηνύματα λάθους.
+Customers can:
+1. Search for any product by selecting `1` from the options menu.
+2. Add products to their cart by selecting `2` from the options menu.
+3. Update the quantity of a product in their cart by selecting `3`, or remove it completely by selecting `4` from the options menu.
+4. Complete their order by selecting `5` from the options menu.
+5. View their order history by selecting `6` from the options menu.
 
 ---
 
-## Σύνδεση/ Εγγραφή χρηστών
+## Classes Created
 
-Αφού φορτωθούν τα απαραίτητα αρχεία, το E-shop ξεκινά τη λειτουργία του με την κλήση `eshop.showLoginPrompt();`.  
-Εκεί, αναλόγως αν ο χρήστης επιθυμεί να συνδεθεί ή να εγγραφεί, μεταβιβαζόμαστε στην ανάλογη συνάρτηση.  
-Αφού γίνουν οι απαραίτητοι έλεγχοι για τη σωστή και έγκυρη καταχώριση διαπιστευτηρίων, εμφανίζεται το κατάλληλο μενού επιλογών, ανάλογα με τον ρόλο του χρήστη.  
-Στη συνέχεια, ο χρήστης επιλέγει τη λειτουργία που επιθυμεί οπότε και καλείται η κατάλληλη συνάρτηση.
+- **User Class**  
+  The `User` class contains methods with common names for both administrators and customers. It serves as a base class, with the `Administrator` and `Customer` classes derived from it. This allows us to leverage polymorphism. Additionally, it contains information about each user, such as their name, password, and role. Finally, the `User` class has a pointer to the `eshop` it corresponds to. Since each user corresponds to exactly one e-shop and their actions depend directly on it, we considered it appropriate to include it as a field in the structure, so we don't have to pass it as an argument to every method in `User` that interacts with the e-shop. 
+
+- **Administrator and Customer Classes**  
+  The `Administrator` class defines the methods for administrators, while the `Customer` class defines those for customers, with the addition of some extra fields and methods for managing the shopping cart and discounts.
+
+- **Eshop Class**  
+  The `Eshop` class is the core class on which the entire e-shop is based. It stores all the users, products, product categories, and product information that help us implement functions like `top5Products`. It also contains the necessary methods for the successful login or registration of a user.
+
+- **Product Class**  
+  This class contains all the information about a product and methods for managing it.
+
+- **Order Class**  
+  An object of the `Order` class represents an order placed by a user, including the products in the order and the total cost.
 
 ---
 
-## Αποθήκευση χρηστών/ προϊόντων
-
-Για την αποθήκευση των χρηστών και των προϊόντων του Eshop επιλέξαμε τη δομή δεδομένων `unordered_map` και δημιουργήσαμε δύο hash tables:
--  `users: username -> pointer to User`
--  `products: product title -> Product object`
-
-Με αυτόν τον τρόπο, οι λειτουργίες της εισαγωγής, διαγραφής, καθώς και της αναζήτησης με βάση το username ή τον τίτλο του προϊόντος αποκτούν την ελάχιστη δυνατή πολυπλοκότητα ($Ο(1)$). 
+**Note:** The way messages are displayed for the program's operation is based on the `samples` provided.
 
 ---
 
-## Υλοποίηση αναλυτικών προδιαγραφών λογισμικού
+### The `General.cpp` File
+The `General.cpp` file contains functions that, as it turned out, needed to be used in many parts of the code. For this reason, these functions are grouped together in this file so that a simple call is enough each time. It is primarily intended for validating the values read and printing appropriate error messages.
 
-### Διαχειριστές
+---
 
-1. Η συνάρτηση `addProduct()`  
-   Αφού δοθούν όλες οι πληροφορίες του προϊόντος, αυτό προστίθεται στο map των προϊόντως του E-shop μέσω της συνάρτησης `addProduct()`.
-2. Η συνάρτηση `updateProduct()`  
-   Ο διαχειριστής επιλέγει το χαρακτηριστικό του προϊόντος που επιθυμεί να τροποποιήσει. Δημιουργείται ένα αντίγραφο του ήδη υπάρχοντος προϊόντος και σε αυτό αλλάζει το χαρακτηριστικό που έχει επιλέξει ο χρήστης. Έπειτα, το προϊόν διαγράφεται από το map των προϊόντων, μέσω της `removeProductByTitle()` και προστίθεται το νέο προϊόν, μέσω της `addProduct()` (Η `addProduct` του E-shop είναι διαφορετική από την `addProduct` του `Administrator` που ορίσαμε πιο πάνω).
-3. Η συνάρτηση `removeProduct()`  
-   Πρόκειται για μια απλή κλήση της βοηθητικής συνάρτησης `removeProductByTitle()`.
-4. Η συνάρτηση `searchProduct()`  
-   Η συνάρτηση αυτή, επειδή είναι κοινή τόσο για τους διαχειριστές όσο και για τους πελάτες, θεωρείται συνάρτηση της κλάσης `User`.    
-   Αν ο χρήστης επιλέξει να κάνει αναζήτηση με βάση κάποιον τίτλο (όνομα) προϊόντος, τότε αν υπάρχει το προϊόν τυπώνονται τα χαρακτηριστικά του, διαφορετικά τυπώνεται κατάλληλο μήνυμα.  
-   Αν επιλέξει να κάνει αναζήτηση με βάση κάποια συγκεκριμένη κατηγορία, βρίσκουμε τα προϊόντα που ανήκουν στη ζητούμενη κατηγορία και τυπώνουμε τα χαρακτηριστικά τους.  
-   Αν επιλέξει να δει όλα τα προϊόντα, δεν έχουμε παρά να τυπώσουμε τα χαρακτηριστικά όλων των προϊόντων.
-5. Η συνάρτηση `unavailableProducts()`  
-   Ελέγχεται η τιμή της ποσότητας του κάθε προϊόντος και εμφανίζονται τα χαρακτηριστικά εκείνων που έχουν μηδενική ποσότητα (<10e-6).
-6. Η συνάρτηση `top5Products()`  
-   Αφού λάβουμε τα προϊόντα με τις περισσότερες πωλήσεις μέσω της βοηθητικής συνάρτησης `getTop5Products()`, ελέγχουμε αν υπάρχουν τουλάχιστον 5 προϊόντα και σε αυτή την περίπτωση, εμφανίζουμε τα χαρακτηριστικά τους.
-   
-### Πελάτες
+## User Login/Registration
 
-1. Η συνάρτηση `searchProduct()`  
-   Όμοια με παραπάνω.
-2. Η συνάρτηση `addProduct()`  
-   Για το προϊόν που θα δώσει ο πελάτης, γίνεται έλεγχος της ποσότητάς του. Εφόσον αυτή δεν είναι μηδενική, ο πελάτης πληκτρολογεί την ποσότητα που επιθυμεί και γίνεται έλεγχος αν υπάρχει το απαιτούμενο απόθεμα, εμφανίζοντας κατάλληλο μήνυμα. Αν υπάρχει και αν το προϊόν υπάρχει ήδη στο καλάθι του,  προσθέτουμε στην ποσότητα την ποσότητα που επιθυμεί, διαφορετικά απλώς προσθέτουμε το προϊόν στο καλάθι. Τέλος, αφαιρούμε την ποσότητα που ζητήθηκε από το απόθεμα του προϊόντος.
-3. Η συνάρτηση `updateProduct()`  
-   Αφού ο χρήστης δώσει το προϊόν που τον ενδιαφέρει, εφόσον αυτό βρίσκεται στο καλάθι, ζητείται η νέα ποσότητα και το καλάθι ανανεώνεται με τη νέα ποσότητα. Αν, ωστόσο, δεν υπάρχει η ποσότητα που ζητάει ο χρήστης, εκτυπώνεται κατάλληλο μήνυμα.
-4. Η συνάρτηση `removeProduct()`  
-   Αφού βεβαιωθούμε πως το προϊόν που έδωσε ο χρήστης υπάρχει στο καλάθι, το αφαιρούμε μέσω της βοηθητικής συνάρτησης `removeProductFromCart`.
-5. Η συνάρτηση `makeOrder()`  
-   Όταν ο χρήστης ολοκληρώσει μία παραγγελία, θα πρέπει, για κάθε προϊόν που αυτή περιέχει, να ενημερωθούν κατάλληλα οι δομές που αφορούν τις εκπτώσεις, αλλά και αν ο χρήστης δικαιούται κάποια έκπτωση στην τρέχουσα παραγγελία.
-   Επιπλέον, θα πρέπει να ενημερώνουμε το ιστορικό παραγγελιών, προσθέτοντας την τρέχουσα παραγγελία και να αδειάζουμε το καλάθι.
-6. Η συνάρτηση `viewOrderHistory()`  
-   Για κάθε παραγγελία στο `orderHistory`, τυπώνεται ο αύξων αριθμός της, η ποσότητα του κάθε προϊόντος που περιλαμβάνει, μαζί με τον τίτλο του, και τέλος, το συνολικό κόστος της παραγγελίας.
+Once the necessary files are loaded, the e-shop starts its operation by calling `eshop.showLoginPrompt();`.  
+Depending on whether the user wants to log in or register, we proceed to the corresponding function.  
+After the necessary checks for correct and valid credential entry, the appropriate options menu is displayed based on the user's role.  
+Then, the user selects the function they want, and the corresponding function is called.
+
+---
+
+## Storing Users/Products
+
+To store the users and products of the e-shop, we chose the `unordered_map` data structure and created two hash tables:
+- `users: username -> pointer to User`
+- `products: product title -> Product object`
+
+This way, operations for insertion, deletion, and searching by username or product title have the minimal possible complexity ($O(1)$).
+
+---
+
+## Implementation of Detailed Software Specifications
+
+### Administrators
+
+1. **The `addProduct()` function**  
+   After providing all the information for the product, it is added to the e-shop's product map via the `addProduct()` function.
+2. **The `updateProduct()` function**  
+   The administrator selects the attribute of the product they want to modify. A copy of the existing product is created, and the selected attribute is changed. Then, the product is removed from the product map via `removeProductByTitle()` and the new product is added via `addProduct()` (Note: `addProduct` in the `Eshop` class is different from the `addProduct` in the `Administrator` class defined above).
+3. **The `removeProduct()` function**  
+   This is a simple call to the helper function `removeProductByTitle()`.
+4. **The `searchProduct()` function**  
+   This function is common for both administrators and customers and is considered a function of the `User` class.  
+   If the user chooses to search by product title, the product's details are displayed if it exists; otherwise, an appropriate message is printed.  
+   If the user chooses to search by a specific category, the products in the requested category are found and their details are displayed.  
+   If the user selects to see all products, the details of all products are printed.
+5. **The `unavailableProducts()` function**  
+   The quantity of each product is checked, and those with zero quantity (<10e-6) are displayed.
+6. **The `top5Products()` function**  
+   After getting the products with the most sales via the helper function `getTop5Products()`, we check if there are at least 5 products. If so, their details are displayed.
+
+### Customers
+
+1. **The `searchProduct()` function**  
+   Similar to the one above.
+2. **The `addProduct()` function**  
+   For the product given by the customer, the quantity is checked. If it's not zero, the customer enters the desired quantity, and we check if the required stock is available, displaying an appropriate message. If the product is already in the cart, the desired quantity is added to the existing amount; otherwise, the product is simply added to the cart. Finally, the requested quantity is subtracted from the product's stock.
+3. **The `updateProduct()` function**  
+   After the user provides the product they are interested in, if it's in the cart, the new quantity is requested, and the cart is updated with the new quantity. If the desired quantity is not available, an appropriate message is displayed.
+4. **The `removeProduct()` function**  
+   After ensuring that the product exists in the cart, it is removed using the helper function `removeProductFromCart`.
+5. **The `makeOrder()` function**  
+   When the user completes an order, for each product in the order, the discount structures are updated, and it is checked whether the user is eligible for a discount on the current order.  
+   Additionally, the order history is updated by adding the current order, and the cart is emptied.
+6. **The `viewOrderHistory()` function**  
+   For each order in the `orderHistory`, its order number, the quantity of each product it contains (along with the product title), and the total cost of the order are displayed.
 
 ---
 
 ## Bonus
 
-1. Αν ο χρήστης αγοράσει το προϊόν Χ σε 3 συνεχόμενες παραγγελίες, τότε παίρνει έκπτωση 20% στο προϊόν Χ στην επόμενη παραγγελία στην οποία θα πάρει το προϊόν Χ.
-2. Αν ο χρήστης αγοράσει σε μία παραγγελία τουλάχιστον Χ ποσότητα από προϊόντα μίας κατηγορίας (όπου Χ η ελάχιστη ποσότητα προϊόντων που δίνεται), τότε εφαρμόζεται έκπτωση 30% στα προϊόντα αυτής της κατηγορίας που θα πάρει στην αμέσως  επόμενη παραγγελία. Αν στην επόμενη παραγγελία δεν πάρει προϊόν αυτής της κατηγορίας, η έκπτωση χάνεται.
-3. Αγαπημένο προϊόν του χρήστη θεωρείται αυτό που εμφανίζεται με τη μεγαλύτερη ποσότητα σε ολόκληρο το ιστορικό παραγγελιών του. Για την εύρεση του αγαπημένου προϊόντος, αποθηκεύουμε τη συνολική ποσότητα από κάθε προϊόν που έχει αγοράσει ο χρήστης σε ένα `map<product title, amount>` και χρησιμοποιούμε ένα `set<pair<amount, product title>>` για να κρατάμε ταξινομημένα σε φθίνουσα σειρά τα προϊόντα με βάση την ποσότητα που έχει αγοραστεί από καθένα από αυτά. Έτσι, το αγαπημένο προϊόν του χρήστη είναι πάντα το πρώτο στοιχείο του `set`. Κάθε φορά που ο χρήστης κάνει μία παραγγελία, αφαιρούμε κάθε προϊόν της παραγγελίας από το `set`, ανανεώνουμε ανάλογα την ποσότητά του και το ξαναπροσθέτουμε στο `set` με την ανανεωμένη ποσότητα. Ο τρόπος αυτός είναι αποδοτικός, καθώς επιτρέπει την εύκολη ανανέωση της ποσότητα των προϊόντων (απαιτείται μία αφαίρεση και μία προσθήκη σε set -> Ο(logn)) και παρέχει εύκολη πρόσβαση στο αγαπημένο αντικείμενο (πρώτο στοιχείο του set -> Ο(1)).
+1. If a user buys product X in 3 consecutive orders, they get a 20% discount on product X in the next order where product X is purchased.
+2. If a user buys at least X quantity of products from a category in one order (where X is the minimum quantity provided), a 30% discount is applied to products from that category in the next order. If the user does not buy products from that category in the next order, the discount is lost.
+3. A user's favorite product is considered the one with the highest quantity across their entire order history. To find the favorite product, we store the total quantity of each product the user has bought in a `map<product title, amount>` and use a `set<pair<amount, product title>>` to keep products sorted in descending order based on the quantity purchased. Thus, the user's favorite product is always the first element in the `set`. Every time the user makes an order, we remove each product from the order from the `set`, update its quantity accordingly, and re-add it with the updated quantity. This approach is efficient, as it allows easy updating of product quantities (requires one removal and one addition in the set → $O(logn)$) and easy access to the favorite product (first element of the set → $O(1)$).
